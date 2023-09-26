@@ -12,6 +12,15 @@ export interface SoundsRaceSurvival {
   music: Sound;
 }
 
+export interface ControlsGame {
+  onTouchLeftStart: () => void;
+  onTouchLeftEnd: () => void;
+  onTouchRightStart: () => void;
+  onTouchRightEnd: () => void;
+  onTouchDownStart: () => void;
+  onTouchDownEnd: () => void;
+}
+
 export interface Vehicle {
   position: Point;
   tilePosition: Point;

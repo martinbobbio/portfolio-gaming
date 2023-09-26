@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePixiContext } from '@/hooks';
 import { Controls, Game, Menu, Score } from './components';
-import { SoundsRaceSurvival, TexturesRaceSurvival } from './interfaces';
+import {
+  ControlsGame,
+  SoundsRaceSurvival,
+  TexturesRaceSurvival,
+} from './interfaces';
 import { paths } from './data';
 import { GameProvider } from './contexts';
 import { RaceSurvivalStyled } from './RaceSurvival.styled';
@@ -13,6 +17,7 @@ const RaceSurvival = () => {
   const [textures, setTextures] = useState<TexturesRaceSurvival>();
   const [sounds, setSounds] = useState<SoundsRaceSurvival>();
   const [isGameRunning, setIsGameRunning] = useState(false);
+  const [controls, setControls] = useState<ControlsGame>();
 
   const handleStartGame = () => {
     setIsGameRunning(true);
@@ -51,11 +56,6 @@ const RaceSurvival = () => {
     loadTextures();
   }, [loadTextures]);
 
-  useEffect(() => {
-    const body = document.querySelector('body');
-    if (body) body.style.overflowY = 'hidden';
-  }, []);
-
   return (
     <GameProvider>
       <>
@@ -70,11 +70,12 @@ const RaceSurvival = () => {
               textures={textures}
               sounds={sounds}
               onEndGame={handleEndGame}
+              setControls={setControls}
             />
             <Score />
           </RaceSurvivalStyled>
         )}
-        {isGameRunning && <Controls />}
+        {isGameRunning && controls && <Controls controls={controls} />}
       </>
     </GameProvider>
   );

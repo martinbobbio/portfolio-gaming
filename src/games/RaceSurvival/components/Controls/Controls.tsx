@@ -2,20 +2,53 @@ import { FAIcon } from '@/components';
 import { ButtonControl, ControlsStyled } from './Controls.styled';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
 import { faArrowDown, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { ControlsGame } from '../../interfaces';
+import { useKeyPress } from '@/hooks';
 
-const Controls = () => {
+interface ControlProps {
+  controls: ControlsGame;
+}
+
+const Controls = ({ controls }: ControlProps) => {
+  useKeyPress('ArrowLeft', controls.onTouchLeftStart, controls.onTouchLeftEnd);
+  useKeyPress('a', controls.onTouchLeftStart, controls.onTouchLeftEnd);
+  useKeyPress(
+    'ArrowRight',
+    controls.onTouchRightStart,
+    controls.onTouchRightEnd
+  );
+  useKeyPress('d', controls.onTouchRightStart, controls.onTouchRightEnd);
+  useKeyPress('ArrowDown', controls.onTouchDownStart, controls.onTouchDownEnd);
+  useKeyPress('s', controls.onTouchDownStart, controls.onTouchDownEnd);
+
   return (
     <ControlsStyled>
-      <ButtonControl className='left'>
+      <ButtonControl
+        onTouchStart={controls.onTouchLeftStart}
+        onTouchEnd={controls.onTouchLeftEnd}
+        className='left'
+      >
         <FAIcon size='xxl' icon={faArrowLeft} />
       </ButtonControl>
-      <ButtonControl className='right'>
+      <ButtonControl
+        onTouchStart={controls.onTouchRightStart}
+        onTouchEnd={controls.onTouchRightEnd}
+        className='right'
+      >
         <FAIcon size='xxl' icon={faArrowRight} />
       </ButtonControl>
-      <ButtonControl className='down-right'>
+      <ButtonControl
+        onTouchStart={controls.onTouchDownStart}
+        onTouchEnd={controls.onTouchDownEnd}
+        className='down-right'
+      >
         <FAIcon size='xxl' icon={faArrowDown} />
       </ButtonControl>
-      <ButtonControl className='down-left'>
+      <ButtonControl
+        onTouchStart={controls.onTouchDownStart}
+        onTouchEnd={controls.onTouchDownEnd}
+        className='down-left'
+      >
         <FAIcon size='xxl' icon={faArrowDown} />
       </ButtonControl>
     </ControlsStyled>

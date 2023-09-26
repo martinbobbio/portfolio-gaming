@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
-import { useKeyPress, usePixiContext } from '@/hooks';
+import { usePixiContext } from '@/hooks';
 import { Stage, Container, TilingSprite } from '@pixi/react';
 import { Point } from 'pixi.js';
 import {
+  ControlsGame,
   SoundsRaceSurvival,
   TexturesRaceSurvival,
   Vehicle,
@@ -15,6 +16,7 @@ interface GameProps {
   textures: TexturesRaceSurvival;
   sounds: SoundsRaceSurvival;
   onEndGame: () => void;
+  setControls: (controls: ControlsGame) => void;
 }
 
 /**
@@ -25,7 +27,7 @@ interface GameProps {
  * @param onEndGame for stop and finish the game
  * @return React.ReactElement <Game/>
  */
-const Game = ({ textures, sounds, onEndGame }: GameProps) => {
+const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
   const app = usePixiContext();
   const { points, level, setPoints, setLevel } = useGameContext();
   const height = window.innerHeight - 64;
@@ -37,7 +39,7 @@ const Game = ({ textures, sounds, onEndGame }: GameProps) => {
   const [ellapsedFrames, setEllapsedFrames] = useState(0);
   const [isSpeedingUp, setIsSpeedingUp] = useState(false);
   const [player, setPlayer] = useState<Vehicle>({
-    position: new Point(200, 0),
+    position: new Point(0, 0),
     velocity: new Point(0, 0),
     tilePosition: new Point(0, 0),
     width: 36,
@@ -79,7 +81,7 @@ const Game = ({ textures, sounds, onEndGame }: GameProps) => {
     sounds.car.play();
   }, [sounds]);
 
-  const turn = (right: boolean) => {
+  const turn = useCallback((right: boolean) => {
     const turnSpeed = 4;
     if (right)
       setPlayer((prevState) => ({
@@ -91,24 +93,24 @@ const Game = ({ textures, sounds, onEndGame }: GameProps) => {
         ...prevState,
         velocity: new Point(turnSpeed, 0),
       }));
-  };
+  }, []);
 
-  const resetVelocity = () => {
+  const resetVelocity = useCallback(() => {
     setPlayer((prevState) => ({
       ...prevState,
       velocity: new Point(0, 0),
     }));
-  };
+  }, []);
 
-  const speedUp = () => {
+  const speedUp = useCallback(() => {
     sounds.car.speed = 0.4 + carSpeedMultiplier;
     setIsSpeedingUp(true);
-  };
+  }, [carSpeedMultiplier, sounds.car]);
 
-  const speedDown = () => {
+  const speedDown = useCallback(() => {
     sounds.car.speed = 0.3 + carSpeedMultiplier;
     setIsSpeedingUp(false);
-  };
+  }, [carSpeedMultiplier, sounds.car]);
 
   const updateScore = useCallback(() => {
     setPoints(points + (isSpeedingUp ? 10 : 5));
@@ -123,19 +125,23 @@ const Game = ({ textures, sounds, onEndGame }: GameProps) => {
     );
   };
 
-  useKeyPress('ArrowLeft', () => turn(true), resetVelocity);
-  useKeyPress('a', () => turn(true), resetVelocity);
-  useKeyPress('ArrowRight', () => turn(false), resetVelocity);
-  useKeyPress('d', () => turn(false), resetVelocity);
-  useKeyPress('ArrowDown', speedUp, speedDown);
-  useKeyPress('s', speedUp, speedDown);
+  useEffect(() => {
+    setControls({
+      onTouchLeftStart: () => turn(true),
+      onTouchLeftEnd: () => resetVelocity(),
+      onTouchRightStart: () => turn(false),
+      onTouchRightEnd: () => resetVelocity(),
+      onTouchDownStart: () => speedUp(),
+      onTouchDownEnd: () => speedDown(),
+    });
+  }, [setControls, speedUp, speedDown, turn, resetVelocity]);
 
   useEffect(() => {
     if (shouldUpdateScore) updateScore();
   }, [points, shouldUpdateScore, updateScore]);
 
   useEffect(() => {
-    const x = width / 2 - 64 / 2;
+    const x = width / 2;
     const y = height - 64 - 20;
     setPlayer((prevState) => ({
       ...prevState,
