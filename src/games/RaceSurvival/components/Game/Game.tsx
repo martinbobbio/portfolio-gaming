@@ -28,7 +28,7 @@ interface GameProps {
 const Game = ({ textures, sounds, onEndGame }: GameProps) => {
   const app = usePixiContext();
   const { points, level, setPoints, setLevel } = useGameContext();
-  const height = textures.background.height / 1.5;
+  const height = window.innerHeight - 64;
   const width =
     window.innerWidth > textures.background.width
       ? textures.background.width

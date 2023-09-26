@@ -10,7 +10,6 @@ export const MenuStyled = styled.div`
   position: relative;
   height: 100vh;
   width: 100%;
-  overflow: hidden;
 `;
 
 export const Screen = styled.div<ScreenProps>`
@@ -22,7 +21,7 @@ export const Screen = styled.div<ScreenProps>`
   height: 100%;
   display: flex;
   align-items: center;
-  background: url('./race-survival/img/background-menu.png');
+  background: url('./race-survival/img/background-menu.jpg');
   background-position: center center;
   background-size: cover;
   flex-direction: column;
@@ -68,5 +67,20 @@ export const ButtonPlay = styled.div`
       width: 48px;
       height: 48px;
     }
+  }
+`;
+
+export const Information = styled.div`
+  width: 75%;
+  background: red;
+  margin: 32px auto 0;
+  border-radius: 8px;
+  text-align: left;
+  padding: 32px;
+  background: ${({ theme }) => theme.palette.elements.header.main};
+  text-align: center;
+  box-shadow: ${({ theme }) => theme.boxShadow.medium};
+  .underline {
+    text-decoration: underline;
   }
 `;

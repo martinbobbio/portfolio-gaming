@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePixiContext } from '@/hooks';
-import { Game, Menu, Score } from './components';
+import { Controls, Game, Menu, Score } from './components';
 import { SoundsRaceSurvival, TexturesRaceSurvival } from './interfaces';
 import { paths } from './data';
 import { GameProvider } from './contexts';
@@ -51,6 +51,11 @@ const RaceSurvival = () => {
     loadTextures();
   }, [loadTextures]);
 
+  useEffect(() => {
+    const body = document.querySelector('body');
+    if (body) body.style.overflowY = 'hidden';
+  }, []);
+
   return (
     <GameProvider>
       <>
@@ -69,6 +74,7 @@ const RaceSurvival = () => {
             <Score />
           </RaceSurvivalStyled>
         )}
+        {isGameRunning && <Controls />}
       </>
     </GameProvider>
   );
