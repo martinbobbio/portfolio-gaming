@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, PixiGame } from '@/views';
-import { RaceSurvival } from '@/games';
+import { KingsAndPigs, RaceSurvival } from '@/games';
 import App from '@/App';
 
 /**
@@ -24,6 +24,10 @@ const Router = () => {
         <Route
           path={'race-survival'}
           element={wrapApplication(<PixiGame game={<RaceSurvival />} />)}
+        />
+        <Route
+          path={'kings-and-pigs'}
+          element={wrapApplication(<PixiGame game={<KingsAndPigs />} />)}
         />
         <Route path={'*'} element={wrapApplication(<Home />)} />
       </Routes>

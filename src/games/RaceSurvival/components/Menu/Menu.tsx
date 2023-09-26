@@ -23,7 +23,7 @@ interface MenuProps {
 const Menu = ({ onStartGame, title, isGameRunning }: MenuProps) => {
   return (
     <MenuStyled>
-      <Screen _active={isGameRunning.toString()}>
+      <Screen id='screen' _animate={isGameRunning.toString()}>
         <Title>{title}</Title>
         <ButtonPlay onClick={onStartGame}>
           <FAIcon icon={faCirclePlay} animation='beat' color='primary' />

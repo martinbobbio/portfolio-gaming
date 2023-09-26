@@ -16,15 +16,14 @@ interface PixiGameProps {
 const PixiGame = ({ game }: PixiGameProps) => {
   const location = useLocation();
   const title = routeToTitle(location.pathname);
+  const tag = location.pathname.replace('/', '');
 
   return (
     <>
       <Header title={title} />
-      <PixiGameStyled>
-        <PixiProvider>
-          <>{game}</>
-        </PixiProvider>
-      </PixiGameStyled>
+      <PixiProvider>
+        <PixiGameStyled className={tag}>{game}</PixiGameStyled>
+      </PixiProvider>
     </>
   );
 };

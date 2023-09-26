@@ -5,5 +5,5 @@
  * @return string
  */
 export default (value: string): string => {
-  return value.replace('/', '').replace('-', ' ').toUpperCase();
+  return value.replace('/', '').replaceAll('-', ' ').toUpperCase();
 };

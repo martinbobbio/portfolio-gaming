@@ -2,7 +2,7 @@ import { BREAKPOINTS } from '@/constants';
 import { styled } from 'styled-components';
 
 interface ScreenProps {
-  _animate: string;
+  _active: string;
 }
 
 export const MenuStyled = styled.div`
@@ -13,20 +13,18 @@ export const MenuStyled = styled.div`
 `;
 
 export const Screen = styled.div<ScreenProps>`
-  top: ${({ _animate }) => (_animate === 'true' ? '100%' : '0%')};
   position: absolute;
   z-index: 2;
+  top: 0;
+  opacity: ${({ _active }) => (_active === 'false' ? '1' : '0')};
   left: 0px;
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
-  background: url('./race-survival/img/background-menu.jpg');
-  background-position: center center;
-  background-size: cover;
   flex-direction: column;
   justify-content: center;
-  transition: all 1s;
+  transition: all 0.3s;
 `;
 
 export const Title = styled.h1`
@@ -71,12 +69,11 @@ export const ButtonPlay = styled.div`
 `;
 
 export const Information = styled.div`
-  width: 75%;
   background: red;
   margin: 32px auto 0;
   border-radius: 8px;
   text-align: left;
-  padding: 32px;
+  padding: 64px;
   background: ${({ theme }) => theme.palette.elements.header.main};
   text-align: center;
   box-shadow: ${({ theme }) => theme.boxShadow.medium};
@@ -85,9 +82,9 @@ export const Information = styled.div`
   }
 `;
 
-export const BackgroundAnimated = styled.div`
+export const BackgroundBlur = styled.div`
   height: 100%;
-  background: url('./race-survival/img/background-menu.jpg');
+  background: url('./kings-and-pigs/img/background-menu.gif');
   background-position: center center;
   background-size: cover;
   filter: blur(5px);

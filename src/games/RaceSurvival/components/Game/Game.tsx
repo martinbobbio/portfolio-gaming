@@ -25,6 +25,7 @@ interface GameProps {
  * @param textures for the current game textures
  * @param sounds for the sounds of the game
  * @param onEndGame for stop and finish the game
+ * @param setControls for add behaviors
  * @return React.ReactElement <Game/>
  */
 const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
