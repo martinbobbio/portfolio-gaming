@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { usePixiContext } from '@/hooks';
 import { Stage, Container, Sprite } from '@pixi/react';
-import { TexturesKingsAndPigs } from '../../interfaces';
+import { ControlsKingsAndPigs, TexturesKingsAndPigs } from '../../interfaces';
+import { Player } from '..';
 
 interface GameProps {
   onEndGame: () => void;
+  setControls: (controls: ControlsKingsAndPigs) => void;
   textures: TexturesKingsAndPigs;
 }
 
@@ -17,15 +19,16 @@ interface GameProps {
  * @param setControls for add behaviors
  * @return React.ReactElement <Game/>
  */
-const Game = ({ textures }: GameProps) => {
+const Game = ({ textures, setControls }: GameProps) => {
   const app = usePixiContext();
   const currentLevel = textures.levels[1];
   const height = currentLevel.height;
   const width = currentLevel.width;
+  const [elapsedFrames, setElapsedFrames] = useState(0);
 
   useEffect(() => {
     const animate = () => {
-      console.log('Aniamated');
+      setElapsedFrames(elapsedFrames + 1);
     };
 
     app.ticker.add(animate);
@@ -33,7 +36,7 @@ const Game = ({ textures }: GameProps) => {
     return () => {
       app.ticker.remove(animate);
     };
-  }, [app]);
+  }, [app, elapsedFrames]);
 
   return (
     <Stage width={width} height={height}>
@@ -43,6 +46,7 @@ const Game = ({ textures }: GameProps) => {
           height={currentLevel.height}
           texture={currentLevel}
         />
+        <Player setControls={setControls} textures={textures.king} />
       </Container>
     </Stage>
   );

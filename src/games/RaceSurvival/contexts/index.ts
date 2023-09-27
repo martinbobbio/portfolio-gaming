@@ -1,2 +1,5 @@
-export { GameProvider, GameContext } from './game/GameContext';
-export type { GameState } from './game/GameState';
+export {
+  RaceSurvivalProvider,
+  RaceSurvivalContext,
+} from './race-survival/RaceSurvivalContext';
+export type { RaceSurvivalState } from './race-survival/RaceSurvivalState';

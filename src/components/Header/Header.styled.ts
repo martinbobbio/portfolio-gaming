@@ -17,9 +17,6 @@ export const HeaderStyled = styled.div`
   button {
     color: ${({ theme }) => theme.palette.white.main};
   }
-  a {
-    margin-right: 16px;
-  }
 `;
 
 export const Logo = styled.img`

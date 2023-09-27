@@ -1,1 +1,1 @@
-export { default as useGameContext } from './context/useGameContext';
+export { default as useRaceSurvivalContext } from './context/useRaceSurvivalContext';

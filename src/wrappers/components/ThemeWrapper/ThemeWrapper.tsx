@@ -10,6 +10,7 @@ interface ThemeWrapperProps {
 /**
  * Functional component that render high order component theme with their logic.
  *
+ * @param children to wrap other elements
  * @return React.ReactElement <ThemeWrapper/>
  */
 const ThemeWrapper = ({ children }: ThemeWrapperProps) => {

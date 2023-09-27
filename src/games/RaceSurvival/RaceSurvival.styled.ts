@@ -1,7 +1,7 @@
 import { styled } from 'styled-components';
 
 export const RaceSurvivalStyled = styled.div`
-  top: 64px;
+  top: 0;
   position: absolute;
 `;
 

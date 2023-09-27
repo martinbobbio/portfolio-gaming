@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useGameContext } from '../../hooks';
+import { useRaceSurvivalContext } from '../../hooks';
 import { Title, Level, Points, ScoreStyled } from './Score.styled';
 
 const Score = () => {
-  const { level, points } = useGameContext();
+  const { level, points } = useRaceSurvivalContext();
   const [pointsChanged, setPointsChanged] = useState(false);
   const [levelChanged, setLevelChanged] = useState(false);
 

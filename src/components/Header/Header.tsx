@@ -1,18 +1,21 @@
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { logoMBDark, logoMBLight } from '@/assets';
-import { FAIcon, Text } from '@/components';
+import { FAIcon } from '@/components';
 import {
   TitleContainer,
   HeaderStyled,
   Logo,
   ThemeButton,
 } from './Header.styled';
-import { Toolbar, Container } from '@mui/material';
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { Toolbar, Container, Breadcrumbs } from '@mui/material';
+import { faChevronRight, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { useDarkMode } from 'usehooks-ts';
+import gsap from 'gsap';
 
 interface HeaderProps {
-  title?: string;
+  breadcrumbs: React.ReactNode[];
+  hide: boolean;
 }
 
 /**
@@ -20,19 +23,35 @@ interface HeaderProps {
  *
  * @return React.ReactElement <Header/>
  */
-const Header = ({ title }: HeaderProps) => {
+const Header = ({ hide, breadcrumbs }: HeaderProps) => {
   const { toggle, isDarkMode } = useDarkMode();
   const logo = isDarkMode ? logoMBDark : logoMBLight;
+  const headerRef = useRef(null);
+
+  const handleShowHeader = () => {
+    gsap.to(headerRef.current, { opacity: 1, duration: 0.3 });
+  };
+
+  const handleHideHeader = () => {
+    if (!hide) return;
+    gsap.to(headerRef.current, { opacity: 0, duration: 0.3 });
+  };
 
   return (
-    <HeaderStyled>
+    <HeaderStyled
+      ref={headerRef}
+      onMouseEnter={handleShowHeader}
+      onMouseLeave={handleHideHeader}
+    >
       <Container>
         <Toolbar>
           <Link to={'/'}>
             <Logo src={logo} />
           </Link>
           <TitleContainer>
-            <Text>{title}</Text>
+            <Breadcrumbs separator={<FAIcon icon={faChevronRight} />}>
+              {breadcrumbs}
+            </Breadcrumbs>
           </TitleContainer>
           <ThemeButton onClick={() => toggle()}>
             <FAIcon icon={faLightbulb} />

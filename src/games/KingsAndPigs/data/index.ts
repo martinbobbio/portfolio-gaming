@@ -3,6 +3,9 @@ export const paths = {
     levels: {
       1: '../kings-and-pigs/sprites/levels/level-1.png',
     },
+    king: {
+      idle: '../kings-and-pigs/sprites/king/idle.png',
+    },
   },
   sounds: {},
 };

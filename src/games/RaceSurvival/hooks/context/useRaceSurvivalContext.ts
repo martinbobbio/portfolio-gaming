@@ -1,13 +1,13 @@
 import { useContext } from 'react';
-import { GameContext } from '../../contexts';
+import { RaceSurvivalContext } from '../../contexts';
 
 /**
  * Hook that facility game contexts calls.
  *
- * @return useGameContext
+ * @return useRaceSurvivalContext
  */
-const useGameContext = () => {
-  const { state, dispatch } = useContext(GameContext);
+const useRaceSurvivalContext = () => {
+  const { state, dispatch } = useContext(RaceSurvivalContext);
   const { level, points } = state;
 
   const setLevel = (payload: number) => {
@@ -21,4 +21,4 @@ const useGameContext = () => {
   return { level, points, setLevel, setPoints };
 };
 
-export default useGameContext;
+export default useRaceSurvivalContext;

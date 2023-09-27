@@ -10,7 +10,7 @@ import {
 } from '../../interfaces';
 import { randomInt } from '@/utils';
 import { sizeCars, spriteCarsPositions } from '../../data';
-import { useGameContext } from '../../hooks';
+import { useRaceSurvivalContext } from '../../hooks';
 
 interface GameProps {
   textures: TexturesRaceSurvival;
@@ -30,8 +30,8 @@ interface GameProps {
  */
 const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
   const app = usePixiContext();
-  const { points, level, setPoints, setLevel } = useGameContext();
-  const height = window.innerHeight - 64;
+  const { points, level, setPoints, setLevel } = useRaceSurvivalContext();
+  const height = window.innerHeight;
   const width =
     window.innerWidth > textures.background.width
       ? textures.background.width

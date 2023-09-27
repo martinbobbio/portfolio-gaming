@@ -7,6 +7,7 @@ interface SWRWrapperProps {
 /**
  * Functional component that render high oirder component swr wrapper and their logic.
  *
+ * @param children to wrap other elements
  * @return React.ReactElement <SWRWrapper/>
  */
 const SWRWrapper = ({ children }: SWRWrapperProps) => {

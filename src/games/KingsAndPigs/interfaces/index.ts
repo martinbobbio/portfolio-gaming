@@ -1,12 +1,5 @@
-import { Sound } from '@pixi/sound';
-import { Texture } from 'pixi.js';
-
-export interface TexturesKingsAndPigs {
-  levels: {
-    1: Texture;
-  };
-}
-
-export interface SoundsKingsAndPigs {
-  music: Sound;
-}
+export type { PlayerState, TexturesPlayer } from './player/player';
+export type { TexturesLevels } from './levels/levels';
+export type { TexturesKingsAndPigs } from './textures/textures';
+export type { Animation } from './animation/animation';
+export type { ControlsKingsAndPigs } from './controls/controls';

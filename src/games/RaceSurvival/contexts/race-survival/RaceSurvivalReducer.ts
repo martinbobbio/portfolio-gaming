@@ -1,7 +1,10 @@
 import { Reducer } from 'react';
-import { Action, GameState } from './GameState';
+import { Action, RaceSurvivalState } from './RaceSurvivalState';
 
-export const gameReducer: Reducer<GameState, Action> = (state, action) => {
+export const raceSurvivalReducer: Reducer<RaceSurvivalState, Action> = (
+  state,
+  action
+) => {
   switch (action.type) {
     case 'SET_LEVEL':
       return {

@@ -7,7 +7,7 @@ import {
   TexturesRaceSurvival,
 } from './interfaces';
 import { paths } from './data';
-import { GameProvider } from './contexts';
+import { RaceSurvivalProvider } from './contexts';
 import { RaceSurvivalStyled } from './RaceSurvival.styled';
 import { Assets, Texture } from 'pixi.js';
 
@@ -57,7 +57,7 @@ const RaceSurvival = () => {
   }, [loadTextures]);
 
   return (
-    <GameProvider>
+    <RaceSurvivalProvider>
       <>
         <Menu
           title={title}
@@ -77,7 +77,7 @@ const RaceSurvival = () => {
         )}
         {isGameRunning && controls && <Controls controls={controls} />}
       </>
-    </GameProvider>
+    </RaceSurvivalProvider>
   );
 };
 
