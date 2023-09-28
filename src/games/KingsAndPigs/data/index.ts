@@ -5,6 +5,7 @@ export const paths = {
     },
     king: {
       idle: '../kings-and-pigs/sprites/king/idle.png',
+      run: '../kings-and-pigs/sprites/king/run.png',
     },
   },
   sounds: {},

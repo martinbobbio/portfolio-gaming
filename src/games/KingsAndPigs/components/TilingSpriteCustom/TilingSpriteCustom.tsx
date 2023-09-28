@@ -1,10 +1,11 @@
 import { Container, TilingSprite, useTick } from '@pixi/react';
 import { Animation } from '../../interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Point } from 'pixi.js';
 
 interface TilingSpriteCustomProps {
   animation: Animation;
+  inverted: boolean;
 }
 
 /**
@@ -12,14 +13,21 @@ interface TilingSpriteCustomProps {
  *
  * @return React.ReactElement <TilingSpriteCustom/>
  */
-const TilingSpriteCustom = ({ animation }: TilingSpriteCustomProps) => {
-  const { texture, frameRate, frameBuffer, autoplay, loop, inverted } =
-    animation;
+const TilingSpriteCustom = ({
+  animation,
+  inverted,
+}: TilingSpriteCustomProps) => {
+  const { texture, frameRate, frameBuffer, autoplay, loop } = animation;
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [currentFrame, setCurrentFrame] = useState(0);
   const height = texture.height;
   const width = texture.width / frameRate;
   const tileScale = new Point(inverted ? -1 : 1, 1);
+
+  useEffect(() => {
+    setCurrentFrame(0);
+    setElapsedFrames(0);
+  }, [animation]);
 
   useTick(() => {
     if (!autoplay) return;

@@ -25,14 +25,16 @@ const KingsAndPigs = () => {
   };
 
   const loadTextures = useCallback(async () => {
-    Assets.load([paths.textures.levels[1], paths.textures.king.idle]).then(
+    const { king, levels } = paths.textures;
+    Assets.load([levels[1], king.idle, king.run]).then(
       (resources: Record<string, Texture>) => {
         setTextures({
           levels: {
-            1: resources[paths.textures.levels[1]],
+            1: resources[levels[1]],
           },
           king: {
-            idle: resources[paths.textures.king.idle],
+            idle: resources[king.idle],
+            run: resources[king.run],
           },
         });
       }

@@ -1,8 +1,7 @@
 import { Container, useTick } from '@pixi/react';
 import { useCallback, useEffect, useState } from 'react';
-import { TilingSpriteCustom } from '..';
+import { Block, TilingSpriteCustom } from '..';
 import {
-  Animation,
   ControlsKingsAndPigs,
   PlayerState,
   TexturesPlayer,
@@ -10,6 +9,7 @@ import {
 import { Point } from 'pixi.js';
 
 interface PlayerProps {
+  initialPosition: Point;
   textures: TexturesPlayer;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
@@ -21,30 +21,68 @@ interface PlayerProps {
  * @param setControls for add behaviors
  * @return React.ReactElement <Player/>
  */
-const Player = ({ textures, setControls }: PlayerProps) => {
+const Player = ({ textures, initialPosition, setControls }: PlayerProps) => {
   const [elapsedFrames, setElapsedFrames] = useState(0);
-  const animation: Animation = {
-    autoplay: true,
-    loop: true,
-    frameBuffer: 4,
-    texture: textures.idle,
-    frameRate: 11,
-    inverted: false,
-  };
+  const [inverted, setInverted] = useState(false);
+  const offsetX = inverted ? 34 : 10;
+  const offsetY = 18;
   const [player, setPlayer] = useState<PlayerState>({
-    position: new Point(0, 200),
+    position: initialPosition,
     velocity: new Point(0, 0),
     gravity: 1,
     inverted: false,
-    currentAnimation: animation,
-    animations: [animation],
+    currentAnimation: 'idle',
+    hitbox: {
+      position: new Point(
+        initialPosition.x + offsetX,
+        initialPosition.y + offsetY
+      ),
+      width: 35,
+      height: 25,
+    },
+    animations: {
+      idle: {
+        autoplay: true,
+        loop: true,
+        frameBuffer: 4,
+        texture: textures.idle,
+        frameRate: 11,
+      },
+      run: {
+        autoplay: true,
+        loop: true,
+        frameBuffer: 4,
+        texture: textures.run,
+        frameRate: 8,
+      },
+    },
   });
+  const animation = player.animations[player.currentAnimation];
 
-  const updatePlayerPositionWithVelocity = () => {
+  const applyMovement = () => {
     const x = player.position.x + player.velocity.x;
     const y = player.position.y;
     const position = new Point(x, y);
     setPlayer((prevState) => ({ ...prevState, position }));
+  };
+
+  const applyGravity = () => {
+    const velocity = new Point(
+      player.velocity.x,
+      player.velocity.y + player.gravity
+    );
+    const position = new Point(
+      player.position.x,
+      player.position.y + player.velocity.y
+    );
+    setPlayer((prevState) => ({ ...prevState, velocity, position }));
+  };
+
+  const updateHitbox = () => {
+    const hitbox = player.hitbox;
+    hitbox.position.x = player.position.x + offsetX;
+    hitbox.position.y = player.position.y + offsetY;
+    setPlayer((prevState) => ({ ...prevState, hitbox }));
   };
 
   const run = useCallback(
@@ -52,7 +90,13 @@ const Player = ({ textures, setControls }: PlayerProps) => {
       const x = inverted ? -5 : 5;
       const y = player.velocity.y;
       const velocity = new Point(x, y);
-      setPlayer((prevState) => ({ ...prevState, velocity, inverted }));
+      const currentAnimation = 'run';
+      setInverted(inverted);
+      setPlayer((prevState) => ({
+        ...prevState,
+        velocity,
+        currentAnimation,
+      }));
     },
     [player.velocity.y]
   );
@@ -62,20 +106,16 @@ const Player = ({ textures, setControls }: PlayerProps) => {
       const x = 0;
       const y = player.velocity.y;
       const velocity = new Point(x, y);
-      setPlayer((prevState) => ({ ...prevState, velocity, inverted }));
+      const currentAnimation = 'idle';
+      setInverted(inverted);
+      setPlayer((prevState) => ({
+        ...prevState,
+        velocity,
+        currentAnimation,
+      }));
     },
     [player.velocity.y]
   );
-
-  useEffect(() => {
-    setPlayer((prevState) => ({
-      ...prevState,
-      currentAnimation: {
-        ...prevState.currentAnimation,
-        inverted: player.inverted,
-      },
-    }));
-  }, [player.inverted]);
 
   useEffect(() => {
     setControls({
@@ -88,13 +128,21 @@ const Player = ({ textures, setControls }: PlayerProps) => {
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);
-    updatePlayerPositionWithVelocity();
+    applyMovement();
+    updateHitbox();
+    // collisions horizontal
+    applyGravity();
+    // updateHitbox();
+    // collisions vertical
   });
 
   return (
-    <Container position={player.position}>
-      <TilingSpriteCustom animation={player.currentAnimation} />
-    </Container>
+    <>
+      <Container position={player.position}>
+        <TilingSpriteCustom animation={animation} inverted={inverted} />
+      </Container>
+      <Block block={player.hitbox} />
+    </>
   );
 };
 

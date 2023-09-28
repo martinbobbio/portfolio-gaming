@@ -3,6 +3,7 @@ import { usePixiContext } from '@/hooks';
 import { Stage, Container, Sprite } from '@pixi/react';
 import { ControlsKingsAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { Player } from '..';
+import { Point } from 'pixi.js';
 
 interface GameProps {
   onEndGame: () => void;
@@ -46,7 +47,11 @@ const Game = ({ textures, setControls }: GameProps) => {
           height={currentLevel.height}
           texture={currentLevel}
         />
-        <Player setControls={setControls} textures={textures.king} />
+        <Player
+          setControls={setControls}
+          textures={textures.king}
+          initialPosition={new Point(100, 100)}
+        />
       </Container>
     </Stage>
   );
