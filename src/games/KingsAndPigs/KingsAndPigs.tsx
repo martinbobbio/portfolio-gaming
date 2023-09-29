@@ -1,10 +1,8 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { usePixiContext } from '@/hooks';
 import { Controls, Game, Menu } from './components';
-import { ControlsKingsAndPigs, TexturesKingsAndPigs } from './interfaces';
-import { paths } from './data';
-import { useLevel } from './hooks';
-import { Assets, Texture } from 'pixi.js';
+import { ControlsKingsAndPigs } from './interfaces';
+import { useLevel, useResources } from './hooks';
 import { KingsAndPigsStyled } from './KingsAndPigs.styled';
 
 /**
@@ -15,14 +13,15 @@ import { KingsAndPigsStyled } from './KingsAndPigs.styled';
 const KingsAndPigs = () => {
   const app = usePixiContext();
   const { level } = useLevel();
+  const { textures, sounds, loadSounds } = useResources();
   const [title, setTitle] = useState('Kings And Pigs');
-  const [textures, setTextures] = useState<TexturesKingsAndPigs>();
   const [controls, setControls] = useState<ControlsKingsAndPigs>();
   const [isGameRunning, setIsGameRunning] = useState(false);
 
   const handleStartGame = () => {
     setIsGameRunning(true);
     app.start();
+    if (!sounds) loadSounds();
   };
 
   const handleEndGame = () => {
@@ -30,24 +29,6 @@ const KingsAndPigs = () => {
     setTitle('Try Again');
     setIsGameRunning(false);
   };
-
-  const loadTextures = useCallback(async () => {
-    const { king } = paths.textures;
-    Assets.load([king.idle, king.run]).then(
-      (resources: Record<string, Texture>) => {
-        setTextures({
-          king: {
-            idle: resources[king.idle],
-            run: resources[king.run],
-          },
-        });
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    loadTextures();
-  }, [loadTextures]);
 
   return (
     <>
@@ -58,12 +39,14 @@ const KingsAndPigs = () => {
       />
       {isGameRunning &&
         textures &&
+        sounds &&
         level.texture &&
         !!level.collisionBlocks.length && (
           <KingsAndPigsStyled>
             <Game
               textures={textures}
               level={level}
+              sounds={sounds}
               setControls={setControls}
               onEndGame={handleEndGame}
             />

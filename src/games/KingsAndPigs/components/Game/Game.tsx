@@ -4,6 +4,7 @@ import { Stage, Container, Sprite } from '@pixi/react';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
+  SoundsKingsAndPigs,
   TexturesKingsAndPigs,
 } from '../../interfaces';
 import { Player } from '..';
@@ -12,6 +13,7 @@ import { Texture } from 'pixi.js';
 interface GameProps {
   textures: TexturesKingsAndPigs;
   level: LevelKingAndPigs;
+  sounds: SoundsKingsAndPigs;
   onEndGame: () => void;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
@@ -21,16 +23,22 @@ interface GameProps {
  *
  * @param level for the current level with their blocks and objects
  * @param textures for the current game textures
+ * @param sounds for the music and effects
  * @param onEndGame for stop and finish the game
  * @param setControls for add behaviors
  * @return React.ReactElement <Game/>
  */
-const Game = ({ textures, level, setControls }: GameProps) => {
+const Game = ({ textures, sounds, level, setControls }: GameProps) => {
   level.texture = level.texture as Texture;
   const app = usePixiContext();
   const height = level.texture.height;
   const width = level.texture.width;
   const [elapsedFrames, setElapsedFrames] = useState(0);
+
+  useEffect(() => {
+    console.log(sounds);
+    sounds.music.play();
+  }, [sounds]);
 
   useEffect(() => {
     const animate = () => {

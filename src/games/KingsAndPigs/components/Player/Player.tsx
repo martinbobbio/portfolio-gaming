@@ -14,8 +14,8 @@ import { PlayerAnimations } from '../../interfaces/player/player';
 interface PlayerProps {
   initialPosition: Point;
   textures: TexturesPlayer;
-  setControls: (controls: ControlsKingsAndPigs) => void;
   collisionBlocks: Block[];
+  setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
 /**
@@ -23,8 +23,8 @@ interface PlayerProps {
  *
  * @param initialPosition for the initial x and y player position
  * @param textures for animations and textures for the player
- * @param setControls for add behaviors to controls
  * @param collisionBlocks for check collisions with the player
+ * @param setControls for add behaviors to controls
  * @return React.ReactElement <Player/>
  */
 const Player = ({
@@ -37,7 +37,7 @@ const Player = ({
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inverted, setInverted] = useState(false);
   //const offsetX = inverted ? 34 : 10;
-  const offsetX = 25;
+  const offsetX = 10;
   const offsetY = 18;
   const [player, setPlayer] = useState<PlayerState>({
     position: initialPosition,
@@ -67,6 +67,16 @@ const Player = ({
         frameBuffer: 4,
         texture: textures.run,
         frameRate: 8,
+      },
+      attack: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 10,
+        texture: textures.attack,
+        frameRate: 3,
+        onComplete: () => {
+          setCurrentAnimation('idle');
+        },
       },
     },
   });
@@ -152,14 +162,17 @@ const Player = ({
     [setVelocityX]
   );
 
-  const jump = useCallback(() => {
-    if (player.velocity.y === 0) {
-      setVelocityY(-15);
-    }
-  }, [player.velocity.y, setVelocityY]);
+  const jump = useCallback(
+    (power: number) => {
+      if (player.velocity.y === 0) {
+        setVelocityY(-power);
+      }
+    },
+    [player.velocity.y, setVelocityY]
+  );
 
   const attack = useCallback(() => {
-    console.log('ATTACK');
+    setCurrentAnimation('attack');
   }, []);
 
   useEffect(() => {
@@ -168,7 +181,7 @@ const Player = ({
       onTouchLeftEnd: () => stopRun(true),
       onTouchRightStart: () => run(false),
       onTouchRightEnd: () => stopRun(false),
-      onTouchUp: () => jump(),
+      onTouchUp: () => jump(15),
       onTouchSpecial: () => attack(),
     });
   }, [run, stopRun, jump, attack, setControls]);

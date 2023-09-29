@@ -6,4 +6,5 @@ export interface Animation {
   autoplay: boolean;
   frameBuffer: number;
   frameRate: number;
+  onComplete?: () => void;
 }

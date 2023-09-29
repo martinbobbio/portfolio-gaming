@@ -14,9 +14,11 @@ export interface PlayerState {
 export interface PlayerAnimations {
   idle: Animation;
   run: Animation;
+  attack: Animation;
 }
 
 export interface TexturesPlayer {
   idle: Texture;
   run: Texture;
+  attack: Texture;
 }

@@ -19,7 +19,8 @@ const TilingSpriteCustom = ({
   animation,
   inverted,
 }: TilingSpriteCustomProps) => {
-  const { texture, frameRate, frameBuffer, autoplay, loop } = animation;
+  const { texture, frameRate, frameBuffer, autoplay, loop, onComplete } =
+    animation;
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [currentFrame, setCurrentFrame] = useState(0);
   const height = texture.height;
@@ -37,6 +38,12 @@ const TilingSpriteCustom = ({
     if (elapsedFrames % frameBuffer == 0) {
       if (currentFrame < frameRate - 1) setCurrentFrame(currentFrame + 1);
       else if (loop) setCurrentFrame(0);
+    }
+
+    if (onComplete) {
+      if (currentFrame === frameRate - 1) {
+        onComplete();
+      }
     }
   });
 
