@@ -18,6 +18,9 @@ interface MenuProps {
 /**
  * Functional component that render component menu.
  *
+ * @param onStartGame for handle started game
+ * @param title for show the title in the menu
+ * @param isGameRunning for some animations
  * @return React.ReactElement <Menu/>
  */
 const Menu = ({ onStartGame, title, isGameRunning }: MenuProps) => {
@@ -33,13 +36,16 @@ const Menu = ({ onStartGame, title, isGameRunning }: MenuProps) => {
           <Text size='xl'>Controls</Text>
           <br />
           <Text size='md'>
-            <span className='underline'>Turn Left:</span> Press A or ArrowLeft
+            <span className='underline'>Move Left:</span> Press A or ArrowLeft
           </Text>
           <Text size='md'>
-            <span className='underline'>Turn Right:</span> Press D or ArrowRight
+            <span className='underline'>Move Right:</span> Press D or ArrowRight
           </Text>
           <Text size='md'>
-            <span className='underline'>Speed Up:</span> Press S or ArrowDown
+            <span className='underline'>Jump:</span> Press W or ArrowDown
+          </Text>
+          <Text size='md'>
+            <span className='underline'>Attack:</span> Press E
           </Text>
         </Information>
       </Screen>

@@ -3,4 +3,6 @@ export interface ControlsKingsAndPigs {
   onTouchLeftEnd: () => void;
   onTouchRightStart: () => void;
   onTouchRightEnd: () => void;
+  onTouchUp: () => void;
+  onTouchSpecial: () => void;
 }

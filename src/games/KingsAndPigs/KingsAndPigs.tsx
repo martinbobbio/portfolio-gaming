@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { usePixiContext } from '@/hooks';
 import { Controls, Game, Menu } from './components';
-import { KingsAndPigsStyled } from './KingsAndPigs.styled';
 import { ControlsKingsAndPigs, TexturesKingsAndPigs } from './interfaces';
-import { Assets, Texture } from 'pixi.js';
 import { paths } from './data';
+import { useLevel } from './hooks';
+import { Assets, Texture } from 'pixi.js';
+import { KingsAndPigsStyled } from './KingsAndPigs.styled';
 
+/**
+ * Functional component that render the main logic and load data
+ *
+ * @return React.ReactElement <KingsAndPigs/>
+ */
 const KingsAndPigs = () => {
   const app = usePixiContext();
+  const { level } = useLevel();
   const [title, setTitle] = useState('Kings And Pigs');
   const [textures, setTextures] = useState<TexturesKingsAndPigs>();
   const [controls, setControls] = useState<ControlsKingsAndPigs>();
@@ -25,13 +32,10 @@ const KingsAndPigs = () => {
   };
 
   const loadTextures = useCallback(async () => {
-    const { king, levels } = paths.textures;
-    Assets.load([levels[1], king.idle, king.run]).then(
+    const { king } = paths.textures;
+    Assets.load([king.idle, king.run]).then(
       (resources: Record<string, Texture>) => {
         setTextures({
-          levels: {
-            1: resources[levels[1]],
-          },
           king: {
             idle: resources[king.idle],
             run: resources[king.run],
@@ -52,16 +56,20 @@ const KingsAndPigs = () => {
         onStartGame={handleStartGame}
         isGameRunning={isGameRunning}
       />
-      {isGameRunning && textures && (
-        <KingsAndPigsStyled>
-          <Game
-            textures={textures}
-            setControls={setControls}
-            onEndGame={handleEndGame}
-          />
-          {controls && <Controls controls={controls} />}
-        </KingsAndPigsStyled>
-      )}
+      {isGameRunning &&
+        textures &&
+        level.texture &&
+        !!level.collisionBlocks.length && (
+          <KingsAndPigsStyled>
+            <Game
+              textures={textures}
+              level={level}
+              setControls={setControls}
+              onEndGame={handleEndGame}
+            />
+            {controls && <Controls controls={controls} />}
+          </KingsAndPigsStyled>
+        )}
     </>
   );
 };

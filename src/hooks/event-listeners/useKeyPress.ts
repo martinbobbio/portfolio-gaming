@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 const useKeyPress = (
   targetKey: string,
   onKeyDownCallback: () => void,
-  onKeyUpCallback: () => void
+  onKeyUpCallback?: () => void
 ) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -20,7 +20,7 @@ const useKeyPress = (
 
     const handleKeyUp = (event: KeyboardEvent) => {
       event.preventDefault();
-      if (event.key === targetKey) {
+      if (event.key === targetKey && onKeyUpCallback) {
         onKeyUpCallback();
       }
     };

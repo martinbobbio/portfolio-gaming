@@ -9,6 +9,12 @@ interface ControlProps {
   controls: ControlsGame;
 }
 
+/**
+ * Functional component that render component controls.
+ *
+ * @param controls for handle the player controls.
+ * @return React.ReactElement <Controls/>
+ */
 const Controls = ({ controls }: ControlProps) => {
   useKeyPress('ArrowLeft', controls.onTouchLeftStart, controls.onTouchLeftEnd);
   useKeyPress('a', controls.onTouchLeftStart, controls.onTouchLeftEnd);

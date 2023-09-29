@@ -11,6 +11,11 @@ import { RaceSurvivalProvider } from './contexts';
 import { RaceSurvivalStyled } from './RaceSurvival.styled';
 import { Assets, Texture } from 'pixi.js';
 
+/**
+ * Functional component that render the main logic and load data
+ *
+ * @return React.ReactElement <RaceSurvival/>
+ */
 const RaceSurvival = () => {
   const app = usePixiContext();
   const [title, setTitle] = useState('Race Survival');

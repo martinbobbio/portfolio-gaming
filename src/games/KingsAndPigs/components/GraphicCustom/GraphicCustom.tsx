@@ -3,21 +3,22 @@ import { Graphics as GraphicsComponent } from '@pixi/react';
 import { Graphics } from 'pixi.js';
 import { Block } from '../../interfaces';
 
-interface RectangleProps {
+interface GraphicCustomProps {
   block: Block;
 }
 
 /**
- * Functional component that render component rectangle
+ * Functional component that render component graphics customs
  *
- * @return React.ReactElement <Rectangle/>
+ * @param block for draw the GraphicCustom for debugging
+ * @return React.ReactElement <GraphicCustom/>
  */
-const Rectangle = ({ block }: RectangleProps) => {
+const GraphicCustom = ({ block }: GraphicCustomProps) => {
   const { position, width, height } = block;
   const draw = useCallback(
     (g: Graphics) => {
       g.clear();
-      g.beginFill('red');
+      g.beginFill('rgba(255, 0, 0, 0.5)');
       g.drawRect(position.x, position.y, width, height);
       g.endFill();
     },
@@ -27,4 +28,4 @@ const Rectangle = ({ block }: RectangleProps) => {
   return <GraphicsComponent draw={draw} />;
 };
 
-export default Rectangle;
+export default GraphicCustom;

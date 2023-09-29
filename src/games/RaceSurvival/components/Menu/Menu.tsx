@@ -18,6 +18,9 @@ interface MenuProps {
 /**
  * Functional component that render component menu.
  *
+ * @param onStartGame for handle started game
+ * @param title for show the title in the menu
+ * @param isGameRunning for some animations
  * @return React.ReactElement <Menu/>
  */
 const Menu = ({ onStartGame, title, isGameRunning }: MenuProps) => {

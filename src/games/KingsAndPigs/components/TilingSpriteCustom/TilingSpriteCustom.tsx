@@ -11,6 +11,8 @@ interface TilingSpriteCustomProps {
 /**
  * Functional component that render component animated sprited.
  *
+ * @param animation for the main logic of the tilingsprite
+ * @param inverted for invert and scale tilingsprite
  * @return React.ReactElement <TilingSpriteCustom/>
  */
 const TilingSpriteCustom = ({

@@ -1,6 +1,5 @@
-import { TexturesLevels, TexturesPlayer } from '..';
+import { TexturesPlayer } from '..';
 
 export interface TexturesKingsAndPigs {
-  levels: TexturesLevels;
   king: TexturesPlayer;
 }
