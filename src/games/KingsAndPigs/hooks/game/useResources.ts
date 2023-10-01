@@ -28,6 +28,17 @@ const useResources = () => {
   };
 
   useEffect(() => {
+    if (sounds) {
+      sounds.jump.volume = 0.2;
+      sounds.jump.speed = 1.5;
+      sounds.music.volume = 0.1;
+      sounds.music.loop = true;
+      sounds.sword.volume = 0.3;
+      sounds.sword.speed = 0.9;
+    }
+  }, [sounds]);
+
+  useEffect(() => {
     const loadTextures = () => {
       const textures = {
         king: {

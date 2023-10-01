@@ -10,6 +10,7 @@ import {
   Chip,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 /**
  * Functional component that render component home.
@@ -35,6 +36,12 @@ const Home = () => {
   ];
 
   const breadcrumbs = [<Text key={0}>Games</Text>];
+
+  useEffect(() => {
+    import('@pixi/sound').then(({ sound }) => {
+      sound.removeAll();
+    });
+  }, []);
 
   return (
     <>

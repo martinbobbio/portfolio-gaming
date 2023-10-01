@@ -36,7 +36,6 @@ const Game = ({ textures, sounds, level, setControls }: GameProps) => {
   const [elapsedFrames, setElapsedFrames] = useState(0);
 
   useEffect(() => {
-    console.log(sounds);
     sounds.music.play();
   }, [sounds]);
 
@@ -62,6 +61,7 @@ const Game = ({ textures, sounds, level, setControls }: GameProps) => {
         />
         <Player
           setControls={setControls}
+          sounds={sounds}
           textures={textures.king}
           initialPosition={level.playerPosition}
           collisionBlocks={level.collisionBlocks}

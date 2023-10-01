@@ -5,6 +5,7 @@ import {
   Block,
   ControlsKingsAndPigs,
   PlayerState,
+  SoundsKingsAndPigs,
   TexturesPlayer,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
@@ -15,6 +16,7 @@ interface PlayerProps {
   initialPosition: Point;
   textures: TexturesPlayer;
   collisionBlocks: Block[];
+  sounds: SoundsKingsAndPigs;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -24,6 +26,7 @@ interface PlayerProps {
  * @param initialPosition for the initial x and y player position
  * @param textures for animations and textures for the player
  * @param collisionBlocks for check collisions with the player
+ * @param sounds for player sounds.
  * @param setControls for add behaviors to controls
  * @return React.ReactElement <Player/>
  */
@@ -31,12 +34,13 @@ const Player = ({
   textures,
   initialPosition,
   collisionBlocks,
+  sounds,
   setControls,
 }: PlayerProps) => {
   const { applyHorizontal, applyVertical } = useCollisions();
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inverted, setInverted] = useState(false);
-  //const offsetX = inverted ? 34 : 10;
+  // const offsetX = inverted ? 34 : 10;
   const offsetX = 10;
   const offsetY = 18;
   const [player, setPlayer] = useState<PlayerState>({
@@ -165,15 +169,17 @@ const Player = ({
   const jump = useCallback(
     (power: number) => {
       if (player.velocity.y === 0) {
+        sounds.jump.play();
         setVelocityY(-power);
       }
     },
-    [player.velocity.y, setVelocityY]
+    [player.velocity.y, setVelocityY, sounds]
   );
 
   const attack = useCallback(() => {
+    sounds.sword.play();
     setCurrentAnimation('attack');
-  }, []);
+  }, [sounds]);
 
   useEffect(() => {
     setControls({
