@@ -23,20 +23,20 @@ const levels = {
   },
 };
 
-/**
- * Hook that get level properties
- *
- * @return useLevel
- */
 const useLevel = () => {
   const minLevel = 1;
   const maxLevel = 3;
   const [level, setLevel] = useState<LevelKingAndPigs>({
     current: 1,
     source: levels[1].source,
-    playerPosition: levels[1].playerPosition,
     texture: null,
     collisionBlocks: [],
+    initialPosition: {
+      position: new Point(-100, -100),
+      width: 0,
+      height: 0,
+    },
+    doors: [],
   });
 
   const nextLevel = () => {
@@ -62,12 +62,41 @@ const useLevel = () => {
   }, [level.source]);
 
   const loadTileMap = useCallback(async () => {
-    const collisions = levels[1].data.layers.find(
-      (layer) => layer.name === 'Collisions'
-    );
-    if (collisions?.data) {
-      const collisionBlocks = blocksFrom2D(parse2D(collisions.data));
+    const main = levels[1].data.layers.find(
+      ({ name }) => name === 'Detections'
+    )?.layers;
+
+    const layers = {
+      collisions: main?.find(({ name }) => name === 'Collisions')?.data,
+      initialPosition: main?.find(({ name }) => name === 'Initial Position')
+        ?.data,
+      doorNext: main?.find(({ name }) => name === 'Door Next')?.data,
+    };
+
+    const collisionBlocks =
+      layers.collisions && blocksFrom2D(parse2D(layers.collisions));
+    const initialPosition =
+      layers.initialPosition &&
+      blocksFrom2D(parse2D(layers.initialPosition))[0];
+    const doorNext =
+      layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
+
+    if (collisionBlocks) {
       setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
+    }
+    if (initialPosition) {
+      setLevel((prevLevel) => ({ ...prevLevel, initialPosition }));
+    }
+    if (doorNext) {
+      setLevel((prevLevel) => ({
+        ...prevLevel,
+        doors: [
+          {
+            type: 'next',
+            hitbox: doorNext,
+          },
+        ],
+      }));
     }
   }, []);
 

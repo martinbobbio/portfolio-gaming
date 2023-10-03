@@ -63,7 +63,7 @@ const Game = ({ textures, sounds, level, setControls }: GameProps) => {
           setControls={setControls}
           sounds={sounds}
           textures={textures.king}
-          initialPosition={level.playerPosition}
+          initialPosition={level.initialPosition.position}
           collisionBlocks={level.collisionBlocks}
         />
       </Container>

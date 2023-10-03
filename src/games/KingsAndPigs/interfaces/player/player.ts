@@ -6,9 +6,12 @@ export interface PlayerState {
   velocity: Point;
   hitbox: Block;
   gravity: number;
-  inverted: boolean;
   currentAnimation: keyof PlayerAnimations;
   animations: PlayerAnimations;
+  jump: {
+    power: number;
+    double: boolean;
+  };
 }
 
 export interface PlayerAnimations {

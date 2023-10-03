@@ -40,14 +40,16 @@ const Player = ({
   const { applyHorizontal, applyVertical } = useCollisions();
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inverted, setInverted] = useState(false);
-  // const offsetX = inverted ? 34 : 10;
-  const offsetX = 10;
+  const offsetX = inverted ? 34 : 10;
   const offsetY = 18;
   const [player, setPlayer] = useState<PlayerState>({
     position: initialPosition,
     velocity: new Point(0, 0),
     gravity: 1,
-    inverted: false,
+    jump: {
+      power: 15,
+      double: true,
+    },
     currentAnimation: 'idle',
     hitbox: {
       position: new Point(
@@ -75,11 +77,11 @@ const Player = ({
       attack: {
         autoplay: true,
         loop: false,
-        frameBuffer: 10,
+        frameBuffer: 8,
         texture: textures.attack,
         frameRate: 3,
         onComplete: () => {
-          setCurrentAnimation('idle');
+          setTimeout(() => setCurrentAnimation('idle'), 100);
         },
       },
     },
@@ -130,6 +132,16 @@ const Player = ({
     setPlayer((prevState) => ({ ...prevState, currentAnimation }));
   };
 
+  const setDoubleJump = (double: boolean) => {
+    setPlayer((prevState) => ({
+      ...prevState,
+      jump: {
+        power: prevState.jump.power,
+        double,
+      },
+    }));
+  };
+
   const applyMovement = () => {
     setPositionX(player.position.x + player.velocity.x);
   };
@@ -147,38 +159,44 @@ const Player = ({
   };
 
   const run = useCallback(
-    (inverted: boolean) => {
-      const currentAnimation = 'run';
-      setInverted(inverted);
-      setVelocityX(inverted ? -5 : 5);
-      setCurrentAnimation(currentAnimation);
+    (isLeft: boolean) => {
+      setInverted(isLeft);
+      setVelocityX(isLeft ? -5 : 5);
+      setCurrentAnimation('run');
+      if (isLeft !== inverted) {
+        if (isLeft) setPositionX(player.position.x - 24);
+        else setPositionX(player.position.x + 24);
+      }
     },
-    [setVelocityX]
+    [inverted, player.position.x, setPositionX, setVelocityX]
   );
 
   const stopRun = useCallback(
-    (inverted: boolean) => {
-      const currentAnimation = 'idle';
-      setInverted(inverted);
+    (isLeft: boolean) => {
+      setInverted(isLeft);
       setVelocityX(0);
-      setCurrentAnimation(currentAnimation);
+      setCurrentAnimation('idle');
     },
     [setVelocityX]
   );
 
-  const jump = useCallback(
-    (power: number) => {
-      if (player.velocity.y === 0) {
-        sounds.jump.play();
-        setVelocityY(-power);
-      }
-    },
-    [player.velocity.y, setVelocityY, sounds]
-  );
+  const jump = useCallback(() => {
+    if (player.velocity.y === 0) {
+      sounds.jump.play();
+      setVelocityY(-player.jump.power);
+      setDoubleJump(true);
+    } else if (player.jump.double) {
+      if (!sounds.jump.isPlaying) sounds.jump.play();
+      setVelocityY(-player.jump.power / 1.5);
+      setDoubleJump(false);
+    }
+  }, [player.velocity.y, setVelocityY, sounds, player.jump]);
 
   const attack = useCallback(() => {
-    sounds.sword.play();
-    setCurrentAnimation('attack');
+    if (!sounds.sword.isPlaying) {
+      sounds.sword.play();
+      setCurrentAnimation('attack');
+    }
   }, [sounds]);
 
   useEffect(() => {
@@ -187,7 +205,7 @@ const Player = ({
       onTouchLeftEnd: () => stopRun(true),
       onTouchRightStart: () => run(false),
       onTouchRightEnd: () => stopRun(false),
-      onTouchUp: () => jump(15),
+      onTouchUp: () => jump(),
       onTouchSpecial: () => attack(),
     });
   }, [run, stopRun, jump, attack, setControls]);

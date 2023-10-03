@@ -1,4 +1,4 @@
-import { Container, TilingSprite, useTick } from '@pixi/react';
+import { TilingSprite, useTick } from '@pixi/react';
 import { Animation } from '../../interfaces';
 import { useEffect, useState } from 'react';
 import { Point } from 'pixi.js';
@@ -25,7 +25,9 @@ const TilingSpriteCustom = ({
   const [currentFrame, setCurrentFrame] = useState(0);
   const height = texture.height;
   const width = texture.width / frameRate;
-  const tileScale = new Point(inverted ? -1 : 1, 1);
+  const tilePosition = new Point(width * currentFrame + width, 0);
+  const scale = new Point(inverted ? -1 : 1, 1);
+  const position = new Point(inverted ? width : 0, 0);
 
   useEffect(() => {
     setCurrentFrame(0);
@@ -48,15 +50,14 @@ const TilingSpriteCustom = ({
   });
 
   return (
-    <Container>
-      <TilingSprite
-        texture={texture}
-        width={width}
-        height={height}
-        tilePosition={{ x: width * currentFrame, y: 0 }}
-        tileScale={tileScale}
-      />
-    </Container>
+    <TilingSprite
+      texture={texture}
+      width={width}
+      height={height}
+      tilePosition={tilePosition}
+      position={position}
+      scale={scale}
+    />
   );
 };
 
