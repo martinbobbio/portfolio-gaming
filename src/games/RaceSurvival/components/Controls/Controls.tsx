@@ -16,15 +16,15 @@ interface ControlProps {
  * @return React.ReactElement <Controls/>
  */
 const Controls = ({ controls }: ControlProps) => {
-  useKeyPress('ArrowLeft', controls.onTouchLeftStart, controls.onTouchLeftEnd);
+  useKeyPress('arrowleft', controls.onTouchLeftStart, controls.onTouchLeftEnd);
   useKeyPress('a', controls.onTouchLeftStart, controls.onTouchLeftEnd);
   useKeyPress(
-    'ArrowRight',
+    'arrowright',
     controls.onTouchRightStart,
     controls.onTouchRightEnd
   );
   useKeyPress('d', controls.onTouchRightStart, controls.onTouchRightEnd);
-  useKeyPress('ArrowDown', controls.onTouchDownStart, controls.onTouchDownEnd);
+  useKeyPress('arrowdown', controls.onTouchDownStart, controls.onTouchDownEnd);
   useKeyPress('s', controls.onTouchDownStart, controls.onTouchDownEnd);
 
   return (

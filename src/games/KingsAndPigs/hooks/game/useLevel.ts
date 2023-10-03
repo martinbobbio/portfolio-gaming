@@ -71,6 +71,7 @@ const useLevel = () => {
       initialPosition: main?.find(({ name }) => name === 'Initial Position')
         ?.data,
       doorNext: main?.find(({ name }) => name === 'Door Next')?.data,
+      doorPrev: main?.find(({ name }) => name === 'Door Prev')?.data,
     };
 
     const collisionBlocks =
@@ -80,6 +81,8 @@ const useLevel = () => {
       blocksFrom2D(parse2D(layers.initialPosition))[0];
     const doorNext =
       layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
+    const doorPrev =
+      layers.doorPrev && blocksFrom2D(parse2D(layers.doorPrev))[0];
 
     if (collisionBlocks) {
       setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
@@ -87,13 +90,17 @@ const useLevel = () => {
     if (initialPosition) {
       setLevel((prevLevel) => ({ ...prevLevel, initialPosition }));
     }
-    if (doorNext) {
+    if (doorNext && doorPrev) {
       setLevel((prevLevel) => ({
         ...prevLevel,
         doors: [
           {
             type: 'next',
-            hitbox: doorNext,
+            block: doorNext,
+          },
+          {
+            type: 'prev',
+            block: doorPrev,
           },
         ],
       }));

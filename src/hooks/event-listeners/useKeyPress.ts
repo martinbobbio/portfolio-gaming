@@ -13,14 +13,14 @@ const useKeyPress = (
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       event.preventDefault();
-      if (event.key === targetKey) {
+      if (event.key.toLowerCase() === targetKey) {
         onKeyDownCallback();
       }
     };
 
     const handleKeyUp = (event: KeyboardEvent) => {
       event.preventDefault();
-      if (event.key === targetKey && onKeyUpCallback) {
+      if (event.key.toLowerCase() === targetKey && onKeyUpCallback) {
         onKeyUpCallback();
       }
     };

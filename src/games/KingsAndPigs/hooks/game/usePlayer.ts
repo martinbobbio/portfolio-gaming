@@ -5,16 +5,16 @@ import {
   LevelKingAndPigs,
   PlayerState,
   SoundsKingsAndPigs,
-  TexturesPlayer,
+  PlayerAnimations,
+  PlayerTextures,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useCollisions } from '..';
-import { PlayerAnimations } from '../../interfaces/player/player';
 import { useTick } from '@pixi/react';
 
 interface usePlayerProps {
   level: LevelKingAndPigs;
-  textures: TexturesPlayer;
+  textures: PlayerTextures;
   sounds: SoundsKingsAndPigs;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }

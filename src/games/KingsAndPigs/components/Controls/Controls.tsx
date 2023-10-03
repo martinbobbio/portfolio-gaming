@@ -15,11 +15,11 @@ const Controls = ({ controls }: ControlProps) => {
     onTouchUp,
     onTouchSpecial,
   } = controls;
-  useKeyPress('ArrowLeft', onTouchLeftStart, onTouchLeftEnd);
+  useKeyPress('arrowleft', onTouchLeftStart, onTouchLeftEnd);
   useKeyPress('a', onTouchLeftStart, onTouchLeftEnd);
-  useKeyPress('ArrowRight', onTouchRightStart, onTouchRightEnd);
+  useKeyPress('arrowright', onTouchRightStart, onTouchRightEnd);
   useKeyPress('d', onTouchRightStart, onTouchRightEnd);
-  useKeyPress('ArrowUp', onTouchUp);
+  useKeyPress('arrowup', onTouchUp);
   useKeyPress('w', onTouchUp);
   useKeyPress('e', onTouchSpecial);
 

@@ -20,7 +20,7 @@ export interface PlayerAnimations {
   attack: Animation;
 }
 
-export interface TexturesPlayer {
+export interface PlayerTextures {
   idle: Texture;
   run: Texture;
   attack: Texture;

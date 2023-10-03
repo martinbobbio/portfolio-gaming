@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { usePixiContext } from '@/hooks';
+import { useEffect } from 'react';
 import { Stage, Container, Sprite } from '@pixi/react';
 import {
   ControlsKingsAndPigs,
@@ -30,26 +29,12 @@ interface MapProps {
  */
 const Map = ({ textures, sounds, level, setControls }: MapProps) => {
   level.texture = level.texture as Texture;
-  const app = usePixiContext();
   const height = level.texture.height;
   const width = level.texture.width;
-  const [elapsedFrames, setElapsedFrames] = useState(0);
 
   useEffect(() => {
     sounds.music.play();
   }, [sounds]);
-
-  useEffect(() => {
-    const animate = () => {
-      setElapsedFrames(elapsedFrames + 1);
-    };
-
-    app.ticker.add(animate);
-
-    return () => {
-      app.ticker.remove(animate);
-    };
-  }, [app, elapsedFrames]);
 
   return (
     <Stage width={width} height={height}>
@@ -62,7 +47,7 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
         <Game
           setControls={setControls}
           sounds={sounds}
-          textures={textures.king}
+          textures={textures}
           level={level}
         />
       </Container>

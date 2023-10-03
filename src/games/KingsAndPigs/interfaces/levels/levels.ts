@@ -14,5 +14,5 @@ export interface LevelKingAndPigs {
 
 export interface LevelDoor {
   type: 'next' | 'prev';
-  hitbox: Block;
+  block: Block;
 }

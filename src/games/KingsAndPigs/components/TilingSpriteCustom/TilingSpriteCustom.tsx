@@ -5,7 +5,7 @@ import { Point } from 'pixi.js';
 
 interface TilingSpriteCustomProps {
   animation: Animation;
-  inverted: boolean;
+  inverted?: boolean;
 }
 
 /**
@@ -17,7 +17,7 @@ interface TilingSpriteCustomProps {
  */
 const TilingSpriteCustom = ({
   animation,
-  inverted,
+  inverted = false,
 }: TilingSpriteCustomProps) => {
   const { texture, frameRate, frameBuffer, autoplay, loop, onComplete } =
     animation;

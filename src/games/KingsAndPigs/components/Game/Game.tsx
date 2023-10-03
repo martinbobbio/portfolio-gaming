@@ -1,43 +1,59 @@
 import { Container } from '@pixi/react';
-import { GraphicCustom, TilingSpriteCustom } from '..';
+import { Debugger, TilingSpriteCustom } from '..';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
   SoundsKingsAndPigs,
-  TexturesPlayer,
+  TexturesKingsAndPigs,
 } from '../../interfaces';
-import { usePlayer } from '../../hooks';
+import { useDoors, usePlayer } from '../../hooks';
 
 interface GameProps {
-  textures: TexturesPlayer;
+  textures: TexturesKingsAndPigs;
   level: LevelKingAndPigs;
   sounds: SoundsKingsAndPigs;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
 /**
- * Functional component that render component animated sprited.
+ * Functional component that render component game with main logic.
  *
  * @param level for level info
  * @param textures for animations and textures for the player
  * @param sounds for player sounds.
  * @param setControls for add behaviors to controls
- * @return React.ReactElement <Player/>
+ * @return React.ReactElement <Game/>
  */
-const Player = (gameProps: GameProps) => {
-  const { player, inverted, animation } = usePlayer(gameProps);
+const Game = (gameProps: GameProps) => {
+  const { level, textures } = gameProps;
+  const { player, inverted } = usePlayer({
+    ...gameProps,
+    textures: textures.king,
+  });
+  const { doors } = useDoors({
+    ...gameProps,
+    textures: textures.door,
+  });
 
   return (
     <>
+      {doors?.map((door, i) => (
+        <Container key={i} x={door.position.x} y={door.position.y}>
+          <TilingSpriteCustom
+            animation={door.animations[door.currentAnimation]}
+          />
+        </Container>
+      ))}
       <Container x={player.position.x} y={player.position.y}>
-        <TilingSpriteCustom animation={animation} inverted={inverted} />
+        <TilingSpriteCustom
+          animation={player.animations[player.currentAnimation]}
+          inverted={inverted}
+        />
       </Container>
-      <GraphicCustom block={player.hitbox} />
-      {/* {collisionBlocks.map((block, i) => (
-        <GraphicCustom key={i} block={block} />
-      ))} */}
+
+      <Debugger player={player} doors={doors} level={level} />
     </>
   );
 };
 
-export default Player;
+export default Game;

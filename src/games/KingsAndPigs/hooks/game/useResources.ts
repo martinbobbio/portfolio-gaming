@@ -46,19 +46,34 @@ const useResources = () => {
           run: '../kings-and-pigs/sprites/king/run.png',
           attack: '../kings-and-pigs/sprites/king/attack.png',
         },
+        door: {
+          idle: '../kings-and-pigs/sprites/door/idle.png',
+          opening: '../kings-and-pigs/sprites/door/opening.png',
+          closing: '../kings-and-pigs/sprites/door/closing.png',
+        },
       };
-      const { king } = textures;
-      Assets.load([king.idle, king.run, king.attack]).then(
-        (resources: Record<string, Texture>) => {
-          setTextures({
-            king: {
-              idle: resources[king.idle],
-              run: resources[king.run],
-              attack: resources[king.attack],
-            },
-          });
-        }
-      );
+      const { king, door } = textures;
+      Assets.load([
+        king.idle,
+        king.run,
+        king.attack,
+        door.idle,
+        door.opening,
+        door.closing,
+      ]).then((resources: Record<string, Texture>) => {
+        setTextures({
+          king: {
+            idle: resources[king.idle],
+            run: resources[king.run],
+            attack: resources[king.attack],
+          },
+          door: {
+            idle: resources[door.idle],
+            opening: resources[door.opening],
+            closing: resources[door.closing],
+          },
+        });
+      });
     };
     loadTextures();
   }, []);
