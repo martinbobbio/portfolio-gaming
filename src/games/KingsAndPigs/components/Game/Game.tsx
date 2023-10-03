@@ -1,74 +1,43 @@
-import { useEffect, useState } from 'react';
-import { usePixiContext } from '@/hooks';
-import { Stage, Container, Sprite } from '@pixi/react';
+import { Container } from '@pixi/react';
+import { GraphicCustom, TilingSpriteCustom } from '..';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
   SoundsKingsAndPigs,
-  TexturesKingsAndPigs,
+  TexturesPlayer,
 } from '../../interfaces';
-import { Player } from '..';
-import { Texture } from 'pixi.js';
+import { usePlayer } from '../../hooks';
 
 interface GameProps {
-  textures: TexturesKingsAndPigs;
+  textures: TexturesPlayer;
   level: LevelKingAndPigs;
   sounds: SoundsKingsAndPigs;
-  onEndGame: () => void;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
 /**
- * Functional component that render component game.
+ * Functional component that render component animated sprited.
  *
- * @param level for the current level with their blocks and objects
- * @param textures for the current game textures
- * @param sounds for the music and effects
- * @param onEndGame for stop and finish the game
- * @param setControls for add behaviors
- * @return React.ReactElement <Game/>
+ * @param level for level info
+ * @param textures for animations and textures for the player
+ * @param sounds for player sounds.
+ * @param setControls for add behaviors to controls
+ * @return React.ReactElement <Player/>
  */
-const Game = ({ textures, sounds, level, setControls }: GameProps) => {
-  level.texture = level.texture as Texture;
-  const app = usePixiContext();
-  const height = level.texture.height;
-  const width = level.texture.width;
-  const [elapsedFrames, setElapsedFrames] = useState(0);
-
-  useEffect(() => {
-    sounds.music.play();
-  }, [sounds]);
-
-  useEffect(() => {
-    const animate = () => {
-      setElapsedFrames(elapsedFrames + 1);
-    };
-
-    app.ticker.add(animate);
-
-    return () => {
-      app.ticker.remove(animate);
-    };
-  }, [app, elapsedFrames]);
+const Player = (gameProps: GameProps) => {
+  const { player, inverted, animation } = usePlayer(gameProps);
 
   return (
-    <Stage width={width} height={height}>
-      <Container>
-        <Sprite
-          width={level.texture.width}
-          height={level.texture.height}
-          texture={level.texture}
-        />
-        <Player
-          setControls={setControls}
-          sounds={sounds}
-          textures={textures.king}
-          initialPosition={level.initialPosition.position}
-          collisionBlocks={level.collisionBlocks}
-        />
+    <>
+      <Container x={player.position.x} y={player.position.y}>
+        <TilingSpriteCustom animation={animation} inverted={inverted} />
       </Container>
-    </Stage>
+      <GraphicCustom block={player.hitbox} />
+      {/* {collisionBlocks.map((block, i) => (
+        <GraphicCustom key={i} block={block} />
+      ))} */}
+    </>
   );
 };
 
-export default Game;
+export default Player;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { usePixiContext } from '@/hooks';
-import { Controls, Game, Menu } from './components';
+import { Controls, Map, Menu } from './components';
 import { ControlsKingsAndPigs } from './interfaces';
 import { useLevel, useResources } from './hooks';
 import { KingsAndPigsStyled } from './KingsAndPigs.styled';
@@ -43,7 +43,7 @@ const KingsAndPigs = () => {
         level.texture &&
         !!level.collisionBlocks.length && (
           <KingsAndPigsStyled>
-            <Game
+            <Map
               textures={textures}
               level={level}
               sounds={sounds}

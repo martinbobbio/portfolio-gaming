@@ -1,49 +1,38 @@
-import { Container, useTick } from '@pixi/react';
 import { useCallback, useEffect, useState } from 'react';
-import { GraphicCustom, TilingSpriteCustom } from '..';
 import {
   Block,
   ControlsKingsAndPigs,
+  LevelKingAndPigs,
   PlayerState,
   SoundsKingsAndPigs,
   TexturesPlayer,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
-import { useCollisions } from '../../hooks';
+import { useCollisions } from '..';
 import { PlayerAnimations } from '../../interfaces/player/player';
+import { useTick } from '@pixi/react';
 
-interface PlayerProps {
-  initialPosition: Point;
+interface usePlayerProps {
+  level: LevelKingAndPigs;
   textures: TexturesPlayer;
-  collisionBlocks: Block[];
   sounds: SoundsKingsAndPigs;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
-/**
- * Functional component that render component animated sprited.
- *
- * @param initialPosition for the initial x and y player position
- * @param textures for animations and textures for the player
- * @param collisionBlocks for check collisions with the player
- * @param sounds for player sounds.
- * @param setControls for add behaviors to controls
- * @return React.ReactElement <Player/>
- */
-const Player = ({
+const usePlayer = ({
   textures,
-  initialPosition,
-  collisionBlocks,
+  level,
   sounds,
   setControls,
-}: PlayerProps) => {
+}: usePlayerProps) => {
+  const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inverted, setInverted] = useState(false);
   const offsetX = inverted ? 34 : 10;
   const offsetY = 18;
   const [player, setPlayer] = useState<PlayerState>({
-    position: initialPosition,
+    position: initialPosition.position,
     velocity: new Point(0, 0),
     gravity: 1,
     jump: {
@@ -53,8 +42,8 @@ const Player = ({
     currentAnimation: 'idle',
     hitbox: {
       position: new Point(
-        initialPosition.x + offsetX,
-        initialPosition.y + offsetY
+        initialPosition.position.x + offsetX,
+        initialPosition.position.y + offsetY
       ),
       width: 35,
       height: 25,
@@ -86,6 +75,7 @@ const Player = ({
       },
     },
   });
+
   const animation = player.animations[player.currentAnimation];
 
   const setPositionX = useCallback(
@@ -220,17 +210,11 @@ const Player = ({
     applyVertical(player, collisionBlocks, setPositionY, setVelocityY);
   });
 
-  return (
-    <>
-      <Container x={player.position.x} y={player.position.y}>
-        <TilingSpriteCustom animation={animation} inverted={inverted} />
-      </Container>
-      <GraphicCustom block={player.hitbox} />
-      {collisionBlocks.map((block, i) => (
-        <GraphicCustom key={i} block={block} />
-      ))}
-    </>
-  );
+  return {
+    player,
+    animation,
+    inverted,
+  };
 };
 
-export default Player;
+export default usePlayer;
