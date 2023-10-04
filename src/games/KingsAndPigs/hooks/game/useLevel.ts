@@ -31,11 +31,7 @@ const useLevel = () => {
     source: levels[1].source,
     texture: null,
     collisionBlocks: [],
-    initialPosition: {
-      position: new Point(-100, -100),
-      width: 0,
-      height: 0,
-    },
+    initialPosition: new Point(-100, -100),
     doors: [],
   });
 
@@ -68,17 +64,12 @@ const useLevel = () => {
 
     const layers = {
       collisions: main?.find(({ name }) => name === 'Collisions')?.data,
-      initialPosition: main?.find(({ name }) => name === 'Initial Position')
-        ?.data,
       doorNext: main?.find(({ name }) => name === 'Door Next')?.data,
       doorPrev: main?.find(({ name }) => name === 'Door Prev')?.data,
     };
 
     const collisionBlocks =
       layers.collisions && blocksFrom2D(parse2D(layers.collisions));
-    const initialPosition =
-      layers.initialPosition &&
-      blocksFrom2D(parse2D(layers.initialPosition))[0];
     const doorNext =
       layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
     const doorPrev =
@@ -86,9 +77,6 @@ const useLevel = () => {
 
     if (collisionBlocks) {
       setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
-    }
-    if (initialPosition) {
-      setLevel((prevLevel) => ({ ...prevLevel, initialPosition }));
     }
     if (doorNext && doorPrev) {
       setLevel((prevLevel) => ({
@@ -103,6 +91,10 @@ const useLevel = () => {
             block: doorPrev,
           },
         ],
+        initialPosition: new Point(
+          doorPrev.position.x - 16,
+          doorPrev.position.y
+        ),
       }));
     }
   }, []);

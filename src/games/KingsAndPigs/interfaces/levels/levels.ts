@@ -1,4 +1,4 @@
-import { Texture } from 'pixi.js';
+import { Point, Texture } from 'pixi.js';
 import { Block } from '..';
 
 export type AvailablesLevels = 1 | 2 | 3;
@@ -8,7 +8,7 @@ export interface LevelKingAndPigs {
   source: string;
   texture: Texture | null;
   collisionBlocks: Block[];
-  initialPosition: Block;
+  initialPosition: Point;
   doors: LevelDoor[];
 }
 

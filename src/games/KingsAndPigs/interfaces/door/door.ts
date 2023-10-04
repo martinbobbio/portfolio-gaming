@@ -5,7 +5,7 @@ export interface DoorState {
   type: 'prev' | 'next';
   position: Point;
   hitbox: Block;
-  currentAnimation: keyof DoorAnimations;
+  currentAnimation: Animation;
   animations: DoorAnimations;
 }
 

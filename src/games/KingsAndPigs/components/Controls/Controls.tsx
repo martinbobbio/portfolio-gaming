@@ -19,9 +19,9 @@ const Controls = ({ controls }: ControlProps) => {
   useKeyPress('a', onTouchLeftStart, onTouchLeftEnd);
   useKeyPress('arrowright', onTouchRightStart, onTouchRightEnd);
   useKeyPress('d', onTouchRightStart, onTouchRightEnd);
-  useKeyPress('arrowup', onTouchUp);
-  useKeyPress('w', onTouchUp);
-  useKeyPress('e', onTouchSpecial);
+  useKeyPress('arrowup', onTouchUp, () => true);
+  useKeyPress('w', onTouchUp, () => true);
+  useKeyPress('e', onTouchSpecial, () => true);
 
   return <ControlsStyled />;
 };

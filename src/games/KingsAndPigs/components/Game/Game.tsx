@@ -8,6 +8,8 @@ import {
 } from '../../interfaces';
 import { useDoors, usePlayer } from '../../hooks';
 
+const debug = false;
+
 interface GameProps {
   textures: TexturesKingsAndPigs;
   level: LevelKingAndPigs;
@@ -26,32 +28,30 @@ interface GameProps {
  */
 const Game = (gameProps: GameProps) => {
   const { level, textures } = gameProps;
-  const { player, inverted } = usePlayer({
-    ...gameProps,
-    textures: textures.king,
-  });
   const { doors } = useDoors({
     ...gameProps,
     textures: textures.door,
+  });
+  const { player } = usePlayer({
+    ...gameProps,
+    textures: textures.king,
+    doors,
   });
 
   return (
     <>
       {doors?.map((door, i) => (
         <Container key={i} x={door.position.x} y={door.position.y}>
-          <TilingSpriteCustom
-            animation={door.animations[door.currentAnimation]}
-          />
+          <TilingSpriteCustom animation={door.currentAnimation} />
         </Container>
       ))}
       <Container x={player.position.x} y={player.position.y}>
         <TilingSpriteCustom
-          animation={player.animations[player.currentAnimation]}
-          inverted={inverted}
+          animation={player.currentAnimation}
+          inverted={player.inverted}
         />
       </Container>
-
-      <Debugger player={player} doors={doors} level={level} />
+      {debug && <Debugger player={player} doors={doors} level={level} />}
     </>
   );
 };

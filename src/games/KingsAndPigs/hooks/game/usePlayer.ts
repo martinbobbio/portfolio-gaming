@@ -1,12 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   Block,
   ControlsKingsAndPigs,
   LevelKingAndPigs,
   PlayerState,
   SoundsKingsAndPigs,
-  PlayerAnimations,
   PlayerTextures,
+  Animation,
+  PlayerAnimations,
+  DoorState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useCollisions } from '..';
@@ -16,6 +18,7 @@ interface usePlayerProps {
   level: LevelKingAndPigs;
   textures: PlayerTextures;
   sounds: SoundsKingsAndPigs;
+  doors: DoorState[];
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -23,32 +26,15 @@ const usePlayer = ({
   textures,
   level,
   sounds,
+  doors,
   setControls,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
   const [elapsedFrames, setElapsedFrames] = useState(0);
-  const [inverted, setInverted] = useState(false);
-  const offsetX = inverted ? 34 : 10;
-  const offsetY = 18;
-  const [player, setPlayer] = useState<PlayerState>({
-    position: initialPosition.position,
-    velocity: new Point(0, 0),
-    gravity: 1,
-    jump: {
-      power: 15,
-      double: true,
-    },
-    currentAnimation: 'idle',
-    hitbox: {
-      position: new Point(
-        initialPosition.position.x + offsetX,
-        initialPosition.position.y + offsetY
-      ),
-      width: 35,
-      height: 25,
-    },
-    animations: {
+
+  const animations = useMemo(() => {
+    const animations: PlayerAnimations = {
       idle: {
         autoplay: true,
         loop: true,
@@ -69,14 +55,63 @@ const usePlayer = ({
         frameBuffer: 8,
         texture: textures.attack,
         frameRate: 3,
-        onComplete: () => {
-          setTimeout(() => setCurrentAnimation('idle'), 100);
-        },
       },
-    },
-  });
+      doorIn: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 6,
+        texture: textures.doorIn,
+        frameRate: 8,
+      },
+      doorOut: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 8,
+        texture: textures.doorOut,
+        frameRate: 8,
+      },
+      dead: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 8,
+        texture: textures.dead,
+        frameRate: 4,
+      },
+      hit: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 8,
+        texture: textures.hit,
+        frameRate: 2,
+      },
+    };
+    animations.attack.onComplete = () => {
+      setTimeout(() => setCurrentAnimation(animations.idle), 100);
+    };
+    animations.doorIn.onComplete = () => {
+      sounds.doorOut.play();
+      setTimeout(() => setCurrentAnimation(animations.idle), 100);
+    };
+    return animations;
+  }, [textures, sounds.doorOut]);
 
-  const animation = player.animations[player.currentAnimation];
+  const [player, setPlayer] = useState<PlayerState>({
+    position: initialPosition,
+    velocity: new Point(0, 0),
+    gravity: 1,
+    inverted: false,
+    jump: {
+      power: 15,
+      double: true,
+    },
+    currentAnimation: animations.doorIn,
+    hitbox: {
+      position: new Point(initialPosition.x, initialPosition.y),
+      width: 35,
+      height: 25,
+    },
+    animations,
+  });
 
   const setPositionX = useCallback(
     (x: number) => {
@@ -118,8 +153,12 @@ const usePlayer = ({
     setPlayer((prevState) => ({ ...prevState, hitbox }));
   };
 
-  const setCurrentAnimation = (currentAnimation: keyof PlayerAnimations) => {
+  const setCurrentAnimation = (currentAnimation: Animation) => {
     setPlayer((prevState) => ({ ...prevState, currentAnimation }));
+  };
+
+  const setInverted = (inverted: boolean) => {
+    setPlayer((prevState) => ({ ...prevState, inverted }));
   };
 
   const setDoubleJump = (double: boolean) => {
@@ -142,6 +181,8 @@ const usePlayer = ({
   };
 
   const autodetectHitbox = () => {
+    const offsetX = player.inverted ? 34 : 10;
+    const offsetY = 18;
     const hitbox = player.hitbox;
     hitbox.position.x = player.position.x + offsetX;
     hitbox.position.y = player.position.y + offsetY;
@@ -152,26 +193,56 @@ const usePlayer = ({
     (isLeft: boolean) => {
       setInverted(isLeft);
       setVelocityX(isLeft ? -5 : 5);
-      setCurrentAnimation('run');
-      if (isLeft !== inverted) {
+      setCurrentAnimation(animations.run);
+      if (isLeft !== player.inverted) {
         if (isLeft) setPositionX(player.position.x - 24);
         else setPositionX(player.position.x + 24);
       }
     },
-    [inverted, player.position.x, setPositionX, setVelocityX]
+    [
+      animations.run,
+      player.inverted,
+      player.position.x,
+      setPositionX,
+      setVelocityX,
+    ]
   );
 
   const stopRun = useCallback(
     (isLeft: boolean) => {
       setInverted(isLeft);
       setVelocityX(0);
-      setCurrentAnimation('idle');
+      setCurrentAnimation(animations.idle);
     },
-    [setVelocityX]
+    [animations, setVelocityX]
   );
 
+  const checkIfCanEnterDoor = useCallback((): boolean => {
+    let canEnter = false;
+    doors
+      .filter((door) => door.type === 'next')
+      .map((door) => {
+        const hitbox = door.hitbox;
+        const entity = player.hitbox;
+        const collisions = {
+          left: entity.position.x <= hitbox.position.x + hitbox.width,
+          right: entity.position.x + entity.width >= hitbox.position.x,
+          bottom: entity.position.y + entity.height >= hitbox.position.y,
+          top: entity.position.y <= hitbox.position.y + hitbox.height,
+        };
+        const { right, left, bottom, top } = collisions;
+        if (right && left && bottom && top) {
+          canEnter = true;
+        }
+      });
+    return canEnter;
+  }, [doors, player.hitbox]);
+
   const jump = useCallback(() => {
-    if (player.velocity.y === 0) {
+    if (checkIfCanEnterDoor()) {
+      setCurrentAnimation(animations.doorOut);
+      sounds.doorIn.play();
+    } else if (player.velocity.y === 0) {
       sounds.jump.play();
       setVelocityY(-player.jump.power);
       setDoubleJump(true);
@@ -180,14 +251,23 @@ const usePlayer = ({
       setVelocityY(-player.jump.power / 1.5);
       setDoubleJump(false);
     }
-  }, [player.velocity.y, setVelocityY, sounds, player.jump]);
+  }, [
+    checkIfCanEnterDoor,
+    player.velocity.y,
+    player.jump.double,
+    player.jump.power,
+    animations.doorOut,
+    sounds.jump,
+    sounds.doorIn,
+    setVelocityY,
+  ]);
 
   const attack = useCallback(() => {
     if (!sounds.sword.isPlaying) {
       sounds.sword.play();
-      setCurrentAnimation('attack');
+      setCurrentAnimation(animations.attack);
     }
-  }, [sounds]);
+  }, [animations, sounds.sword]);
 
   useEffect(() => {
     setControls({
@@ -212,8 +292,6 @@ const usePlayer = ({
 
   return {
     player,
-    animation,
-    inverted,
   };
 };
 

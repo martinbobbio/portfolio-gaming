@@ -19,9 +19,9 @@ const KingsAndPigs = () => {
   const [isGameRunning, setIsGameRunning] = useState(false);
 
   const handleStartGame = () => {
+    if (!sounds) loadSounds();
     setIsGameRunning(true);
     app.start();
-    if (!sounds) loadSounds();
   };
 
   const handleEndGame = () => {
