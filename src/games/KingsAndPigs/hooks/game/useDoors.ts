@@ -72,26 +72,12 @@ const useDoors = ({ textures, level }: useDoorProps) => {
     })
   );
 
-  const checkIfCanEnter = (entity: Block): boolean => {
-    for (let i = 0; i < doors.length; i++) {
-      const hitbox = doors[i].hitbox;
-      const canEnter =
-        entity.position.x + entity.width <= hitbox.position.x + hitbox.width &&
-        entity.position.x >= hitbox.position.x &&
-        entity.position.y + entity.height >= hitbox.position.y &&
-        entity.position.y <= hitbox.position.y + hitbox.height;
-      console.log(canEnter);
-    }
-    return true;
-  };
-
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);
   });
 
   return {
     doors,
-    checkIfCanEnter,
   };
 };
 

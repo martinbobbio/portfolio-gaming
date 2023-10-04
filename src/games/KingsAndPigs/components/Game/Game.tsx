@@ -32,10 +32,16 @@ const Game = (gameProps: GameProps) => {
     ...gameProps,
     textures: textures.door,
   });
+
+  const onNextLevel = () => {
+    console.log('SIGUIENTE');
+  };
+
   const { player } = usePlayer({
     ...gameProps,
     textures: textures.king,
     doors,
+    onNextLevel: () => onNextLevel(),
   });
 
   return (

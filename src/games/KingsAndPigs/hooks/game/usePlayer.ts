@@ -20,6 +20,7 @@ interface usePlayerProps {
   sounds: SoundsKingsAndPigs;
   doors: DoorState[];
   setControls: (controls: ControlsKingsAndPigs) => void;
+  onNextLevel: () => void;
 }
 
 const usePlayer = ({
@@ -28,6 +29,7 @@ const usePlayer = ({
   sounds,
   doors,
   setControls,
+  onNextLevel,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
@@ -189,18 +191,22 @@ const usePlayer = ({
     setHitbox(hitbox);
   };
 
-  const run = useCallback(
+  const pressRun = useCallback(
     (isLeft: boolean) => {
-      setInverted(isLeft);
-      setVelocityX(isLeft ? -5 : 5);
-      setCurrentAnimation(animations.run);
-      if (isLeft !== player.inverted) {
-        if (isLeft) setPositionX(player.position.x - 24);
-        else setPositionX(player.position.x + 24);
+      if (player.currentAnimation === animations.idle) {
+        setInverted(isLeft);
+        setVelocityX(isLeft ? -5 : 5);
+        setCurrentAnimation(animations.run);
+        if (isLeft !== player.inverted) {
+          if (isLeft) setPositionX(player.position.x - 24);
+          else setPositionX(player.position.x + 24);
+        }
       }
     },
     [
+      animations.idle,
       animations.run,
+      player.currentAnimation,
       player.inverted,
       player.position.x,
       setPositionX,
@@ -208,7 +214,7 @@ const usePlayer = ({
     ]
   );
 
-  const stopRun = useCallback(
+  const pressStopRun = useCallback(
     (isLeft: boolean) => {
       setInverted(isLeft);
       setVelocityX(0);
@@ -238,31 +244,46 @@ const usePlayer = ({
     return canEnter;
   }, [doors, player.hitbox]);
 
+  const enterDoor = useCallback(() => {
+    setCurrentAnimation(animations.doorOut);
+    sounds.doorIn.play();
+    onNextLevel();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [animations.doorOut, sounds.doorIn]);
+
   const jump = useCallback(() => {
+    sounds.jump.play();
+    setVelocityY(-player.jump.power);
+    setDoubleJump(true);
+  }, [player.jump.power, setVelocityY, sounds.jump]);
+
+  const doubleJump = useCallback(() => {
+    if (!sounds.jump.isPlaying) sounds.jump.play();
+    setVelocityY(-player.jump.power / 1.5);
+    setDoubleJump(false);
+  }, [player.jump.power, setVelocityY, sounds.jump]);
+
+  const pressUp = useCallback(() => {
+    if (player.currentAnimation === animations.doorOut) return;
     if (checkIfCanEnterDoor()) {
-      setCurrentAnimation(animations.doorOut);
-      sounds.doorIn.play();
+      enterDoor();
     } else if (player.velocity.y === 0) {
-      sounds.jump.play();
-      setVelocityY(-player.jump.power);
-      setDoubleJump(true);
+      jump();
     } else if (player.jump.double) {
-      if (!sounds.jump.isPlaying) sounds.jump.play();
-      setVelocityY(-player.jump.power / 1.5);
-      setDoubleJump(false);
+      doubleJump();
     }
   }, [
-    checkIfCanEnterDoor,
+    player.currentAnimation,
     player.velocity.y,
     player.jump.double,
-    player.jump.power,
     animations.doorOut,
-    sounds.jump,
-    sounds.doorIn,
-    setVelocityY,
+    checkIfCanEnterDoor,
+    enterDoor,
+    jump,
+    doubleJump,
   ]);
 
-  const attack = useCallback(() => {
+  const pressAttack = useCallback(() => {
     if (!sounds.sword.isPlaying) {
       sounds.sword.play();
       setCurrentAnimation(animations.attack);
@@ -271,14 +292,14 @@ const usePlayer = ({
 
   useEffect(() => {
     setControls({
-      onTouchLeftStart: () => run(true),
-      onTouchLeftEnd: () => stopRun(true),
-      onTouchRightStart: () => run(false),
-      onTouchRightEnd: () => stopRun(false),
-      onTouchUp: () => jump(),
-      onTouchSpecial: () => attack(),
+      onTouchLeftStart: () => pressRun(true),
+      onTouchLeftEnd: () => pressStopRun(true),
+      onTouchRightStart: () => pressRun(false),
+      onTouchRightEnd: () => pressStopRun(false),
+      onTouchUp: () => pressUp(),
+      onTouchSpecial: () => pressAttack(),
     });
-  }, [run, stopRun, jump, attack, setControls]);
+  }, [pressRun, pressStopRun, pressUp, pressAttack, setControls]);
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);
