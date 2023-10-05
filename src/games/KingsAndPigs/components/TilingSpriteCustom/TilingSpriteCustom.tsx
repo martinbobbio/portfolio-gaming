@@ -1,6 +1,6 @@
-import { TilingSprite, useTick } from '@pixi/react';
-import { Animation } from '../../interfaces';
 import { useEffect, useState } from 'react';
+import { Animation } from '../../interfaces';
+import { TilingSprite, useTick } from '@pixi/react';
 import { Point } from 'pixi.js';
 
 interface TilingSpriteCustomProps {

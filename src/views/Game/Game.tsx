@@ -1,8 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Header, MetaTags, Text } from '@/components';
-import { PixiProvider } from '@/contexts';
 import { routeToTag, routeToTitle } from '@/utils';
-import { PixiGameStyled } from './PixiGame.styled';
+import { GameStyled } from './Game.styled';
 
 interface PixiGameProps {
   game: React.ReactNode;
@@ -28,9 +27,7 @@ const PixiGame = ({ game }: PixiGameProps) => {
     <>
       <MetaTags title={title} favicon={tag} />
       <Header breadcrumbs={breadcrumbs} hide={true} />
-      <PixiProvider>
-        <PixiGameStyled className={tag}>{game}</PixiGameStyled>
-      </PixiProvider>
+      <GameStyled className={tag}>{game}</GameStyled>
     </>
   );
 };

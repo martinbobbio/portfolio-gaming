@@ -8,7 +8,6 @@ import {
   Block,
   DoorAnimations,
 } from '../../interfaces';
-import { useTick } from '@pixi/react';
 import { Point } from 'pixi.js';
 
 interface useDoorProps {
@@ -19,8 +18,6 @@ interface useDoorProps {
 }
 
 const useDoors = ({ textures, level }: useDoorProps) => {
-  const [elapsedFrames, setElapsedFrames] = useState(0);
-
   const animations = useMemo(() => {
     const animations: DoorAnimations = {
       idle: {
@@ -74,10 +71,6 @@ const useDoors = ({ textures, level }: useDoorProps) => {
       return door;
     })
   );
-
-  useTick(() => {
-    setElapsedFrames(elapsedFrames + 1);
-  });
 
   return {
     doors,

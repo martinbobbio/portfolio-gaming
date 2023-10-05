@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { usePixiContext } from '@/hooks';
-import { Controls, Game, Menu, Score } from './components';
+import { Controls, Map, Menu, Score } from './components';
 import {
   ControlsGame,
   SoundsRaceSurvival,
@@ -17,7 +16,6 @@ import { Assets, Texture } from 'pixi.js';
  * @return React.ReactElement <RaceSurvival/>
  */
 const RaceSurvival = () => {
-  const app = usePixiContext();
   const [title, setTitle] = useState('Race Survival');
   const [textures, setTextures] = useState<TexturesRaceSurvival>();
   const [sounds, setSounds] = useState<SoundsRaceSurvival>();
@@ -26,12 +24,10 @@ const RaceSurvival = () => {
 
   const handleStartGame = () => {
     setIsGameRunning(true);
-    app.start();
     if (!sounds) loadSounds();
   };
 
   const handleEndGame = () => {
-    app.stop();
     setTitle('Try Again');
     setIsGameRunning(false);
   };
@@ -71,7 +67,7 @@ const RaceSurvival = () => {
         />
         {isGameRunning && textures && sounds && (
           <RaceSurvivalStyled>
-            <Game
+            <Map
               textures={textures}
               sounds={sounds}
               onEndGame={handleEndGame}

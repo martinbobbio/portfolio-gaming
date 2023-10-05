@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCollisions } from '..';
 import {
   Block,
   ControlsKingsAndPigs,
@@ -11,7 +12,6 @@ import {
   DoorState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
-import { useCollisions } from '..';
 import { useTick } from '@pixi/react';
 
 interface usePlayerProps {

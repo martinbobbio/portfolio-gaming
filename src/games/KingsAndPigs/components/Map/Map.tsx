@@ -6,7 +6,7 @@ import {
   TexturesKingsAndPigs,
 } from '../../interfaces';
 import { Game } from '..';
-import { Point, Texture } from 'pixi.js';
+import { Texture } from 'pixi.js';
 
 interface MapProps {
   textures: TexturesKingsAndPigs;

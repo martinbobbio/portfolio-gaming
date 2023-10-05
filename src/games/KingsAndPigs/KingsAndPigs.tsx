@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { usePixiContext } from '@/hooks';
 import { Controls, Map, Menu } from './components';
 import { ControlsKingsAndPigs } from './interfaces';
 import { useLevel, useResources } from './hooks';
@@ -11,7 +10,6 @@ import { KingsAndPigsStyled } from './KingsAndPigs.styled';
  * @return React.ReactElement <KingsAndPigs/>
  */
 const KingsAndPigs = () => {
-  const app = usePixiContext();
   const { level } = useLevel();
   const { textures, sounds, loadSounds } = useResources();
   const [controls, setControls] = useState<ControlsKingsAndPigs>();
@@ -20,7 +18,6 @@ const KingsAndPigs = () => {
   const handleStartGame = () => {
     if (!sounds) loadSounds();
     setIsGameRunning(true);
-    app.start();
   };
 
   useEffect(() => {

@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
-import { usePixiContext } from '@/hooks';
 import { randomInt } from '@/utils';
-import { Stage, Container, TilingSprite } from '@pixi/react';
+import { TilingSprite, useTick } from '@pixi/react';
 import { Point } from 'pixi.js';
 import {
   ControlsGame,
@@ -29,7 +28,6 @@ interface GameProps {
  * @return React.ReactElement <Game/>
  */
 const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
-  const app = usePixiContext();
   const { points, level, setPoints, setLevel } = useRaceSurvivalContext();
   const height = window.innerHeight;
   const width =
@@ -174,7 +172,6 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
   }, [player, limits]);
 
   const endGame = useCallback(() => {
-    app.stop();
     sounds.explosion.volume = 0.5;
     sounds.music.stop();
     sounds.car.stop();
@@ -184,7 +181,7 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
     onEndGame();
     setLevel(1);
     setPoints(0);
-  }, [app, onEndGame, setLevel, setPoints, sounds]);
+  }, [onEndGame, setLevel, setPoints, sounds]);
 
   const checkCollision = useCallback(() => {
     for (let i = 0; i < enemies.length; i++) {
@@ -241,64 +238,42 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
     setEnemies([...enemies]);
   }, [enemies, speed, setEnemies]);
 
-  useEffect(() => {
-    const animate = () => {
-      setEllapsedFrames(ellapsedFrames + 1);
-      setBackgroundTilePosition(({ x, y }) => new Point(x, (y -= 0.5 * speed)));
-      checkLimitsAndMove();
-      setBotBehavior();
-      checkCollision();
-      manageEnemiesOutOfRange();
-    };
-
-    app.ticker.add(animate);
-
-    return () => {
-      app.ticker.remove(animate);
-    };
-  }, [
-    app,
-    limits,
-    speed,
-    player,
-    enemies,
-    ellapsedFrames,
-    checkLimitsAndMove,
-    setBotBehavior,
-    checkCollision,
-    manageEnemiesOutOfRange,
-    sounds.car,
-  ]);
+  useTick(() => {
+    setEllapsedFrames(ellapsedFrames + 1);
+    setBackgroundTilePosition(({ x, y }) => new Point(x, (y -= 0.5 * speed)));
+    checkLimitsAndMove();
+    setBotBehavior();
+    checkCollision();
+    manageEnemiesOutOfRange();
+  });
 
   return (
-    <Stage width={width} height={height}>
-      <Container scale={scale}>
+    <>
+      <TilingSprite
+        width={textures.background.width}
+        height={textures.background.height}
+        texture={textures.background}
+        tilePosition={backgroundTilePosition}
+      />
+      <TilingSprite
+        position={player.position}
+        texture={textures.car}
+        tilePosition={{ x: 0, y: 0 }}
+        width={sizeCars.width}
+        height={sizeCars.height}
+      />
+      {enemies.map((enemy, i) => (
         <TilingSprite
-          width={textures.background.width}
-          height={textures.background.height}
-          texture={textures.background}
-          tilePosition={backgroundTilePosition}
-        />
-        <TilingSprite
-          position={player.position}
+          key={i}
+          x={enemy.position.x}
+          y={enemy.position.y}
           texture={textures.car}
-          tilePosition={{ x: 0, y: 0 }}
+          tilePosition={enemy.tilePosition}
           width={sizeCars.width}
           height={sizeCars.height}
         />
-        {enemies.map((enemy, i) => (
-          <TilingSprite
-            key={i}
-            x={enemy.position.x}
-            y={enemy.position.y}
-            texture={textures.car}
-            tilePosition={enemy.tilePosition}
-            width={sizeCars.width}
-            height={sizeCars.height}
-          />
-        ))}
-      </Container>
-    </Stage>
+      ))}
+    </>
   );
 };
 
