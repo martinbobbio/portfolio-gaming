@@ -92,8 +92,11 @@ const usePlayer = ({
       sounds.doorOut.play();
       setTimeout(() => setCurrentAnimation(animations.idle), 100);
     };
+    animations.doorOut.onComplete = () => {
+      level.onNextLevel();
+    };
     return animations;
-  }, [textures, sounds.doorOut]);
+  }, [textures, sounds.doorOut, level]);
 
   const [player, setPlayer] = useState<PlayerState>({
     position: initialPosition,
@@ -107,8 +110,8 @@ const usePlayer = ({
     currentAnimation: animations.doorIn,
     hitbox: {
       position: new Point(initialPosition.x, initialPosition.y),
-      width: 35,
-      height: 25,
+      width: 24,
+      height: 26,
     },
     animations,
   });
@@ -181,7 +184,7 @@ const usePlayer = ({
   };
 
   const autodetectHitbox = () => {
-    const offsetX = player.inverted ? 34 : 10;
+    const offsetX = player.inverted ? 36 : 18;
     const offsetY = 18;
     const hitbox = player.hitbox;
     hitbox.position.x = player.position.x + offsetX;
@@ -246,8 +249,7 @@ const usePlayer = ({
   const enterDoor = useCallback(() => {
     setCurrentAnimation(animations.doorOut);
     sounds.doorIn.play();
-    level.onNextLevel();
-  }, [animations.doorOut, sounds.doorIn, level]);
+  }, [animations.doorOut, sounds.doorIn]);
 
   const jump = useCallback(() => {
     sounds.jump.play();
@@ -298,6 +300,10 @@ const usePlayer = ({
       onTouchSpecial: () => pressAttack(),
     });
   }, [pressRun, pressStopRun, pressUp, pressAttack, setControls]);
+
+  useEffect(() => {
+    level.updatePlayerPosition(player.position);
+  }, [level, player.position.x, player.position.y, player.position]);
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);

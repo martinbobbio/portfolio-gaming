@@ -1,46 +1,40 @@
 import { Assets, Point, Texture } from 'pixi.js';
 import { useCallback, useEffect, useState } from 'react';
-import { LevelKingAndPigs, AvailablesLevels } from '../../interfaces';
-import source from '../../levels/level-1.png';
-import data from '../../levels/level-1.json';
 import { blocksFrom2D, parse2D } from '@/utils';
-
-const levels = {
-  1: {
-    source,
-    playerPosition: new Point(200, 200),
-    data,
-  },
-  2: {
-    source,
-    playerPosition: new Point(0, 0),
-    data,
-  },
-  3: {
-    source,
-    playerPosition: new Point(0, 0),
-    data,
-  },
-};
+import {
+  LevelKingAndPigs,
+  AvailablesLevels,
+  LevelData,
+} from '../../interfaces';
 
 const useLevel = () => {
   const minLevel = 1;
   const maxLevel = 3;
   const [level, setLevel] = useState<LevelKingAndPigs>({
     current: 1,
-    source: levels[1].source,
     texture: null,
     collisionBlocks: [],
     initialPosition: new Point(-100, -100),
     doors: [],
-    onNextLevel: () => console.log('SIG'),
-    onPrevLevel: () => console.log('SIG'),
+    player: {
+      position: new Point(-100, -100),
+    },
+    onNextLevel: () => nextLevel(),
+    onPrevLevel: () => prevLevel(),
+    updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
   });
+  const currentLevel = level.current;
 
   const nextLevel = () => {
     if (level.current < maxLevel) {
       const current = (level.current + 1) as AvailablesLevels;
-      setLevel({ ...level, current });
+      setLevel({
+        ...level,
+        current,
+        texture: null,
+        collisionBlocks: [],
+        doors: [],
+      });
     }
   };
 
@@ -51,16 +45,25 @@ const useLevel = () => {
     }
   };
 
-  const loadTexture = useCallback(async () => {
-    const resources: Record<string, Texture> = await Assets.load([
-      level.source,
-    ]);
-    const texture = resources[level.source];
-    setLevel((prevLevel) => ({ ...prevLevel, texture }));
-  }, [level.source]);
+  const updatePlayerPosition = (position: Point) => {
+    level.player.position = position;
+  };
 
-  const loadTileMap = useCallback(async () => {
-    const main = levels[1].data.layers.find(
+  const loadLevelTexture = useCallback(async () => {
+    const source = await import(`../../levels/level-${currentLevel}.png`).then(
+      (module) => module.default
+    );
+    const resources: Record<string, Texture> = await Assets.load([source]);
+    const texture = resources[source];
+    setLevel((prevLevel) => ({ ...prevLevel, texture }));
+  }, [currentLevel]);
+
+  const loadlLevelData = useCallback(async () => {
+    const levelData: LevelData = await import(
+      `../../levels/level-${currentLevel}.json`
+    ).then((module) => module.default);
+
+    const main = levelData.layers.find(
       ({ name }) => name === 'Detections'
     )?.layers;
 
@@ -99,12 +102,12 @@ const useLevel = () => {
         ),
       }));
     }
-  }, []);
+  }, [currentLevel]);
 
   useEffect(() => {
-    loadTexture();
-    loadTileMap();
-  }, [loadTexture, loadTileMap]);
+    loadLevelTexture();
+    loadlLevelData();
+  }, [currentLevel, loadLevelTexture, loadlLevelData]);
 
   return {
     level,

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePixiContext } from '@/hooks';
 import { Controls, Map, Menu } from './components';
 import { ControlsKingsAndPigs } from './interfaces';
@@ -22,6 +22,10 @@ const KingsAndPigs = () => {
     setIsGameRunning(true);
     app.start();
   };
+
+  useEffect(() => {
+    if (sounds) sounds.music.play();
+  }, [sounds]);
 
   return (
     <>

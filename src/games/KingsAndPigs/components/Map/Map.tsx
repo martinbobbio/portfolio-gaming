@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Stage, Container, Sprite } from '@pixi/react';
 import {
   ControlsKingsAndPigs,
@@ -7,7 +6,7 @@ import {
   TexturesKingsAndPigs,
 } from '../../interfaces';
 import { Game } from '..';
-import { Texture } from 'pixi.js';
+import { Point, Texture } from 'pixi.js';
 
 interface MapProps {
   textures: TexturesKingsAndPigs;
@@ -29,10 +28,6 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
   level.texture = level.texture as Texture;
   const height = level.texture.height;
   const width = level.texture.width;
-
-  useEffect(() => {
-    sounds.music.play();
-  }, [sounds]);
 
   return (
     <Stage width={width} height={height}>

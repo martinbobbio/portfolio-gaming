@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
 import { usePixiContext } from '@/hooks';
+import { randomInt } from '@/utils';
 import { Stage, Container, TilingSprite } from '@pixi/react';
 import { Point } from 'pixi.js';
 import {
@@ -8,7 +9,6 @@ import {
   TexturesRaceSurvival,
   Vehicle,
 } from '../../interfaces';
-import { randomInt } from '@/utils';
 import { sizeCars, spriteCarsPositions } from '../../data';
 import { useRaceSurvivalContext } from '../../hooks';
 
