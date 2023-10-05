@@ -7,6 +7,8 @@ export interface DoorState {
   hitbox: Block;
   currentAnimation: Animation;
   animations: DoorAnimations;
+  open: () => void;
+  close: () => void;
 }
 
 export interface DoorAnimations {

@@ -33,7 +33,7 @@ const useDoors = ({ textures, level }: useDoorProps) => {
       opening: {
         autoplay: true,
         loop: false,
-        frameBuffer: 10,
+        frameBuffer: 24,
         texture: textures.opening,
         frameRate: 5,
       },
@@ -62,13 +62,16 @@ const useDoors = ({ textures, level }: useDoorProps) => {
         prev: animations.opening,
         next: animations.idle,
       };
-      return {
+      const door: DoorState = {
         position: getInitialPosition(block),
         hitbox: block,
         type,
         currentAnimation: currentAnimations[type],
         animations,
+        open: () => (door.currentAnimation = animations.opening),
+        close: () => (door.currentAnimation = animations.closing),
       };
+      return door;
     })
   );
 

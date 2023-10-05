@@ -33,6 +33,8 @@ const useLevel = () => {
     collisionBlocks: [],
     initialPosition: new Point(-100, -100),
     doors: [],
+    onNextLevel: () => console.log('SIG'),
+    onPrevLevel: () => console.log('SIG'),
   });
 
   const nextLevel = () => {

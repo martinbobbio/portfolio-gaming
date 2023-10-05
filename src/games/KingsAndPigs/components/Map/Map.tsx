@@ -13,7 +13,6 @@ interface MapProps {
   textures: TexturesKingsAndPigs;
   level: LevelKingAndPigs;
   sounds: SoundsKingsAndPigs;
-  onEndGame: () => void;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -23,7 +22,6 @@ interface MapProps {
  * @param level for the current level with their blocks and objects
  * @param textures for the current game textures
  * @param sounds for the music and effects
- * @param onEndGame for stop and finish the game
  * @param setControls for add behaviors
  * @return React.ReactElement <Game/>
  */

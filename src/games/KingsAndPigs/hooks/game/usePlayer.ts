@@ -20,7 +20,6 @@ interface usePlayerProps {
   sounds: SoundsKingsAndPigs;
   doors: DoorState[];
   setControls: (controls: ControlsKingsAndPigs) => void;
-  onNextLevel: () => void;
 }
 
 const usePlayer = ({
@@ -29,7 +28,6 @@ const usePlayer = ({
   sounds,
   doors,
   setControls,
-  onNextLevel,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
@@ -239,6 +237,7 @@ const usePlayer = ({
         const { right, left, bottom, top } = collisions;
         if (right && left && bottom && top) {
           canEnter = true;
+          door.open();
         }
       });
     return canEnter;
@@ -247,9 +246,8 @@ const usePlayer = ({
   const enterDoor = useCallback(() => {
     setCurrentAnimation(animations.doorOut);
     sounds.doorIn.play();
-    onNextLevel();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [animations.doorOut, sounds.doorIn]);
+    level.onNextLevel();
+  }, [animations.doorOut, sounds.doorIn, level]);
 
   const jump = useCallback(() => {
     sounds.jump.play();

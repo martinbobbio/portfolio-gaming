@@ -10,6 +10,8 @@ export interface LevelKingAndPigs {
   collisionBlocks: Block[];
   initialPosition: Point;
   doors: LevelDoor[];
+  onNextLevel: () => void;
+  onPrevLevel: () => void;
 }
 
 export interface LevelDoor {

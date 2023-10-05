@@ -14,7 +14,6 @@ const KingsAndPigs = () => {
   const app = usePixiContext();
   const { level } = useLevel();
   const { textures, sounds, loadSounds } = useResources();
-  const [title, setTitle] = useState('Kings And Pigs');
   const [controls, setControls] = useState<ControlsKingsAndPigs>();
   const [isGameRunning, setIsGameRunning] = useState(false);
 
@@ -24,19 +23,9 @@ const KingsAndPigs = () => {
     app.start();
   };
 
-  const handleEndGame = () => {
-    app.stop();
-    setTitle('Try Again');
-    setIsGameRunning(false);
-  };
-
   return (
     <>
-      <Menu
-        title={title}
-        onStartGame={handleStartGame}
-        isGameRunning={isGameRunning}
-      />
+      <Menu onStartGame={handleStartGame} isGameRunning={isGameRunning} />
       {isGameRunning &&
         textures &&
         sounds &&
@@ -48,7 +37,6 @@ const KingsAndPigs = () => {
               level={level}
               sounds={sounds}
               setControls={setControls}
-              onEndGame={handleEndGame}
             />
             {controls && <Controls controls={controls} />}
           </KingsAndPigsStyled>
