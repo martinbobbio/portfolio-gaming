@@ -1,11 +1,11 @@
-import { Stage, Container, Sprite } from '@pixi/react';
+import { Stage, Sprite } from '@pixi/react';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
   SoundsKingsAndPigs,
   TexturesKingsAndPigs,
 } from '../../interfaces';
-import { Game } from '..';
+import { Camera, Game } from '..';
 import { Texture } from 'pixi.js';
 
 interface MapProps {
@@ -16,34 +16,32 @@ interface MapProps {
 }
 
 /**
- * Functional component that render component game.
+ * Functional component that render component map.
  *
  * @param level for the current level with their blocks and objects
- * @param textures for the current game textures
+ * @param textures for the current map textures
  * @param sounds for the music and effects
  * @param setControls for add behaviors
- * @return React.ReactElement <Game/>
+ * @return React.ReactElement <Map/>
  */
 const Map = ({ textures, sounds, level, setControls }: MapProps) => {
   level.texture = level.texture as Texture;
-  const height = level.texture.height;
   const width = level.texture.width;
+  const height = level.texture.height;
+  const player = level.player.position;
+  const texture = level.texture;
 
   return (
-    <Stage width={width} height={height}>
-      <Container>
-        <Sprite
-          width={level.texture.width}
-          height={level.texture.height}
-          texture={level.texture}
-        />
+    <Stage width={window.innerWidth} height={window.innerHeight}>
+      <Camera player={player} width={width} height={height}>
+        <Sprite width={width} height={height} texture={texture} />
         <Game
           setControls={setControls}
           sounds={sounds}
           textures={textures}
           level={level}
         />
-      </Container>
+      </Camera>
     </Stage>
   );
 };
