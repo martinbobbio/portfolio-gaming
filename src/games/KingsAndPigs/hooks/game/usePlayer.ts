@@ -217,11 +217,12 @@ const usePlayer = ({
 
   const pressStopRun = useCallback(
     (isLeft: boolean) => {
+      if (player.currentAnimation === animations.idle) return;
       setInverted(isLeft);
       setVelocityX(0);
       setCurrentAnimation(animations.idle);
     },
-    [animations, setVelocityX]
+    [animations.idle, player.currentAnimation, setVelocityX]
   );
 
   const checkIfCanEnterDoor = useCallback((): boolean => {
@@ -281,6 +282,21 @@ const usePlayer = ({
     enterDoor,
     jump,
     doubleJump,
+  ]);
+
+  useEffect(() => {
+    const { x } = player.velocity;
+    const { currentAnimation } = player;
+    if (currentAnimation === animations.idle && x !== 0) {
+      setCurrentAnimation(player.animations.run);
+    }
+  }, [
+    animations.idle,
+    player,
+    player.animations.run,
+    player.currentAnimation,
+    player.velocity,
+    player.velocity.x,
   ]);
 
   const pressAttack = useCallback(() => {
