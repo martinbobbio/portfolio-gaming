@@ -3,28 +3,40 @@ import { Stage, Container } from '@pixi/react';
 import { Point } from 'pixi.js';
 import {
   ControlsGame,
+  Points,
   SoundsRaceSurvival,
   TexturesRaceSurvival,
 } from '../../interfaces';
 import { Game } from '..';
 
-interface GameProps {
+interface MapProps {
   textures: TexturesRaceSurvival;
   sounds: SoundsRaceSurvival;
   onEndGame: () => void;
   setControls: (controls: ControlsGame) => void;
+  setPoints: (points: Points) => void;
+  points: Points;
 }
 
 /**
- * Functional component that render component game.
+ * Functional component that render component map.
  *
- * @param textures for the current game textures
- * @param sounds for the sounds of the game
- * @param onEndGame for stop and finish the game
+ * @param textures for the current map textures
+ * @param sounds for the sounds of the map
+ * @param points for pass point to child component
+ * @param onEndGame for stop and finish the map
  * @param setControls for add behaviors
- * @return React.ReactElement <Game/>
+ * @param setPoints for the points
+ * @return React.ReactElement <Map/>
  */
-const Map = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
+const Map = ({
+  textures,
+  sounds,
+  points,
+  onEndGame,
+  setControls,
+  setPoints,
+}: MapProps) => {
   const height = window.innerHeight;
   const width =
     window.innerWidth > textures.background.width
@@ -52,6 +64,8 @@ const Map = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
           sounds={sounds}
           onEndGame={onEndGame}
           setControls={setControls}
+          setPoints={setPoints}
+          points={points}
         />
       </Container>
     </Stage>

@@ -39,9 +39,9 @@ const KingsAndPigs = () => {
               sounds={sounds}
               setControls={setControls}
             />
-            {controls && <Controls controls={controls} />}
           </KingsAndPigsStyled>
         )}
+      {isGameRunning && controls && <Controls controls={controls} />}
     </>
   );
 };

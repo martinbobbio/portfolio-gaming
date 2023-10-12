@@ -28,3 +28,8 @@ export interface Vehicle {
   width: number;
   height: number;
 }
+
+export interface Points {
+  points: number;
+  level: number;
+}

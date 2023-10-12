@@ -16,3 +16,12 @@ export type {
 } from './levels/levels';
 export type { Animation } from './animation/animation';
 export type { Block } from './block/block';
+export type {
+  DialogBoxState,
+  DialogBoxTextures,
+  DialogBoxAnimations,
+} from './dialog-box/dialog-box';
+export type {
+  LivesAndCoinsAnimations,
+  LivesAndCoinsTextures,
+} from './lives-and-coins/lives-and-coins';

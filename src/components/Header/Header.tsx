@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { logoMBDark, logoMBLight } from '@/assets';
 import { FAIcon } from '@/components';
@@ -28,20 +28,27 @@ const Header = ({ hide, breadcrumbs }: HeaderProps) => {
   const logo = isDarkMode ? logoMBDark : logoMBLight;
   const headerRef = useRef(null);
 
-  const handleShowHeader = () => {
-    gsap.to(headerRef.current, { opacity: 1, duration: 0.3 });
-  };
+  const handleShowHeader = useCallback((duration: number) => {
+    gsap.to(headerRef.current, { opacity: 1, duration });
+  }, []);
 
-  const handleHideHeader = () => {
-    if (!hide) return;
-    gsap.to(headerRef.current, { opacity: 0, duration: 0.3 });
-  };
+  const handleHideHeader = useCallback(
+    (duration: number) => {
+      if (!hide) return;
+      gsap.to(headerRef.current, { opacity: 0, duration });
+    },
+    [hide]
+  );
+
+  useEffect(() => {
+    if (hide) handleHideHeader(1);
+  }, [handleHideHeader, hide]);
 
   return (
     <HeaderStyled
       ref={headerRef}
-      onMouseEnter={handleShowHeader}
-      onMouseLeave={handleHideHeader}
+      onMouseEnter={() => handleShowHeader(0.3)}
+      onMouseLeave={() => handleHideHeader(0.3)}
     >
       <Container>
         <Toolbar>

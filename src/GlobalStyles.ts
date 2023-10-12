@@ -129,7 +129,7 @@ img {
 
 /* End of base CSS */
 body {
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 `;

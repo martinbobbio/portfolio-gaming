@@ -1,14 +1,17 @@
 import { useState, useEffect } from 'react';
-import { useRaceSurvivalContext } from '../../hooks';
 import { Title, Level, Points, ScoreStyled } from './Score.styled';
+
+interface ScoreProps {
+  level: number;
+  points: number;
+}
 
 /**
  * Functional component that render the score component
  *
  * @return React.ReactElement <Score/>
  */
-const Score = () => {
-  const { level, points } = useRaceSurvivalContext();
+const Score = ({ level, points }: ScoreProps) => {
   const [pointsChanged, setPointsChanged] = useState(false);
   const [levelChanged, setLevelChanged] = useState(false);
 

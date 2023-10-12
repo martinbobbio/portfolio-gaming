@@ -1,21 +1,23 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
 import { randomInt } from '@/utils';
-import { TilingSprite, useTick } from '@pixi/react';
-import { Point } from 'pixi.js';
 import {
   ControlsGame,
+  Points,
   SoundsRaceSurvival,
   TexturesRaceSurvival,
   Vehicle,
 } from '../../interfaces';
 import { sizeCars, spriteCarsPositions } from '../../data';
-import { useRaceSurvivalContext } from '../../hooks';
+import { TilingSprite, useTick } from '@pixi/react';
+import { Point } from 'pixi.js';
 
 interface GameProps {
   textures: TexturesRaceSurvival;
   sounds: SoundsRaceSurvival;
+  points: Points;
   onEndGame: () => void;
   setControls: (controls: ControlsGame) => void;
+  setPoints: (points: Points) => void;
 }
 
 /**
@@ -23,12 +25,20 @@ interface GameProps {
  *
  * @param textures for the current game textures
  * @param sounds for the sounds of the game
+ * @param points for accelerate calculates levels and points
  * @param onEndGame for stop and finish the game
  * @param setControls for add behaviors
+ * @param setPoints for the points and levels
  * @return React.ReactElement <Game/>
  */
-const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
-  const { points, level, setPoints, setLevel } = useRaceSurvivalContext();
+const Game = ({
+  textures,
+  sounds,
+  points,
+  onEndGame,
+  setControls,
+  setPoints,
+}: GameProps) => {
   const height = window.innerHeight;
   const width =
     window.innerWidth > textures.background.width
@@ -51,8 +61,8 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
   const [enemiesPassed, setEnemiesPassed] = useState(0);
 
   const carSpeedMultiplier = useMemo(() => {
-    return level / 100;
-  }, [level]);
+    return points.level / 100;
+  }, [points.level]);
 
   const speed = useMemo(() => {
     const multiplier = carSpeedMultiplier * 100;
@@ -112,10 +122,12 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
   }, [carSpeedMultiplier, sounds.car]);
 
   const updateScore = useCallback(() => {
-    setPoints(points + (isSpeedingUp ? 10 : 5));
+    setPoints({
+      points: points.points + (isSpeedingUp ? 10 : 5),
+      level: Math.ceil(enemiesPassed / 5),
+    });
     setShouldUpdateScore(false);
-    setLevel(Math.ceil(enemiesPassed / 5));
-  }, [setPoints, setLevel, points, enemiesPassed, isSpeedingUp]);
+  }, [setPoints, points, enemiesPassed, isSpeedingUp]);
 
   const getVehicleCenter = (vehicle: Vehicle): Point => {
     return new Point(
@@ -179,9 +191,8 @@ const Game = ({ textures, sounds, onEndGame, setControls }: GameProps) => {
     setEnemies([]);
     setEnemiesPassed(0);
     onEndGame();
-    setLevel(1);
-    setPoints(0);
-  }, [onEndGame, setLevel, setPoints, sounds]);
+    setPoints({ level: 1, points: 0 });
+  }, [onEndGame, setPoints, sounds]);
 
   const checkCollision = useCallback(() => {
     for (let i = 0; i < enemies.length; i++) {

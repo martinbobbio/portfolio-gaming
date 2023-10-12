@@ -13,20 +13,36 @@ interface SoundPaths {
   [key: string]: string;
 }
 
+const uri = '../kings-and-pigs/sprites/';
 const texturePaths: TexturePaths = {
   king: {
-    idle: '../kings-and-pigs/sprites/king/idle.png',
-    run: '../kings-and-pigs/sprites/king/run.png',
-    attack: '../kings-and-pigs/sprites/king/attack.png',
-    doorIn: '../kings-and-pigs/sprites/king/door-in.png',
-    doorOut: '../kings-and-pigs/sprites/king/door-out.png',
-    dead: '../kings-and-pigs/sprites/king/dead.png',
-    hit: '../kings-and-pigs/sprites/king/hit.png',
+    idle: `${uri}king/idle.png`,
+    run: `${uri}king/run.png`,
+    attack: `${uri}king/attack.png`,
+    doorIn: `${uri}king/door-in.png`,
+    doorOut: `${uri}king/door-out.png`,
+    dead: `${uri}king/dead.png`,
+    hit: `${uri}king/hit.png`,
   },
   door: {
-    idle: '../kings-and-pigs/sprites/door/idle.png',
-    opening: '../kings-and-pigs/sprites/door/opening.png',
-    closing: '../kings-and-pigs/sprites/door/closing.png',
+    idle: `${uri}door/idle.png`,
+    opening: `${uri}door/opening.png`,
+    closing: `${uri}door/closing.png`,
+  },
+  dialogBox: {
+    helloIn: `${uri}dialogue-boxes/hello-in.png`,
+    helloOut: `${uri}dialogue-boxes/hello-out.png`,
+    deadIn: `${uri}dialogue-boxes/dead-in.png`,
+    deadOut: `${uri}dialogue-boxes/dead-out.png`,
+    exclamationIn: `${uri}dialogue-boxes/exclamation-in.png`,
+    exclamationOut: `${uri}dialogue-boxes/exclamation-out.png`,
+  },
+  livesAndCoins: {
+    liveBar: `${uri}lives-and-coins/live-bar.png`,
+    smallHeartIdle: `${uri}lives-and-coins/small-heart-idle.png`,
+    bigHeartIdle: `${uri}lives-and-coins/big-heart-idle.png`,
+    bigDiamondIdle: `${uri}lives-and-coins/big-diamond-idle.png`,
+    numbers: `${uri}lives-and-coins/numbers.png`,
   },
 };
 

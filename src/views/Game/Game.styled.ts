@@ -17,5 +17,9 @@ export const GameStyled = styled.div`
 
   @media (max-width: ${BREAKPOINTS.small}) {
     padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
 `;

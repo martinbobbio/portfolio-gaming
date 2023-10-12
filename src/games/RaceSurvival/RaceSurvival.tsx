@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { Controls, Map, Menu, Score } from './components';
 import {
   ControlsGame,
+  Points,
   SoundsRaceSurvival,
   TexturesRaceSurvival,
 } from './interfaces';
 import { paths } from './data';
-import { RaceSurvivalProvider } from './contexts';
 import { RaceSurvivalStyled } from './RaceSurvival.styled';
 import { Assets, Texture } from 'pixi.js';
 
@@ -19,8 +19,9 @@ const RaceSurvival = () => {
   const [title, setTitle] = useState('Race Survival');
   const [textures, setTextures] = useState<TexturesRaceSurvival>();
   const [sounds, setSounds] = useState<SoundsRaceSurvival>();
-  const [isGameRunning, setIsGameRunning] = useState(false);
   const [controls, setControls] = useState<ControlsGame>();
+  const [points, setPoints] = useState<Points>({ points: 0, level: 1 });
+  const [isGameRunning, setIsGameRunning] = useState(false);
 
   const handleStartGame = () => {
     setIsGameRunning(true);
@@ -58,27 +59,27 @@ const RaceSurvival = () => {
   }, [loadTextures]);
 
   return (
-    <RaceSurvivalProvider>
-      <>
-        <Menu
-          title={title}
-          onStartGame={handleStartGame}
-          isGameRunning={isGameRunning}
-        />
-        {isGameRunning && textures && sounds && (
-          <RaceSurvivalStyled>
-            <Map
-              textures={textures}
-              sounds={sounds}
-              onEndGame={handleEndGame}
-              setControls={setControls}
-            />
-            <Score />
-          </RaceSurvivalStyled>
-        )}
-        {isGameRunning && controls && <Controls controls={controls} />}
-      </>
-    </RaceSurvivalProvider>
+    <>
+      <Menu
+        title={title}
+        onStartGame={handleStartGame}
+        isGameRunning={isGameRunning}
+      />
+      {isGameRunning && textures && sounds && (
+        <RaceSurvivalStyled>
+          <Map
+            textures={textures}
+            sounds={sounds}
+            onEndGame={handleEndGame}
+            setControls={setControls}
+            setPoints={setPoints}
+            points={points}
+          />
+          <Score level={points.level} points={points.points} />
+        </RaceSurvivalStyled>
+      )}
+      {isGameRunning && controls && <Controls controls={controls} />}
+    </>
   );
 };
 

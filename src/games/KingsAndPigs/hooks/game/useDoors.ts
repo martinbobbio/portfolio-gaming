@@ -1,8 +1,6 @@
 import { useMemo, useState } from 'react';
 import {
-  ControlsKingsAndPigs,
   LevelKingAndPigs,
-  SoundsKingsAndPigs,
   DoorState,
   DoorTextures,
   Block,
@@ -13,8 +11,6 @@ import { Point } from 'pixi.js';
 interface useDoorProps {
   level: LevelKingAndPigs;
   textures: DoorTextures;
-  sounds: SoundsKingsAndPigs;
-  setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
 const useDoors = ({ textures, level }: useDoorProps) => {

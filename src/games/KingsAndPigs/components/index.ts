@@ -5,3 +5,4 @@ export { default as Menu } from './Menu/Menu';
 export { default as Camera } from './Camera/Camera';
 export { default as Debugger } from './Debugger/Debugger';
 export { default as TilingSpriteCustom } from './TilingSpriteCustom/TilingSpriteCustom';
+export { default as GraphicUserInterface } from './GraphicUserInterface/GraphicUserInterface';

@@ -12,9 +12,13 @@ export interface LevelKingAndPigs {
   player: {
     position: Point;
   };
+  camera: {
+    position: Point;
+  };
   onNextLevel: () => void;
   onPrevLevel: () => void;
   updatePlayerPosition: (point: Point) => void;
+  updateCameraPosition: (point: Point) => void;
 }
 
 export interface LevelDoor {

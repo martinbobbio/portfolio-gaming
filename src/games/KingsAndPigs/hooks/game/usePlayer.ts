@@ -10,6 +10,7 @@ import {
   Animation,
   PlayerAnimations,
   DoorState,
+  DialogBoxState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useTick } from '@pixi/react';
@@ -19,6 +20,7 @@ interface usePlayerProps {
   textures: PlayerTextures;
   sounds: SoundsKingsAndPigs;
   doors: DoorState[];
+  dialogBox: DialogBoxState;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -27,11 +29,13 @@ const usePlayer = ({
   level,
   sounds,
   doors,
+  dialogBox,
   setControls,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
   const [elapsedFrames, setElapsedFrames] = useState(0);
+  const [inactiveTime, setInactiveTime] = useState(0);
 
   const animations = useMemo(() => {
     const animations: PlayerAnimations = {
@@ -225,8 +229,8 @@ const usePlayer = ({
     [animations.idle, player.currentAnimation, setVelocityX]
   );
 
-  const checkIfCanEnterDoor = useCallback((): boolean => {
-    let canEnter = false;
+  const checkIfCanEnterDoor = useCallback((): DoorState | null => {
+    let doorEntered = null;
     doors
       .filter((door) => door.type === 'next')
       .map((door) => {
@@ -240,11 +244,10 @@ const usePlayer = ({
         };
         const { right, left, bottom, top } = collisions;
         if (right && left && bottom && top) {
-          canEnter = true;
-          door.open();
+          doorEntered = door;
         }
       });
-    return canEnter;
+    return doorEntered;
   }, [doors, player.hitbox]);
 
   const enterDoor = useCallback(() => {
@@ -266,7 +269,9 @@ const usePlayer = ({
 
   const pressUp = useCallback(() => {
     if (player.currentAnimation === animations.doorOut) return;
-    if (checkIfCanEnterDoor()) {
+    const door = checkIfCanEnterDoor();
+    if (door) {
+      door.open();
       enterDoor();
     } else if (player.velocity.y === 0) {
       jump();
@@ -306,6 +311,32 @@ const usePlayer = ({
     }
   }, [animations, sounds.sword]);
 
+  const checkSayHello = () => {
+    const { x, y } = player.velocity;
+    const isInactive = x === 0 && y === 0;
+    if (isInactive) setInactiveTime((prevInactiveTime) => prevInactiveTime + 1);
+    else {
+      setInactiveTime(0);
+      dialogBox.deleteAnimation();
+    }
+    if (inactiveTime >= 5 * 60) {
+      dialogBox.setAnimation('helloIn');
+    }
+  };
+
+  const checkSayExclamation = () => {
+    if (player.currentAnimation === animations.idle) {
+      if (checkIfCanEnterDoor()) dialogBox.setAnimation('exclamationIn');
+    } else {
+      dialogBox.deleteAnimation();
+    }
+  };
+
+  const checkDialogs = () => {
+    checkSayHello();
+    checkSayExclamation();
+  };
+
   useEffect(() => {
     setControls({
       onTouchLeftStart: () => pressRun(true),
@@ -329,6 +360,7 @@ const usePlayer = ({
     applyGravity();
     autodetectHitbox();
     applyVertical(player, collisionBlocks, setPositionY, setVelocityY);
+    checkDialogs();
   });
 
   return {

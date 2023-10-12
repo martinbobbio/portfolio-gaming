@@ -19,9 +19,13 @@ const useLevel = () => {
     player: {
       position: new Point(-100, -100),
     },
+    camera: {
+      position: new Point(-100, -100),
+    },
     onNextLevel: () => nextLevel(),
     onPrevLevel: () => prevLevel(),
     updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
+    updateCameraPosition: (point: Point) => updateCameraPosition(point),
   });
   const currentLevel = level.current;
 
@@ -47,6 +51,10 @@ const useLevel = () => {
 
   const updatePlayerPosition = (position: Point) => {
     level.player.position = position;
+  };
+
+  const updateCameraPosition = (position: Point) => {
+    level.camera.position = position;
   };
 
   const loadLevelTexture = useCallback(async () => {
