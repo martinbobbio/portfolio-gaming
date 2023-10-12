@@ -12,4 +12,4 @@
 
 ## Description
 
-Lorem
+Lorem ipsum
