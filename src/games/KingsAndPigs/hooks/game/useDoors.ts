@@ -13,6 +13,13 @@ interface useDoorProps {
   textures: DoorTextures;
 }
 
+/**
+ * Hook that manage doors in the game.
+ *
+ * @param level for known data level
+ * @param textures for the graphics
+ * @return useDoors
+ */
 const useDoors = ({ textures, level }: useDoorProps) => {
   const animations = useMemo(() => {
     const animations: DoorAnimations = {

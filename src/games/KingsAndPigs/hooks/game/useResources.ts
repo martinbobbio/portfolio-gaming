@@ -55,6 +55,11 @@ const soundPaths: SoundPaths = {
   doorOut: '../kings-and-pigs/sound/door-out.mp3',
 };
 
+/**
+ * Hook that manage resources for the game.
+ *
+ * @return useResources
+ */
 const useResources = () => {
   const [textures, setTextures] = useState<TexturesKingsAndPigs>();
   const [sounds, setSounds] = useState<SoundsKingsAndPigs>();

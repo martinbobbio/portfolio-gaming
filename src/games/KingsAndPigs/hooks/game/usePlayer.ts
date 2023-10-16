@@ -24,6 +24,17 @@ interface usePlayerProps {
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
+/**
+ * Hook that handles manage the player
+ *
+ * @param level for know the map values
+ * @param textures for render animations
+ * @param sounds for making noise
+ * @param doors for check collisions
+ * @param dialogBox for make animations dialogs
+ * @param setControls for add behaviors
+ * @return usePlayer
+ */
 const usePlayer = ({
   textures,
   level,

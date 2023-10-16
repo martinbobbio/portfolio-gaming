@@ -7,6 +7,11 @@ import {
 } from '../../interfaces';
 import { Assets, Point, Texture } from 'pixi.js';
 
+/**
+ * Hook that handles manage level important properties
+ *
+ * @return useLevel
+ */
 const useLevel = () => {
   const minLevel = 1;
   const maxLevel = 3;
@@ -19,13 +24,9 @@ const useLevel = () => {
     player: {
       position: new Point(-100, -100),
     },
-    camera: {
-      position: new Point(-100, -100),
-    },
     onNextLevel: () => nextLevel(),
     onPrevLevel: () => prevLevel(),
     updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
-    updateCameraPosition: (point: Point) => updateCameraPosition(point),
   });
   const currentLevel = level.current;
 
@@ -51,10 +52,6 @@ const useLevel = () => {
 
   const updatePlayerPosition = (position: Point) => {
     level.player.position = position;
-  };
-
-  const updateCameraPosition = (position: Point) => {
-    level.camera.position = position;
   };
 
   const loadLevelTexture = useCallback(async () => {

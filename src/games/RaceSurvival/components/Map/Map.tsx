@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { Stage, Container } from '@pixi/react';
+import { useWindowSize } from '@/hooks';
 import { Point } from 'pixi.js';
 import {
   ControlsGame,
@@ -37,11 +38,12 @@ const Map = ({
   setControls,
   setPoints,
 }: MapProps) => {
-  const height = window.innerHeight;
+  const windowSize = useWindowSize();
+  const height = windowSize.heigth;
   const width =
-    window.innerWidth > textures.background.width
+    windowSize.width > textures.background.width
       ? textures.background.width
-      : window.innerWidth;
+      : windowSize.width;
 
   const scale = useMemo(() => {
     return new Point(width / textures.background.width, 1);

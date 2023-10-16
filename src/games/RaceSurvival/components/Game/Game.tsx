@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useCallback, useState } from 'react';
 import { randomInt } from '@/utils';
+import { useWindowSize } from '@/hooks';
 import {
   ControlsGame,
   Points,
@@ -39,11 +40,12 @@ const Game = ({
   setControls,
   setPoints,
 }: GameProps) => {
-  const height = window.innerHeight;
+  const windowSize = useWindowSize();
+  const height = windowSize.heigth;
   const width =
-    window.innerWidth > textures.background.width
+    windowSize.width > textures.background.width
       ? textures.background.width
-      : window.innerWidth;
+      : windowSize.width;
   const [enemies, setEnemies] = useState<Vehicle[]>([]);
   const [ellapsedFrames, setEllapsedFrames] = useState(0);
   const [isSpeedingUp, setIsSpeedingUp] = useState(false);

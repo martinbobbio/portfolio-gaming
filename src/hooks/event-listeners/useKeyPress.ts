@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 /**
  * Hook that handle listeners
  *
- * @return useGlobalContextResponse
+ * @return useKeyPress
  */
 const useKeyPress = (
   targetKey: string,

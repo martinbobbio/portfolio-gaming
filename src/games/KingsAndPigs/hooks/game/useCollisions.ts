@@ -1,5 +1,10 @@
 import { Block, PlayerState } from '../../interfaces';
 
+/**
+ * Hook that manage collisions between objects
+ *
+ * @return useResources
+ */
 const useCollisions = () => {
   const getIfExistHorizontal = (player: PlayerState, block: Block) => {
     const { hitbox } = player;

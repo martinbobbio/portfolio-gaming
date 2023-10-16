@@ -1,5 +1,5 @@
 import { Container } from '@pixi/react';
-import { Debugger, GraphicUserInterface, TilingSpriteCustom } from '..';
+import { Debugger, TilingSpriteCustom } from '..';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
@@ -47,7 +47,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
 
   return (
     <>
-      <GraphicUserInterface textures={textures} level={level} />
+      {/* <GraphicUserInterface textures={textures} level={level} /> */}
       {doors?.map((door, i) => (
         <Container key={i} x={door.position.x} y={door.position.y}>
           <TilingSpriteCustom animation={door.currentAnimation} />

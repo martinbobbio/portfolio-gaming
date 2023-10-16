@@ -1,8 +1,9 @@
-import { Container, Sprite, Text } from '@pixi/react';
+import { Container, Graphics, Sprite, Text } from '@pixi/react';
+import { useWindowSize } from '@/hooks';
 import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { TilingSpriteCustom } from '..';
 import { useMemo } from 'react';
-import { TextStyle } from 'pixi.js';
+import { Point, TextStyle } from 'pixi.js';
 
 interface GUIProps {
   textures: TexturesKingsAndPigs;
@@ -17,6 +18,7 @@ interface GUIProps {
  * @return React.ReactElement <GUI/>
  */
 const GraphicUserInterface = ({ level, textures }: GUIProps) => {
+  const { isMobile, width } = useWindowSize();
   const animations = useMemo(() => {
     return {
       smallHeartIdle: {
@@ -34,7 +36,6 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
     { x: 22, y: 10 },
     { x: 32, y: 10 },
   ];
-  const { x, y } = level.camera.position;
 
   const textStyle = new TextStyle({
     fontFamily: 'Skranji',
@@ -43,18 +44,42 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
     letterSpacing: 2,
   });
 
+  const positions = {
+    livebar: new Point(16, 16),
+    level: new Point(!isMobile ? width / 2 - 64 : width * 0.65, 32),
+  };
+
+  const scales = {
+    livebar: 1.8,
+    level: 1.5,
+  };
+
   return (
-    <Container scale={1} x={x} y={y}>
-      <Sprite texture={textures.livesAndCoins.liveBar} />
-      {hearts.map((heart, i) => (
-        <Container key={i} x={heart.x} y={heart.y}>
-          <TilingSpriteCustom animation={animations.smallHeartIdle} />
-        </Container>
-      ))}
-      <Container x={100} y={8}>
-        <Text text={`Level ${level.current}`} style={textStyle} />
+    <>
+      <Container scale={scales.livebar} position={positions.livebar}>
+        <Sprite texture={textures.livesAndCoins.liveBar} />
+        {hearts.map((heart, i) => (
+          <Container key={i} x={heart.x} y={heart.y}>
+            <TilingSpriteCustom animation={animations.smallHeartIdle} />
+          </Container>
+        ))}
       </Container>
-    </Container>
+      <Container position={positions.level}>
+        <Graphics
+          draw={(g) => {
+            g.clear();
+            g.beginFill('#3f3851', 0.5);
+            g.drawRoundedRect(-30, -5, 150, 40, 24);
+            g.endFill();
+          }}
+        />
+        <Text
+          scale={scales.level}
+          text={`Level ${level.current}`}
+          style={textStyle}
+        />
+      </Container>
+    </>
   );
 };
 

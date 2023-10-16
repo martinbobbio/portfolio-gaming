@@ -1,4 +1,5 @@
 import { Stage, Sprite } from '@pixi/react';
+import { useWindowSize } from '@/hooks';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
@@ -25,6 +26,7 @@ interface MapProps {
  * @return React.ReactElement <Map/>
  */
 const Map = ({ textures, sounds, level, setControls }: MapProps) => {
+  const windowSize = useWindowSize();
   level.texture = level.texture as Texture;
   const width = level.texture.width;
   const height = level.texture.height;
@@ -32,8 +34,14 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
   const texture = level.texture;
 
   return (
-    <Stage width={window.innerWidth} height={window.innerHeight}>
-      <Camera player={player} width={width} height={height} level={level}>
+    <Stage width={windowSize.width} height={windowSize.heigth}>
+      <Camera
+        player={player}
+        width={width}
+        height={height}
+        level={level}
+        textures={textures}
+      >
         <Sprite width={width} height={height} texture={texture} />
         <Game
           setControls={setControls}

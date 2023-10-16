@@ -1,7 +1,8 @@
 import { Container } from '@pixi/react';
+import { useWindowSize } from '@/hooks';
 import { Point } from 'pixi.js';
-import { useEffect } from 'react';
-import { LevelKingAndPigs } from '../../interfaces';
+import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
+import { GraphicUserInterface } from '..';
 
 interface MapProps {
   level: LevelKingAndPigs;
@@ -9,6 +10,7 @@ interface MapProps {
   children: React.ReactNode;
   width: number;
   height: number;
+  textures: TexturesKingsAndPigs;
 }
 
 /**
@@ -21,11 +23,20 @@ interface MapProps {
  * @param height for according to the map texture
  * @return React.ReactElement <Camera/>
  */
-const Camera = ({ level, player, children, width, height }: MapProps) => {
+const Camera = ({
+  level,
+  player,
+  children,
+  width,
+  height,
+  textures,
+}: MapProps) => {
+  const windowSize = useWindowSize();
+
   const scale = 1.5;
 
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
+  const centerX = windowSize.width / 2;
+  const centerY = windowSize.heigth / 2;
 
   const minX = centerX / scale;
   const minY = centerY / scale;
@@ -38,16 +49,13 @@ const Camera = ({ level, player, children, width, height }: MapProps) => {
   const x = centerX - cameraX * scale;
   const y = centerY - cameraY * scale;
 
-  useEffect(() => {
-    level.updateCameraPosition(
-      new Point(Math.abs(x) / scale + 16, Math.abs(y) / scale + 16)
-    );
-  }, [level, x, y]);
-
   return (
-    <Container scale={scale} x={x} y={y}>
-      {children}
-    </Container>
+    <>
+      <Container scale={scale} x={x} y={y}>
+        {children}
+      </Container>
+      <GraphicUserInterface textures={textures} level={level} />
+    </>
   );
 };
 
