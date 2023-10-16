@@ -1,4 +1,3 @@
-import { Assets, Point, Texture } from 'pixi.js';
 import { useCallback, useEffect, useState } from 'react';
 import { blocksFrom2D, parse2D } from '@/utils';
 import {
@@ -6,6 +5,7 @@ import {
   AvailablesLevels,
   LevelData,
 } from '../../interfaces';
+import { Assets, Point, Texture } from 'pixi.js';
 
 const useLevel = () => {
   const minLevel = 1;

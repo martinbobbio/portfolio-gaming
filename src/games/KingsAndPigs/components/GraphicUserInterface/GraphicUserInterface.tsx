@@ -1,7 +1,8 @@
-import { Container, Sprite } from '@pixi/react';
+import { Container, Sprite, Text } from '@pixi/react';
 import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { TilingSpriteCustom } from '..';
 import { useMemo } from 'react';
+import { TextStyle } from 'pixi.js';
 
 interface GUIProps {
   textures: TexturesKingsAndPigs;
@@ -35,14 +36,24 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
   ];
   const { x, y } = level.camera.position;
 
+  const textStyle = new TextStyle({
+    fontFamily: 'Skranji',
+    fontSize: 14,
+    fill: '#ffffff',
+    letterSpacing: 2,
+  });
+
   return (
-    <Container scale={1.5} x={x} y={y}>
+    <Container scale={1} x={x} y={y}>
       <Sprite texture={textures.livesAndCoins.liveBar} />
       {hearts.map((heart, i) => (
         <Container key={i} x={heart.x} y={heart.y}>
           <TilingSpriteCustom animation={animations.smallHeartIdle} />
         </Container>
       ))}
+      <Container x={100} y={8}>
+        <Text text={`Level ${level.current}`} style={textStyle} />
+      </Container>
     </Container>
   );
 };

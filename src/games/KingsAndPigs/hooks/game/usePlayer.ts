@@ -350,7 +350,7 @@ const usePlayer = ({
 
   useEffect(() => {
     level.updatePlayerPosition(player.position);
-  }, [level, player.position.x, player.position.y, player.position]);
+  }, [level, player.position]);
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);
