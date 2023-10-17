@@ -6,6 +6,7 @@ export interface LivesAndCoinsAnimations {
   smallHeartIdle: Animation;
   bigHeartIdle: Animation;
   bigDiamondIdle: Animation;
+  smallDiamondIdle: Animation;
   numbers: Animation;
 }
 
@@ -14,5 +15,6 @@ export interface LivesAndCoinsTextures {
   smallHeartIdle: Texture;
   bigHeartIdle: Texture;
   bigDiamondIdle: Texture;
+  smallDiamondIdle: Texture;
   numbers: Texture;
 }

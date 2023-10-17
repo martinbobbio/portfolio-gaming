@@ -2,7 +2,7 @@ import { Container, Graphics, Sprite, Text } from '@pixi/react';
 import { useWindowSize } from '@/hooks';
 import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { TilingSpriteCustom } from '..';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Point, TextStyle } from 'pixi.js';
 
 interface GUIProps {
@@ -19,6 +19,7 @@ interface GUIProps {
  */
 const GraphicUserInterface = ({ level, textures }: GUIProps) => {
   const { isMobile, width } = useWindowSize();
+  const [timer, setTimer] = useState(0);
   const animations = useMemo(() => {
     return {
       smallHeartIdle: {
@@ -28,8 +29,22 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
         texture: textures.livesAndCoins.smallHeartIdle,
         frameRate: 8,
       },
+      smallDiamondIdle: {
+        autoplay: true,
+        loop: true,
+        frameBuffer: 9,
+        texture: textures.livesAndCoins.smallDiamondIdle,
+        frameRate: 8,
+      },
+      numbers: {
+        autoplay: false,
+        loop: false,
+        frameBuffer: 0,
+        texture: textures.livesAndCoins.numbers,
+        frameRate: 10,
+      },
     };
-  }, [textures.livesAndCoins.smallHeartIdle]);
+  }, [textures]);
 
   const hearts = [
     { x: 12, y: 10 },
@@ -54,6 +69,24 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
     level: 1.5,
   };
 
+  const formatTimer = (timer: number) => {
+    const minutes = Math.floor(timer / 60);
+    const seconds = timer % 60;
+    const textMinutes = String(minutes).padStart(2, '0');
+    const textSeconds = String(seconds).padStart(2, '0');
+    return `${textMinutes}:${textSeconds}`;
+  };
+
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setTimer((prevTimer) => prevTimer + 1);
+    }, 1000);
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [timer]);
+
   return (
     <>
       <Container scale={scales.livebar} position={positions.livebar}>
@@ -63,19 +96,32 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
             <TilingSpriteCustom animation={animations.smallHeartIdle} />
           </Container>
         ))}
+        <Container x={8} y={32}>
+          <TilingSpriteCustom animation={animations.smallDiamondIdle} />
+        </Container>
+        <Container x={27} y={34} scale={1.1}>
+          <TilingSpriteCustom animation={animations.numbers} />
+        </Container>
       </Container>
       <Container position={positions.level}>
         <Graphics
           draw={(g) => {
             g.clear();
             g.beginFill('#3f3851', 0.5);
-            g.drawRoundedRect(-30, -5, 150, 40, 24);
+            g.drawRoundedRect(-30, -5, 150, 70, 35);
             g.endFill();
           }}
         />
         <Text
           scale={scales.level}
           text={`Level ${level.current}`}
+          style={textStyle}
+        />
+        <Text
+          scale={scales.level}
+          y={32}
+          x={12}
+          text={`${formatTimer(timer)}`}
           style={textStyle}
         />
       </Container>

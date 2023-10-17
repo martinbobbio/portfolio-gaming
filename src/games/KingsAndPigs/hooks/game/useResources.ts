@@ -43,6 +43,7 @@ const texturePaths: TexturePaths = {
     bigHeartIdle: `${uri}lives-and-coins/big-heart-idle.png`,
     bigDiamondIdle: `${uri}lives-and-coins/big-diamond-idle.png`,
     numbers: `${uri}lives-and-coins/numbers.png`,
+    smallDiamondIdle: `${uri}lives-and-coins/small-diamond-idle.png`,
   },
 };
 
