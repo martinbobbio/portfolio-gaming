@@ -1,5 +1,6 @@
 import { Sound } from '@pixi/sound';
 import {
+  DecorationsTextures,
   DialogBoxTextures,
   DoorTextures,
   LivesAndCoinsTextures,
@@ -11,6 +12,7 @@ export interface TexturesKingsAndPigs {
   door: DoorTextures;
   dialogBox: DialogBoxTextures;
   livesAndCoins: LivesAndCoinsTextures;
+  decorations: DecorationsTextures;
 }
 
 export interface SoundsKingsAndPigs {

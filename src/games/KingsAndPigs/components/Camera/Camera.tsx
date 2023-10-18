@@ -4,7 +4,7 @@ import { Point } from 'pixi.js';
 import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { GraphicUserInterface } from '..';
 
-interface MapProps {
+interface CameraProps {
   level: LevelKingAndPigs;
   player: Point;
   children: React.ReactNode;
@@ -30,7 +30,7 @@ const Camera = ({
   width,
   height,
   textures,
-}: MapProps) => {
+}: CameraProps) => {
   const windowSize = useWindowSize();
 
   const scale = 1.5;

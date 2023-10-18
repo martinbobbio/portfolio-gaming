@@ -6,3 +6,6 @@ export { default as Camera } from './Camera/Camera';
 export { default as Debugger } from './Debugger/Debugger';
 export { default as TilingSpriteCustom } from './TilingSpriteCustom/TilingSpriteCustom';
 export { default as GraphicUserInterface } from './GraphicUserInterface/GraphicUserInterface';
+export { default as Player } from './Player/Player';
+export { default as Doors } from './Doors/Doors';
+export { default as Decorations } from './Decorations/Decorations';

@@ -76,6 +76,10 @@ const useLevel = () => {
       collisions: main?.find(({ name }) => name === 'Collisions')?.data,
       doorNext: main?.find(({ name }) => name === 'Door Next')?.data,
       doorPrev: main?.find(({ name }) => name === 'Door Prev')?.data,
+      diamonds: main?.find(({ name }) => name === 'Diamonds')?.data,
+      candles: main?.find(({ name }) => name === 'Candles')?.data,
+      smallChains: main?.find(({ name }) => name === 'Small Chains')?.data,
+      bigChains: main?.find(({ name }) => name === 'Big Chains')?.data,
     };
 
     const collisionBlocks =
@@ -84,6 +88,12 @@ const useLevel = () => {
       layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
     const doorPrev =
       layers.doorPrev && blocksFrom2D(parse2D(layers.doorPrev))[0];
+    const diamonds = layers.diamonds && blocksFrom2D(parse2D(layers.diamonds));
+    const candles = layers.candles && blocksFrom2D(parse2D(layers.candles));
+    const smallChains =
+      layers.smallChains && blocksFrom2D(parse2D(layers.smallChains));
+    const bigChains =
+      layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
 
     if (collisionBlocks) {
       setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
@@ -105,6 +115,12 @@ const useLevel = () => {
           doorPrev.position.x - 16,
           doorPrev.position.y
         ),
+        diamonds,
+        decorations: {
+          candles,
+          smallChains,
+          bigChains,
+        },
       }));
     }
   }, [currentLevel]);

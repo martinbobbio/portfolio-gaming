@@ -12,6 +12,7 @@ export type { DoorState, DoorTextures, DoorAnimations } from './door/door';
 export type {
   LevelKingAndPigs,
   AvailablesLevels,
+  DecorationsLevel,
   LevelData,
 } from './levels/levels';
 export type { Animation } from './animation/animation';
@@ -25,3 +26,8 @@ export type {
   LivesAndCoinsAnimations,
   LivesAndCoinsTextures,
 } from './lives-and-coins/lives-and-coins';
+export type {
+  DecorationsAnimations,
+  DecorationsTextures,
+  DecorationsState,
+} from './decorations/decorations';

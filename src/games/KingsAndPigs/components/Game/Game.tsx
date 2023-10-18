@@ -1,12 +1,11 @@
-import { Container } from '@pixi/react';
-import { Debugger, TilingSpriteCustom } from '..';
+import { Debugger, Decorations, Doors, Player } from '..';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
   SoundsKingsAndPigs,
   TexturesKingsAndPigs,
 } from '../../interfaces';
-import { useDialogBox, useDoors, usePlayer } from '../../hooks';
+import { useDecorations, useDialogBox, useDoors, usePlayer } from '../../hooks';
 
 const debug = false;
 
@@ -45,26 +44,24 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     setControls,
   });
 
+  const { decorations } = useDecorations({
+    textures: textures.decorations,
+    objects: level.decorations,
+  });
+
   return (
     <>
-      {/* <GraphicUserInterface textures={textures} level={level} /> */}
-      {doors?.map((door, i) => (
-        <Container key={i} x={door.position.x} y={door.position.y}>
-          <TilingSpriteCustom animation={door.currentAnimation} />
-        </Container>
-      ))}
-      <Container x={player.position.x} y={player.position.y}>
-        <TilingSpriteCustom
-          animation={player.currentAnimation}
-          inverted={player.inverted}
+      <Decorations decorations={decorations} />
+      <Doors doors={doors} />
+      <Player player={player} dialogBox={dialogBox} />
+      {debug && (
+        <Debugger
+          player={player}
+          doors={doors}
+          level={level}
+          decorations={decorations}
         />
-        <Container x={player.inverted ? 25 : 35}>
-          {dialogBox.visible && (
-            <TilingSpriteCustom animation={dialogBox.currentAnimation} />
-          )}
-        </Container>
-      </Container>
-      {debug && <Debugger player={player} doors={doors} level={level} />}
+      )}
     </>
   );
 };

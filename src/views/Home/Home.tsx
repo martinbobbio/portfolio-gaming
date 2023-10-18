@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Footer, Header, Text, MetaTags } from '@/components';
 import { HomeStyled } from './Home.styled';
 import {
@@ -9,8 +11,6 @@ import {
   Grid,
   Chip,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
 
 /**
  * Functional component that render component home.

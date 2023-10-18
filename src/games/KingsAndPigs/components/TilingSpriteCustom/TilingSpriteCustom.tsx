@@ -30,14 +30,6 @@ const TilingSpriteCustom = ({
   const position = new Point(inverted ? width : 0, 0);
 
   useEffect(() => {
-    if (animation.texture.textureCacheIds[0].includes('small-heart-idle.png')) {
-      // console.log('FRAMES', frameRate);
-      // console.log('FRAME ACTUAL', currentFrame);
-      // console.log('CONDITION', currentFrame < frameRate - 1);
-    }
-  }, [animation, currentFrame, frameRate]);
-
-  useEffect(() => {
     setCurrentFrame(0);
     setElapsedFrames(0);
   }, [animation]);

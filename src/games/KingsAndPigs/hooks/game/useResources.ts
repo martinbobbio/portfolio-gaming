@@ -45,6 +45,11 @@ const texturePaths: TexturePaths = {
     numbers: `${uri}lives-and-coins/numbers.png`,
     smallDiamondIdle: `${uri}lives-and-coins/small-diamond-idle.png`,
   },
+  decorations: {
+    candle: `${uri}decorations/torch.png`,
+    smallChain: `${uri}decorations/small-chains.png`,
+    bigChain: `${uri}decorations/big-chains.png`,
+  },
 };
 
 const soundPaths: SoundPaths = {

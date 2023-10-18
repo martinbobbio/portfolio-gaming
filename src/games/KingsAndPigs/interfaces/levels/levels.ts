@@ -7,6 +7,8 @@ export interface LevelKingAndPigs {
   current: AvailablesLevels;
   texture: Texture | null;
   collisionBlocks: Block[];
+  decorations?: DecorationsLevel;
+  diamonds?: Block[];
   initialPosition: Point;
   doors: LevelDoor[];
   player: {
@@ -15,6 +17,12 @@ export interface LevelKingAndPigs {
   onNextLevel: () => void;
   onPrevLevel: () => void;
   updatePlayerPosition: (point: Point) => void;
+}
+
+export interface DecorationsLevel {
+  candles?: Block[];
+  smallChains?: Block[];
+  bigChains?: Block[];
 }
 
 export interface LevelDoor {

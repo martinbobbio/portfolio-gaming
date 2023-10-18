@@ -3,6 +3,7 @@ import { Graphics as GraphicsComponent } from '@pixi/react';
 import { Graphics } from 'pixi.js';
 import {
   Block,
+  DecorationsState,
   DoorState,
   LevelKingAndPigs,
   PlayerState,
@@ -12,6 +13,7 @@ interface DebuggerProps {
   player: PlayerState;
   doors: DoorState[];
   level: LevelKingAndPigs;
+  decorations: DecorationsState[];
 }
 
 /**
@@ -20,9 +22,10 @@ interface DebuggerProps {
  * @param player for draw hitbox player
  * @param doors for draw hitbox doors
  * @param level for draw and debugging collision blocks
+ * @param decorations for draw hitbox decorations
  * @return React.ReactElement <Debugger/>
  */
-const Debugger = ({ player, doors, level }: DebuggerProps) => {
+const Debugger = ({ player, doors, level, decorations }: DebuggerProps) => {
   const draw = useCallback((g: Graphics, block: Block) => {
     const { position, width, height } = block;
     g.clear();
@@ -37,8 +40,11 @@ const Debugger = ({ player, doors, level }: DebuggerProps) => {
       {level.collisionBlocks.map((block, i) => (
         <GraphicsComponent key={i} draw={(g) => draw(g, block)} />
       ))}
-      {doors?.map((door, i) => (
-        <GraphicsComponent key={i} draw={(g) => draw(g, door.hitbox)} />
+      {doors?.map(({ hitbox }, i) => (
+        <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
+      ))}
+      {decorations?.map(({ hitbox }, i) => (
+        <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
       ))}
     </>
   );
