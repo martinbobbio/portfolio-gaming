@@ -23,6 +23,13 @@ const useDecorations = ({ textures, objects }: useDoorProps) => {
         loop: true,
         texture: textures.candle,
       },
+      candleLight: {
+        autoplay: true,
+        frameBuffer: 8,
+        frameRate: 5,
+        loop: true,
+        texture: textures.candleLight,
+      },
       smallChain: {
         autoplay: true,
         frameBuffer: 8,
@@ -57,6 +64,11 @@ const useDecorations = ({ textures, objects }: useDoorProps) => {
       animation: animations.candle,
       position: getPosition(hitbox, 8, -8),
     }));
+    const candlesLights = objects?.candles?.map((hitbox) => ({
+      hitbox,
+      animation: animations.candleLight,
+      position: getPosition(hitbox, -10, -50),
+    }));
     const smallChains = objects?.smallChains?.map((hitbox) => ({
       hitbox,
       animation: animations.smallChain,
@@ -67,7 +79,12 @@ const useDecorations = ({ textures, objects }: useDoorProps) => {
       animation: animations.bigChain,
       position: getPosition(hitbox, 16, 0),
     }));
-    return [...(candles || []), ...(smallChains || []), ...(bigChains || [])];
+    return [
+      ...(candles || []),
+      ...(candlesLights || []),
+      ...(smallChains || []),
+      ...(bigChains || []),
+    ];
   });
 
   return {

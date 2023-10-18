@@ -46,7 +46,8 @@ const texturePaths: TexturePaths = {
     smallDiamondIdle: `${uri}lives-and-coins/small-diamond-idle.png`,
   },
   decorations: {
-    candle: `${uri}decorations/torch.png`,
+    candle: `${uri}decorations/candle.png`,
+    candleLight: `${uri}decorations/candle-light.png`,
     smallChain: `${uri}decorations/small-chains.png`,
     bigChain: `${uri}decorations/big-chains.png`,
   },

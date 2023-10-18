@@ -9,12 +9,14 @@ export interface DecorationsState {
 
 export interface DecorationsAnimations {
   candle: Animation;
+  candleLight: Animation;
   smallChain: Animation;
   bigChain: Animation;
 }
 
 export interface DecorationsTextures {
   candle: Texture;
+  candleLight: Texture;
   smallChain: Texture;
   bigChain: Texture;
 }
