@@ -35,6 +35,7 @@ interface FontSize {
   lg: string;
   xl: string;
   xxl: string;
+  xxxl: string;
 }
 
 interface LineHeight {
@@ -43,6 +44,7 @@ interface LineHeight {
   lg: string;
   xl: string;
   xxl: string;
+  xxxl: string;
 }
 
 interface FontWeight {

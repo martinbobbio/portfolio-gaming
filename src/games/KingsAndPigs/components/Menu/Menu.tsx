@@ -28,7 +28,12 @@ const Menu = ({ onStartGame, isGameRunning }: MenuProps) => {
       <Screen _active={isGameRunning.toString()}>
         <Title>Kings And Pigs</Title>
         <ButtonPlay onClick={onStartGame}>
-          <FAIcon icon={faCirclePlay} animation='beat' color='primary' />
+          <FAIcon
+            icon={faCirclePlay}
+            animation='beat'
+            color='primary'
+            size='xxxl'
+          />
         </ButtonPlay>
         <Information>
           <Text size='xl'>Controls</Text>

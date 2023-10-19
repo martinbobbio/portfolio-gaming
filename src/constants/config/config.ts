@@ -1,5 +1,5 @@
 import { logoMBDark, logoMBLight } from '@/assets';
-import { THEME } from '@/constants';
+import { THEME } from '../theme/theme';
 
 const BRANDING = {
   logo: {
@@ -14,7 +14,7 @@ const SITES = {
   githubVersion: 'https://github.com/martinbobbio/portfolio-gaming/tree/',
 };
 
-export default {
+export const CONFIG = {
   branding: BRANDING,
   sites: SITES,
   theme: THEME,

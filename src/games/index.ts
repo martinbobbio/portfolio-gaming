@@ -1,2 +1,4 @@
-export { default as RaceSurvival } from './RaceSurvival/RaceSurvival';
-export { default as KingsAndPigs } from './KingsAndPigs/KingsAndPigs';
+import { lazy } from 'react';
+
+export const KingsAndPigs = lazy(() => import('./KingsAndPigs/KingsAndPigs'));
+export const RaceSurvival = lazy(() => import('./RaceSurvival/RaceSurvival'));

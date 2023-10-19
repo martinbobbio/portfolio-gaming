@@ -4,7 +4,7 @@ export {
   SupportedWeights,
   SupportedIconsAnimations,
 } from './enums/enums';
-export { default as THEME } from './theme/theme';
-export { default as CONFIG } from './config/config';
-export { default as BREAKPOINTS } from './breakpoints/breakpoints';
-export { default as API } from './axios/axios';
+export { THEME } from './theme/theme';
+export { CONFIG } from './config/config';
+export { BREAKPOINTS } from './breakpoints/breakpoints';
+export { API } from './axios/axios';

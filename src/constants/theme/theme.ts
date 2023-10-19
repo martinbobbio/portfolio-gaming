@@ -16,6 +16,7 @@ const FONT_SIZES = {
   lg: '18px',
   xl: '24px',
   xxl: '30px',
+  xxxl: '96px',
 };
 
 const LINE_HEIGHTS = {
@@ -24,6 +25,7 @@ const LINE_HEIGHTS = {
   lg: '26px',
   xl: '32px',
   xxl: '38px',
+  xxxl: '80px',
 };
 
 const FONT_WEIGHTS = {
@@ -45,7 +47,7 @@ const BASIC_PROPS = {
   boxShadow: BOX_SHADOWS,
 };
 
-export default {
+export const THEME = {
   light: {
     ...BASIC_PROPS,
     palette: {

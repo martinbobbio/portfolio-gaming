@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Controls, Map, Menu } from './components';
 import { ControlsKingsAndPigs } from './interfaces';
 import { useLevel, useResources } from './hooks';
@@ -25,7 +25,7 @@ const KingsAndPigs = () => {
   }, [sounds]);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading</div>}>
       <Menu onStartGame={handleStartGame} isGameRunning={isGameRunning} />
       {isGameRunning &&
         textures &&
@@ -42,7 +42,7 @@ const KingsAndPigs = () => {
           </KingsAndPigsStyled>
         )}
       {isGameRunning && controls && <Controls controls={controls} />}
-    </>
+    </Suspense>
   );
 };
 

@@ -29,7 +29,12 @@ const Menu = ({ onStartGame, title, isGameRunning }: MenuProps) => {
       <Screen id='screen' _animate={isGameRunning.toString()}>
         <Title>{title}</Title>
         <ButtonPlay onClick={onStartGame}>
-          <FAIcon icon={faCirclePlay} animation='beat' color='primary' />
+          <FAIcon
+            icon={faCirclePlay}
+            animation='beat'
+            color='primary'
+            size='xxxl'
+          />
         </ButtonPlay>
         <Grid container spacing={2}>
           <Grid item xs={12} md={6}>

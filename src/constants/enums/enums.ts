@@ -9,6 +9,7 @@ export enum SupportedSizes {
   LG = 'lg',
   XL = 'xl',
   XXL = 'xxl',
+  XXXL = 'xxxl',
 }
 
 export enum SupportedWeights {
