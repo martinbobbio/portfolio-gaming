@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import { styled } from 'styled-components';
 
-export const HeaderStyled = styled.div`
+export const HeaderStyled = styled.header`
   height: 64px;
   width: 100%;
   top: 0;

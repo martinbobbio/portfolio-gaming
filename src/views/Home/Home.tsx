@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Footer, Header, Text, MetaTags } from '@/components';
-import { HomeStyled } from './Home.styled';
+import { GlobalStyle, HomeStyled } from './Home.styled';
 import {
   Card,
   CardMedia,
@@ -24,14 +24,14 @@ const Home = () => {
       title: 'Kings And Pigs',
       image: './kings-and-pigs/img/background-menu.gif',
       tags: ['Pixi.js', 'Adventures'],
-      description: 'Lorem ipsum',
+      description: 'Navigate puzzles, beat riddles, overcome hurdles. Succeed.',
     },
     {
       redirect: 'race-survival',
       title: 'Race Survival',
       image: './race-survival/img/background-menu.jpg',
       tags: ['Pixi.js', 'Race'],
-      description: 'Lorem ipsum',
+      description: 'Speed, points, challenge, compete, victory, thrill.',
     },
   ];
 
@@ -46,6 +46,7 @@ const Home = () => {
   return (
     <>
       <MetaTags />
+      <GlobalStyle />
       <Header hide={false} breadcrumbs={breadcrumbs} />
       <HomeStyled>
         <Container>

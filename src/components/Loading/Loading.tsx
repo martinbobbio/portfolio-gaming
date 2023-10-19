@@ -1,16 +1,23 @@
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { FAIcon } from '..';
-import { LoadingStyled } from './Loading.styled';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { FAIcon, Text } from '..';
+import { Content, LoadingStyled } from './Loading.styled';
+
+interface LoadingProps {
+  title?: string;
+}
 
 /**
  * Functional component that render component loading.
  *
  * @return React.ReactElement <Loading/>
  */
-const Loading = () => {
+const Loading = ({ title = 'Loading' }: LoadingProps) => {
   return (
     <LoadingStyled>
-      <FAIcon icon={faSpinner} animation='spin' size='xxl' />
+      <Content>
+        <FAIcon icon={faCircleNotch} animation='spin' size='xxl' />
+        <Text>{title}</Text>
+      </Content>
     </LoadingStyled>
   );
 };

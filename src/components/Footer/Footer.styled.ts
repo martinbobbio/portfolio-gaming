@@ -2,7 +2,7 @@ import { BREAKPOINTS } from '@/constants';
 import { Link } from '@mui/material';
 import { styled } from 'styled-components';
 
-export const FooterStyled = styled.div`
+export const FooterStyled = styled.footer`
   padding: 32px;
   width: 100%;
   font-weight: 500;

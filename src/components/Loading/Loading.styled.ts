@@ -6,3 +6,13 @@ export const LoadingStyled = styled.div`
   justify-content: center;
   height: 100vh;
 `;
+
+export const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  p {
+    margin-top: 8px;
+  }
+`;
