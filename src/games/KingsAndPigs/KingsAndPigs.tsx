@@ -38,7 +38,9 @@ const KingsAndPigs = () => {
               setControls={setControls}
             />
           )}
-          {(!textures || !sounds || !level.texture) && <Loading />}
+          {(!textures || !sounds || !level.texture) && (
+            <Loading title={`Loading level ${level.current}...`} />
+          )}
         </KingsAndPigsStyled>
       )}
       {isGameRunning && controls && <Controls controls={controls} />}
