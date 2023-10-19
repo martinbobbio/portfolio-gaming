@@ -25,12 +25,6 @@ const KingsAndPigs = () => {
     if (sounds) sounds.music.play();
   }, [sounds]);
 
-  console.log('isGameRunning', isGameRunning);
-  console.log('level.texture', level.texture);
-  console.log('textures', textures);
-  console.log('sounds', sounds);
-  console.log('------------------');
-
   return (
     <>
       <Menu onStartGame={handleStartGame} isGameRunning={isGameRunning} />
