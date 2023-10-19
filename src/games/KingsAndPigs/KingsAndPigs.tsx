@@ -15,6 +15,7 @@ const KingsAndPigs = () => {
   const { textures, sounds, loadSounds } = useResources();
   const [controls, setControls] = useState<ControlsKingsAndPigs>();
   const [isGameRunning, setIsGameRunning] = useState(false);
+  const collisionLoaded = !!level.collisionBlocks.length;
 
   const handleStartGame = () => {
     if (!sounds) loadSounds();
@@ -30,7 +31,7 @@ const KingsAndPigs = () => {
       <Menu onStartGame={handleStartGame} isGameRunning={isGameRunning} />
       {isGameRunning && (
         <KingsAndPigsStyled>
-          {textures && sounds && level.texture && (
+          {textures && sounds && level.texture && collisionLoaded && (
             <Map
               textures={textures}
               level={level}
