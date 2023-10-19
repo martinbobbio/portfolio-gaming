@@ -1,8 +1,9 @@
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controls, Map, Menu } from './components';
 import { ControlsKingsAndPigs } from './interfaces';
 import { useLevel, useResources } from './hooks';
 import { KingsAndPigsStyled } from './KingsAndPigs.styled';
+import { Loading } from '@/components';
 
 /**
  * Functional component that render the main logic and load data
@@ -24,25 +25,30 @@ const KingsAndPigs = () => {
     if (sounds) sounds.music.play();
   }, [sounds]);
 
+  console.log('isGameRunning', isGameRunning);
+  console.log('level.texture', level.texture);
+  console.log('textures', textures);
+  console.log('sounds', sounds);
+  console.log('------------------');
+
   return (
-    <Suspense fallback={<div>Loading</div>}>
+    <>
       <Menu onStartGame={handleStartGame} isGameRunning={isGameRunning} />
-      {isGameRunning &&
-        textures &&
-        sounds &&
-        level.texture &&
-        !!level.collisionBlocks.length && (
-          <KingsAndPigsStyled>
+      {isGameRunning && (
+        <KingsAndPigsStyled>
+          {textures && sounds && level.texture && (
             <Map
               textures={textures}
               level={level}
               sounds={sounds}
               setControls={setControls}
             />
-          </KingsAndPigsStyled>
-        )}
+          )}
+          {(!textures || !sounds || !level.texture) && <Loading />}
+        </KingsAndPigsStyled>
+      )}
       {isGameRunning && controls && <Controls controls={controls} />}
-    </Suspense>
+    </>
   );
 };
 
