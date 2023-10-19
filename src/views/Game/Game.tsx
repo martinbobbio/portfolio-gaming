@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Header, MetaTags, Text } from '@/components';
 import { routeToTag, routeToTitle } from '@/utils';
 import { GameStyled } from './Game.styled';
+import { useEffect } from 'react';
 
 interface PixiGameProps {
   game: React.ReactNode;
@@ -22,6 +23,10 @@ const PixiGame = ({ game }: PixiGameProps) => {
     </Text>,
     <Text key={1}>{title}</Text>,
   ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>
