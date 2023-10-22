@@ -4,6 +4,7 @@ import {
   DialogBoxTextures,
   DoorTextures,
   LivesAndCoinsTextures,
+  ParticlesTextures,
   PlayerTextures,
 } from '..';
 
@@ -13,6 +14,7 @@ export interface TexturesKingsAndPigs {
   dialogBox: DialogBoxTextures;
   livesAndCoins: LivesAndCoinsTextures;
   decorations: DecorationsTextures;
+  particles: ParticlesTextures;
 }
 
 export interface SoundsKingsAndPigs {

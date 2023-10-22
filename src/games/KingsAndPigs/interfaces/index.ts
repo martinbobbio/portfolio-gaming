@@ -31,3 +31,8 @@ export type {
   DecorationsTextures,
   DecorationsState,
 } from './decorations/decorations';
+export type {
+  ParticlesAnimations,
+  ParticlesTextures,
+  ParticlesState,
+} from './particles/particles';

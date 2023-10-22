@@ -51,6 +51,10 @@ const texturePaths: TexturePaths = {
     smallChain: `${uri}decorations/small-chains.png`,
     bigChain: `${uri}decorations/big-chains.png`,
   },
+  particles: {
+    jump: `${uri}particles/jump.png`,
+    run: `${uri}particles/run.png`,
+  },
 };
 
 const soundPaths: SoundPaths = {
