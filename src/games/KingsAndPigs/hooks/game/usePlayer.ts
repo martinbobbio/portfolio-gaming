@@ -330,7 +330,7 @@ const usePlayer = ({
       setInactiveTime(0);
       dialogBox.deleteAnimation();
     }
-    if (inactiveTime >= 5 * 60) {
+    if (inactiveTime >= (5 * 60) / 30) {
       dialogBox.setAnimation('helloIn');
     }
   };
@@ -344,8 +344,10 @@ const usePlayer = ({
   };
 
   const checkDialogs = () => {
-    checkSayHello();
-    checkSayExclamation();
+    if (elapsedFrames % 30 == 0) {
+      checkSayHello();
+      checkSayExclamation();
+    }
   };
 
   useEffect(() => {

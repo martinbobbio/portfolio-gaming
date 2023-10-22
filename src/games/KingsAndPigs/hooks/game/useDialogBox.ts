@@ -20,7 +20,7 @@ const useDialogBox = ({ textures }: useDoorProps) => {
     const fadeOut = {
       autoplay: true,
       loop: false,
-      frameBuffer: 500,
+      frameBuffer: 100,
       frameRate: 2,
     };
     const animations: DialogBoxAnimations = {
@@ -71,19 +71,16 @@ const useDialogBox = ({ textures }: useDoorProps) => {
     const fadeIn = (value: keyof DialogBoxAnimations) => {
       dialogBox.setAnimation(value);
     };
-    const fadeOut = (value: keyof DialogBoxAnimations) => {
+    const fadeOut = () => {
       dialogBox.deleteAnimation();
-      setTimeout(() => {
-        dialogBox.setAnimation(value);
-      }, 1000);
     };
 
     animations.helloIn.onComplete = () => fadeIn('helloOut');
-    animations.helloOut.onComplete = () => fadeOut('helloIn');
+    animations.helloOut.onComplete = () => fadeOut();
     animations.deadIn.onComplete = () => fadeIn('deadOut');
-    animations.deadOut.onComplete = () => fadeOut('deadIn');
+    animations.deadOut.onComplete = () => fadeOut();
     animations.exclamationIn.onComplete = () => fadeIn('exclamationOut');
-    animations.exclamationOut.onComplete = () => fadeOut('exclamationIn');
+    animations.exclamationOut.onComplete = () => fadeOut();
   }, [animations, dialogBox]);
 
   return {
