@@ -5,7 +5,13 @@ import {
   SoundsKingsAndPigs,
   TexturesKingsAndPigs,
 } from '../../interfaces';
-import { useDecorations, useDialogBox, useDoors, usePlayer } from '../../hooks';
+import {
+  useDecorations,
+  useDialogBox,
+  useDoors,
+  useParticles,
+  usePlayer,
+} from '../../hooks';
 
 const debug = false;
 
@@ -35,12 +41,17 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     textures: textures.dialogBox,
   });
 
+  const { particles } = useParticles({
+    textures: textures.particles,
+  });
+
   const { player } = usePlayer({
     textures: textures.king,
     level,
     doors,
     sounds,
     dialogBox,
+    particles,
     setControls,
   });
 
@@ -53,7 +64,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     <>
       <Decorations decorations={decorations} />
       <Doors doors={doors} />
-      <Player player={player} dialogBox={dialogBox} />
+      <Player player={player} dialogBox={dialogBox} particles={particles} />
       {debug && (
         <Debugger
           player={player}

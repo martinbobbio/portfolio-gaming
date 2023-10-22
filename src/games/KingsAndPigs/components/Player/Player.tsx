@@ -1,18 +1,23 @@
 import { Container } from '@pixi/react';
-import { DialogBoxState, PlayerState } from '../../interfaces';
+import { DialogBoxState, ParticlesState, PlayerState } from '../../interfaces';
 import { TilingSpriteCustom } from '..';
 
 interface PlayerProps {
   player: PlayerState;
   dialogBox: DialogBoxState;
+  particles: ParticlesState;
 }
 
 /**
  * Functional component that renders the player component.
  *
+ * @param player for player positions
+ * @param dialogBox for player interactions
+ * @param particles for player particles effects
  * @return React.ReactElement <Player/>
  */
-const Player = ({ player, dialogBox }: PlayerProps) => {
+const Player = ({ player, dialogBox, particles }: PlayerProps) => {
+  console.log(particles.currentAnimation);
   return (
     <Container x={player.position.x} y={player.position.y}>
       <TilingSpriteCustom
@@ -22,6 +27,11 @@ const Player = ({ player, dialogBox }: PlayerProps) => {
       <Container x={player.inverted ? 25 : 35}>
         {dialogBox.visible && (
           <TilingSpriteCustom animation={dialogBox.currentAnimation} />
+        )}
+      </Container>
+      <Container x={14} y={20}>
+        {particles.currentAnimation && (
+          <TilingSpriteCustom animation={particles.currentAnimation} />
         )}
       </Container>
     </Container>

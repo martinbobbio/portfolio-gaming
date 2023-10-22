@@ -5,11 +5,11 @@ import {
   DialogBoxState,
 } from '../../interfaces';
 
-interface useDoorProps {
+interface useDialogBoxProps {
   textures: DialogBoxTextures;
 }
 
-const useDialogBox = ({ textures }: useDoorProps) => {
+const useDialogBox = ({ textures }: useDialogBoxProps) => {
   const animations = useMemo(() => {
     const fadeIn = {
       autoplay: true,

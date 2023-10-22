@@ -11,6 +11,7 @@ import {
   PlayerAnimations,
   DoorState,
   DialogBoxState,
+  ParticlesState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useTick } from '@pixi/react';
@@ -21,6 +22,7 @@ interface usePlayerProps {
   sounds: SoundsKingsAndPigs;
   doors: DoorState[];
   dialogBox: DialogBoxState;
+  particles: ParticlesState;
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -32,6 +34,7 @@ interface usePlayerProps {
  * @param sounds for making noise
  * @param doors for check collisions
  * @param dialogBox for make animations dialogs
+ * @param particles for show particles effects
  * @param setControls for add behaviors
  * @return usePlayer
  */
@@ -41,6 +44,7 @@ const usePlayer = ({
   sounds,
   doors,
   dialogBox,
+  particles,
   setControls,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
@@ -267,10 +271,11 @@ const usePlayer = ({
   }, [animations.doorOut, sounds.doorIn]);
 
   const jump = useCallback(() => {
+    particles.setParticles('jump');
     sounds.jump.play();
     setVelocityY(-player.jump.power);
     setDoubleJump(true);
-  }, [player.jump.power, setVelocityY, sounds.jump]);
+  }, [particles, player.jump.power, setVelocityY, sounds.jump]);
 
   const doubleJump = useCallback(() => {
     if (!sounds.jump.isPlaying) sounds.jump.play();
