@@ -49,6 +49,7 @@ const usePlayer = ({
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
+  const [isFalling, setIsFalling] = useState(false);
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inactiveTime, setInactiveTime] = useState(0);
 
@@ -102,6 +103,13 @@ const usePlayer = ({
         frameBuffer: 8,
         texture: textures.hit,
         frameRate: 2,
+      },
+      fall: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 1,
+        texture: textures.fall,
+        frameRate: 1,
       },
     };
     animations.attack.onComplete = () => {
@@ -202,6 +210,10 @@ const usePlayer = ({
     setPositionY(player.position.y + player.velocity.y);
   };
 
+  const getPlayerPosition = useCallback(() => {
+    return new Point(player.position.x, player.position.y);
+  }, [player.position.x, player.position.y]);
+
   const autodetectHitbox = () => {
     const offsetX = player.inverted ? 36 : 18;
     const offsetY = 18;
@@ -271,17 +283,33 @@ const usePlayer = ({
   }, [animations.doorOut, sounds.doorIn]);
 
   const jump = useCallback(() => {
-    particles.setParticles('jump');
+    particles.setParticles('jump', getPlayerPosition(), player.inverted);
     sounds.jump.play();
     setVelocityY(-player.jump.power);
     setDoubleJump(true);
-  }, [particles, player.jump.power, setVelocityY, sounds.jump]);
+  }, [
+    particles,
+    getPlayerPosition,
+    player.inverted,
+    player.jump.power,
+    sounds.jump,
+    setVelocityY,
+  ]);
 
   const doubleJump = useCallback(() => {
-    if (!sounds.jump.isPlaying) sounds.jump.play();
+    sounds.jump.play();
+    particles.setParticles('jump', getPlayerPosition(), player.inverted);
     setVelocityY(-player.jump.power / 1.5);
+    setIsFalling(false);
     setDoubleJump(false);
-  }, [player.jump.power, setVelocityY, sounds.jump]);
+  }, [
+    getPlayerPosition,
+    particles,
+    player.inverted,
+    player.jump.power,
+    setVelocityY,
+    sounds.jump,
+  ]);
 
   const pressUp = useCallback(() => {
     if (player.currentAnimation === animations.doorOut) return;
@@ -306,13 +334,18 @@ const usePlayer = ({
   ]);
 
   useEffect(() => {
-    const { x } = player.velocity;
+    const { x, y } = player.velocity;
     const { currentAnimation } = player;
-    if (currentAnimation === animations.idle && x !== 0) {
+    if (currentAnimation === animations.idle && x) {
       setCurrentAnimation(player.animations.run);
     }
+    if (y > 1) setIsFalling(true);
+    else if (y === 0) setIsFalling(false);
   }, [
+    particles,
     animations.idle,
+    elapsedFrames,
+    getPlayerPosition,
     player,
     player.animations.run,
     player.currentAnimation,
@@ -354,6 +387,22 @@ const usePlayer = ({
       checkSayExclamation();
     }
   };
+
+  useEffect(() => {
+    if (isFalling && player.velocity.y === 0) {
+      console.log('A');
+      sounds.fall.play();
+      particles.setParticles('fall', getPlayerPosition(), player.inverted);
+    }
+  }, [
+    particles,
+    sounds.fall,
+    getPlayerPosition,
+    isFalling,
+    player.inverted,
+    player.jump.double,
+    player.velocity.y,
+  ]);
 
   useEffect(() => {
     setControls({

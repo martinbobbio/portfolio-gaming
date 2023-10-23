@@ -23,6 +23,7 @@ export interface PlayerAnimations {
   doorOut: Animation;
   dead: Animation;
   hit: Animation;
+  fall: Animation;
 }
 
 export interface PlayerTextures {
@@ -33,4 +34,5 @@ export interface PlayerTextures {
   doorOut: Texture;
   dead: Texture;
   hit: Texture;
+  fall: Texture;
 }

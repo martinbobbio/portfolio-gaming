@@ -1,18 +1,24 @@
-import { Texture } from 'pixi.js';
+import { Point, Texture } from 'pixi.js';
 import { Animation } from '..';
 
 export interface ParticlesState {
   currentAnimation?: Animation;
+  inverted: boolean;
+  position: Point;
   deleteParticles: () => void;
-  setParticles: (key: keyof ParticlesAnimations) => void;
+  setParticles: (
+    key: keyof ParticlesAnimations,
+    point: Point,
+    inverted: boolean
+  ) => void;
 }
 
 export interface ParticlesAnimations {
-  run: Animation;
+  fall: Animation;
   jump: Animation;
 }
 
 export interface ParticlesTextures {
-  run: Texture;
+  fall: Texture;
   jump: Texture;
 }

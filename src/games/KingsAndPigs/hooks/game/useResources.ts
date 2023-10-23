@@ -23,6 +23,7 @@ const texturePaths: TexturePaths = {
     doorOut: `${uri}king/door-out.png`,
     dead: `${uri}king/dead.png`,
     hit: `${uri}king/hit.png`,
+    fall: `${uri}king/fall.png`,
   },
   door: {
     idle: `${uri}door/idle.png`,
@@ -53,7 +54,7 @@ const texturePaths: TexturePaths = {
   },
   particles: {
     jump: `${uri}particles/jump.png`,
-    run: `${uri}particles/run.png`,
+    fall: `${uri}particles/fall.png`,
   },
 };
 
@@ -64,6 +65,9 @@ const soundPaths: SoundPaths = {
   walk: '../kings-and-pigs/sound/walk.wav',
   doorIn: '../kings-and-pigs/sound/door-in.mp3',
   doorOut: '../kings-and-pigs/sound/door-out.mp3',
+  diamond: '../kings-and-pigs/sound/diamond.mp3',
+  fall: '../kings-and-pigs/sound/fall.mp3',
+  run: '../kings-and-pigs/sound/run.mp3',
 };
 
 /**
@@ -97,6 +101,8 @@ const useResources = () => {
       sounds.doorOut.volume = 0.15;
       sounds.doorIn.speed = 0.9;
       sounds.doorIn.volume = 0.15;
+      sounds.fall.volume = 0.1;
+      sounds.run.volume = 0.1;
     }
   }, [sounds]);
 

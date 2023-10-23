@@ -17,24 +17,28 @@ interface PlayerProps {
  * @return React.ReactElement <Player/>
  */
 const Player = ({ player, dialogBox, particles }: PlayerProps) => {
-  console.log(particles.currentAnimation);
   return (
-    <Container x={player.position.x} y={player.position.y}>
-      <TilingSpriteCustom
-        animation={player.currentAnimation}
-        inverted={player.inverted}
-      />
-      <Container x={player.inverted ? 25 : 35}>
-        {dialogBox.visible && (
-          <TilingSpriteCustom animation={dialogBox.currentAnimation} />
-        )}
-      </Container>
-      <Container x={14} y={20}>
+    <>
+      <Container x={particles.position.x} y={particles.position.y}>
         {particles.currentAnimation && (
-          <TilingSpriteCustom animation={particles.currentAnimation} />
+          <TilingSpriteCustom
+            animation={particles.currentAnimation}
+            inverted={particles.inverted}
+          />
         )}
       </Container>
-    </Container>
+      <Container x={player.position.x} y={player.position.y}>
+        <TilingSpriteCustom
+          animation={player.currentAnimation}
+          inverted={player.inverted}
+        />
+        <Container x={player.inverted ? 25 : 35}>
+          {dialogBox.visible && (
+            <TilingSpriteCustom animation={dialogBox.currentAnimation} />
+          )}
+        </Container>
+      </Container>
+    </>
   );
 };
 

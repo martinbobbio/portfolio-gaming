@@ -24,4 +24,7 @@ export interface SoundsKingsAndPigs {
   jump: Sound;
   doorIn: Sound;
   doorOut: Sound;
+  diamond: Sound;
+  fall: Sound;
+  run: Sound;
 }

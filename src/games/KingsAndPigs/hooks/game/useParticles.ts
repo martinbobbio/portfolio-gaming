@@ -4,6 +4,7 @@ import {
   ParticlesState,
   ParticlesTextures,
 } from '../../interfaces';
+import { Point } from 'pixi.js';
 
 interface useParticlesProps {
   textures: ParticlesTextures;
@@ -19,29 +20,44 @@ const useParticles = ({ textures }: useParticlesProps) => {
         frameRate: 6,
         texture: textures.jump,
       },
-      run: {
+      fall: {
         autoplay: true,
         loop: false,
-        frameBuffer: 50,
+        frameBuffer: 8,
         frameRate: 3,
-        texture: textures.run,
+        texture: textures.fall,
       },
     };
   }, [textures]);
 
-  const [particles] = useState<ParticlesState>(() => {
+  const createParticles = (): ParticlesState => {
     const particles: ParticlesState = {
       currentAnimation: undefined,
-      deleteParticles: () => (particles.currentAnimation = undefined),
-      setParticles: (key: keyof ParticlesAnimations) => {
+      position: new Point(0, 0),
+      inverted: false,
+      deleteParticles: () => {
+        particles.currentAnimation = undefined;
+      },
+      setParticles: (key, position, inverted) => {
         particles.currentAnimation = animations[key];
+        particles.inverted = inverted;
+        if (key === 'jump') {
+          position.y += 14;
+          position.x += inverted ? 28 : 8;
+        } else if (key === 'fall') {
+          position.y += 28;
+          position.x += inverted ? 10 : -10;
+        }
+        particles.position = position;
       },
     };
     return particles;
-  });
+  };
+
+  const [particles] = useState<ParticlesState>(() => createParticles());
 
   useEffect(() => {
-    animations.run.onComplete = () => particles.deleteParticles();
+    animations.fall.onComplete = () => particles.deleteParticles();
     animations.jump.onComplete = () => particles.deleteParticles();
   }, [animations, particles]);
 
