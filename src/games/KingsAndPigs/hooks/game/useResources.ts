@@ -103,6 +103,8 @@ const useResources = () => {
       sounds.doorIn.volume = 0.15;
       sounds.fall.volume = 0.1;
       sounds.run.volume = 0.1;
+      sounds.run.loop = true;
+      sounds.run.speed = 1.5;
     }
   }, [sounds]);
 

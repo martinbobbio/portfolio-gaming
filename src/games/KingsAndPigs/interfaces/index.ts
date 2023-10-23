@@ -35,4 +35,5 @@ export type {
   ParticlesAnimations,
   ParticlesTextures,
   ParticlesState,
+  Particle,
 } from './particles/particles';

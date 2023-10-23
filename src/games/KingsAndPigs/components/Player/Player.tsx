@@ -19,14 +19,14 @@ interface PlayerProps {
 const Player = ({ player, dialogBox, particles }: PlayerProps) => {
   return (
     <>
-      <Container x={particles.position.x} y={particles.position.y}>
-        {particles.currentAnimation && (
+      {particles.items.map((particle, i) => (
+        <Container key={i} x={particle.position.x} y={particle.position.y}>
           <TilingSpriteCustom
-            animation={particles.currentAnimation}
-            inverted={particles.inverted}
+            animation={particle.currentAnimation}
+            inverted={particle.inverted}
           />
-        )}
-      </Container>
+        </Container>
+      ))}
       <Container x={player.position.x} y={player.position.y}>
         <TilingSpriteCustom
           animation={player.currentAnimation}

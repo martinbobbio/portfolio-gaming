@@ -283,7 +283,7 @@ const usePlayer = ({
   }, [animations.doorOut, sounds.doorIn]);
 
   const jump = useCallback(() => {
-    particles.setParticles('jump', getPlayerPosition(), player.inverted);
+    particles.addParticle('jump', getPlayerPosition(), player.inverted);
     sounds.jump.play();
     setVelocityY(-player.jump.power);
     setDoubleJump(true);
@@ -298,7 +298,7 @@ const usePlayer = ({
 
   const doubleJump = useCallback(() => {
     sounds.jump.play();
-    particles.setParticles('jump', getPlayerPosition(), player.inverted);
+    particles.addParticle('jump', getPlayerPosition(), player.inverted);
     setVelocityY(-player.jump.power / 1.5);
     setIsFalling(false);
     setDoubleJump(false);
@@ -390,9 +390,8 @@ const usePlayer = ({
 
   useEffect(() => {
     if (isFalling && player.velocity.y === 0) {
-      console.log('A');
       sounds.fall.play();
-      particles.setParticles('fall', getPlayerPosition(), player.inverted);
+      particles.addParticle('fall', getPlayerPosition(), player.inverted);
     }
   }, [
     particles,
@@ -418,6 +417,14 @@ const usePlayer = ({
   useEffect(() => {
     level.updatePlayerPosition(player.position);
   }, [level, player.position]);
+
+  useEffect(() => {
+    if (player.currentAnimation === animations.run) {
+      sounds.run.play();
+    } else {
+      sounds.run.stop();
+    }
+  }, [animations.run, player.currentAnimation, sounds.run]);
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);

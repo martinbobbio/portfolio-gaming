@@ -2,15 +2,19 @@ import { Point, Texture } from 'pixi.js';
 import { Animation } from '..';
 
 export interface ParticlesState {
-  currentAnimation?: Animation;
-  inverted: boolean;
-  position: Point;
+  items: Particle[];
   deleteParticles: () => void;
-  setParticles: (
+  addParticle: (
     key: keyof ParticlesAnimations,
     point: Point,
     inverted: boolean
   ) => void;
+}
+
+export interface Particle {
+  currentAnimation: Animation;
+  inverted: boolean;
+  position: Point;
 }
 
 export interface ParticlesAnimations {
