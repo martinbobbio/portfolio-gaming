@@ -16,16 +16,18 @@ const useParticles = ({ textures }: useParticlesProps) => {
       jump: {
         autoplay: true,
         loop: false,
-        frameBuffer: 20,
+        frameBuffer: 6,
         frameRate: 6,
         texture: textures.jump,
+        invertedTile: true,
       },
       fall: {
         autoplay: true,
         loop: false,
-        frameBuffer: 20,
+        frameBuffer: 8,
         frameRate: 5,
         texture: textures.fall,
+        invertedTile: true,
       },
     };
   }, [textures]);
@@ -59,9 +61,6 @@ const useParticles = ({ textures }: useParticlesProps) => {
         ...prev,
         items: [...prev.items, { currentAnimation, position, inverted }],
       }));
-    },
-    deleteParticles: () => {
-      setParticles((prev) => ({ ...prev, items: [] }));
     },
     items: [],
   });

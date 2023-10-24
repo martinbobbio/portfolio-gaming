@@ -17,6 +17,7 @@ interface PlayerProps {
  * @return React.ReactElement <Player/>
  */
 const Player = ({ player, dialogBox, particles }: PlayerProps) => {
+  console.log(particles.items);
   return (
     <>
       {particles.items.map((particle, i) => (

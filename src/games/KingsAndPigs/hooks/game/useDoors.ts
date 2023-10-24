@@ -33,14 +33,14 @@ const useDoors = ({ textures, level }: useDoorProps) => {
       opening: {
         autoplay: true,
         loop: false,
-        frameBuffer: 24,
+        frameBuffer: 16,
         texture: textures.opening,
         frameRate: 5,
       },
       closing: {
         autoplay: true,
         loop: false,
-        frameBuffer: 10,
+        frameBuffer: 24,
         texture: textures.closing,
         frameRate: 3,
       },

@@ -3,7 +3,6 @@ import { Animation } from '..';
 
 export interface ParticlesState {
   items: Particle[];
-  deleteParticles: () => void;
   addParticle: (
     key: keyof ParticlesAnimations,
     point: Point,

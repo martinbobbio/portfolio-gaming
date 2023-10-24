@@ -19,19 +19,28 @@ const TilingSpriteCustom = ({
   animation,
   inverted = false,
 }: TilingSpriteCustomProps) => {
-  const { texture, frameRate, frameBuffer, autoplay, loop, onComplete } =
-    animation;
-  const [elapsedFrames, setElapsedFrames] = useState(0);
+  const {
+    texture,
+    frameRate,
+    frameBuffer,
+    autoplay,
+    loop,
+    invertedTile,
+    onComplete,
+  } = animation;
+  const [elapsedFrames, setElapsedFrames] = useState(1);
   const [currentFrame, setCurrentFrame] = useState(0);
   const height = texture.height;
   const width = texture.width / frameRate;
-  const tilePosition = new Point(width * currentFrame + width, 0);
+  const tileX = width * currentFrame + width;
+  const tileY = 0;
+  const tilePosition = new Point(invertedTile ? -tileX : tileX, tileY);
   const scale = new Point(inverted ? -1 : 1, 1);
   const position = new Point(inverted ? width : 0, 0);
 
   useEffect(() => {
     setCurrentFrame(0);
-    setElapsedFrames(0);
+    setElapsedFrames(1);
   }, [animation]);
 
   useTick(() => {
