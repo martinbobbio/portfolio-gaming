@@ -16,15 +16,15 @@ const useParticles = ({ textures }: useParticlesProps) => {
       jump: {
         autoplay: true,
         loop: false,
-        frameBuffer: 4,
+        frameBuffer: 20,
         frameRate: 6,
         texture: textures.jump,
       },
       fall: {
         autoplay: true,
         loop: false,
-        frameBuffer: 8,
-        frameRate: 3,
+        frameBuffer: 20,
+        frameRate: 5,
         texture: textures.fall,
       },
     };
@@ -38,11 +38,11 @@ const useParticles = ({ textures }: useParticlesProps) => {
     ) => {
       const currentAnimation = animations[key];
       if (key === 'jump') {
-        position.y += 14;
-        position.x += inverted ? 28 : 8;
+        position.y += 24;
+        position.x += inverted ? 21 : 4;
       } else if (key === 'fall') {
-        position.y += 28;
-        position.x += inverted ? 10 : -10;
+        position.y += 24;
+        position.x += inverted ? 21 : 4;
       }
       currentAnimation.onComplete = () => {
         setParticles((prev) => {
