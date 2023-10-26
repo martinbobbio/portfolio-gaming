@@ -19,9 +19,13 @@ export interface Particle {
 export interface ParticlesAnimations {
   fall: Animation;
   jump: Animation;
+  run: Animation;
+  diamond: Animation;
 }
 
 export interface ParticlesTextures {
   fall: Texture;
   jump: Texture;
+  run: Texture;
+  diamond: Texture;
 }

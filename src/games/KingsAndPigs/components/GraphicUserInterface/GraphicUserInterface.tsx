@@ -22,18 +22,18 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
   const [timer, setTimer] = useState(0);
   const animations = useMemo(() => {
     return {
-      smallHeartIdle: {
+      heart: {
         autoplay: true,
         loop: true,
         frameBuffer: 9,
-        texture: textures.livesAndCoins.smallHeartIdle,
+        texture: textures.livesAndCoins.heart,
         frameRate: 8,
       },
-      smallDiamondIdle: {
+      diamond: {
         autoplay: true,
         loop: true,
         frameBuffer: 9,
-        texture: textures.livesAndCoins.smallDiamondIdle,
+        texture: textures.livesAndCoins.diamond,
         frameRate: 8,
       },
       numbers: {
@@ -93,11 +93,11 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
         <Sprite texture={textures.livesAndCoins.liveBar} />
         {hearts.map((heart, i) => (
           <Container key={i} x={heart.x} y={heart.y}>
-            <TilingSpriteCustom animation={animations.smallHeartIdle} />
+            <TilingSpriteCustom animation={animations.heart} />
           </Container>
         ))}
         <Container x={8} y={32}>
-          <TilingSpriteCustom animation={animations.smallDiamondIdle} />
+          <TilingSpriteCustom animation={animations.diamond} />
         </Container>
         <Container x={27} y={34} scale={1.1}>
           <TilingSpriteCustom animation={animations.numbers} />

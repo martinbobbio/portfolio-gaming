@@ -3,18 +3,14 @@ import { Animation } from '..';
 
 export interface LivesAndCoinsAnimations {
   liveBar: Animation;
-  smallHeartIdle: Animation;
-  bigHeartIdle: Animation;
-  bigDiamondIdle: Animation;
-  smallDiamondIdle: Animation;
+  heart: Animation;
+  diamond: Animation;
   numbers: Animation;
 }
 
 export interface LivesAndCoinsTextures {
   liveBar: Texture;
-  smallHeartIdle: Texture;
-  bigHeartIdle: Texture;
-  bigDiamondIdle: Texture;
-  smallDiamondIdle: Texture;
+  heart: Texture;
+  diamond: Texture;
   numbers: Texture;
 }

@@ -5,6 +5,7 @@ export interface DecorationsState {
   animation: Animation;
   hitbox: Block;
   position: Point;
+  scale?: number;
 }
 
 export interface DecorationsAnimations {
@@ -12,6 +13,8 @@ export interface DecorationsAnimations {
   candleLight: Animation;
   smallChain: Animation;
   bigChain: Animation;
+  window: Animation;
+  windowLight: Animation;
 }
 
 export interface DecorationsTextures {
@@ -19,4 +22,6 @@ export interface DecorationsTextures {
   candleLight: Texture;
   smallChain: Texture;
   bigChain: Texture;
+  window: Texture;
+  windowLight: Texture;
 }

@@ -8,12 +8,12 @@ import {
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 
-interface useDoorProps {
+interface useDecorationsProps {
   textures: DecorationsTextures;
   objects?: DecorationsLevel;
 }
 
-const useDecorations = ({ textures, objects }: useDoorProps) => {
+const useDecorations = ({ textures, objects }: useDecorationsProps) => {
   const animations = useMemo(() => {
     const animations: DecorationsAnimations = {
       candle: {
@@ -44,11 +44,25 @@ const useDecorations = ({ textures, objects }: useDoorProps) => {
         loop: true,
         texture: textures.bigChain,
       },
+      window: {
+        autoplay: true,
+        frameBuffer: 8,
+        frameRate: 37,
+        loop: true,
+        texture: textures.window,
+      },
+      windowLight: {
+        autoplay: true,
+        frameBuffer: 8,
+        frameRate: 4,
+        loop: true,
+        texture: textures.windowLight,
+      },
     };
     return animations;
   }, [textures]);
 
-  const getPosition = (
+  const adjustPosition = (
     { position }: Block,
     offsetX: number,
     offsetY: number
@@ -62,28 +76,41 @@ const useDecorations = ({ textures, objects }: useDoorProps) => {
     const candles = objects?.candles?.map((hitbox) => ({
       hitbox,
       animation: animations.candle,
-      position: getPosition(hitbox, 8, -8),
+      position: adjustPosition(hitbox, 8, -8),
     }));
     const candlesLights = objects?.candles?.map((hitbox) => ({
       hitbox,
       animation: animations.candleLight,
-      position: getPosition(hitbox, -10, -50),
+      position: adjustPosition(hitbox, -10, -50),
     }));
     const smallChains = objects?.smallChains?.map((hitbox) => ({
       hitbox,
       animation: animations.smallChain,
-      position: getPosition(hitbox, 0, 0),
+      position: adjustPosition(hitbox, 0, 0),
     }));
     const bigChains = objects?.bigChains?.map((hitbox) => ({
       hitbox,
       animation: animations.bigChain,
-      position: getPosition(hitbox, 16, 0),
+      position: adjustPosition(hitbox, 16, 0),
+    }));
+    const windows = objects?.windows?.map((hitbox) => ({
+      hitbox,
+      animation: animations.window,
+      position: adjustPosition(hitbox, -5, -4),
+      scale: 1.35,
+    }));
+    const windowsLight = objects?.windows?.map((hitbox) => ({
+      hitbox,
+      animation: animations.windowLight,
+      position: adjustPosition(hitbox, -5, -4),
     }));
     return [
       ...(candles || []),
       ...(candlesLights || []),
       ...(smallChains || []),
       ...(bigChains || []),
+      ...(windows || []),
+      ...(windowsLight || []),
     ];
   });
 

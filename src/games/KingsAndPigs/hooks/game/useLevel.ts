@@ -80,6 +80,7 @@ const useLevel = () => {
       candles: main?.find(({ name }) => name === 'Candles')?.data,
       smallChains: main?.find(({ name }) => name === 'Small Chains')?.data,
       bigChains: main?.find(({ name }) => name === 'Big Chains')?.data,
+      windows: main?.find(({ name }) => name === 'Windows')?.data,
     };
 
     const collisionBlocks =
@@ -94,6 +95,7 @@ const useLevel = () => {
       layers.smallChains && blocksFrom2D(parse2D(layers.smallChains));
     const bigChains =
       layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
+    const windows = layers.windows && blocksFrom2D(parse2D(layers.windows));
 
     if (collisionBlocks) {
       setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
@@ -120,6 +122,7 @@ const useLevel = () => {
           candles,
           smallChains,
           bigChains,
+          windows,
         },
       }));
     }

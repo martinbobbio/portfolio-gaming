@@ -23,6 +23,7 @@ export interface DecorationsLevel {
   candles?: Block[];
   smallChains?: Block[];
   bigChains?: Block[];
+  windows?: Block[];
 }
 
 export interface LevelDoor {

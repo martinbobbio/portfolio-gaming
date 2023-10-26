@@ -5,6 +5,7 @@ import {
   Block,
   DecorationsState,
   DoorState,
+  ItemState,
   LevelKingAndPigs,
   PlayerState,
 } from '../../interfaces';
@@ -14,6 +15,7 @@ interface DebuggerProps {
   doors: DoorState[];
   level: LevelKingAndPigs;
   decorations: DecorationsState[];
+  items: ItemState[];
 }
 
 /**
@@ -25,7 +27,13 @@ interface DebuggerProps {
  * @param decorations for draw hitbox decorations
  * @return React.ReactElement <Debugger/>
  */
-const Debugger = ({ player, doors, level, decorations }: DebuggerProps) => {
+const Debugger = ({
+  player,
+  doors,
+  level,
+  decorations,
+  items,
+}: DebuggerProps) => {
   const draw = useCallback((g: Graphics, block: Block) => {
     const { position, width, height } = block;
     g.clear();
@@ -44,6 +52,9 @@ const Debugger = ({ player, doors, level, decorations }: DebuggerProps) => {
         <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
       ))}
       {decorations?.map(({ hitbox }, i) => (
+        <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
+      ))}
+      {items?.map(({ hitbox }, i) => (
         <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
       ))}
     </>

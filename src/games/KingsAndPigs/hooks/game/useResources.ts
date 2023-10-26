@@ -40,21 +40,27 @@ const texturePaths: TexturePaths = {
   },
   livesAndCoins: {
     liveBar: `${uri}lives-and-coins/live-bar.png`,
-    smallHeartIdle: `${uri}lives-and-coins/small-heart-idle.png`,
-    bigHeartIdle: `${uri}lives-and-coins/big-heart-idle.png`,
-    bigDiamondIdle: `${uri}lives-and-coins/big-diamond-idle.png`,
     numbers: `${uri}lives-and-coins/numbers.png`,
-    smallDiamondIdle: `${uri}lives-and-coins/small-diamond-idle.png`,
+    heart: `${uri}lives-and-coins/heart.png`,
+    diamond: `${uri}lives-and-coins/diamond.png`,
   },
   decorations: {
     candle: `${uri}decorations/candle.png`,
     candleLight: `${uri}decorations/candle-light.png`,
     smallChain: `${uri}decorations/small-chains.png`,
     bigChain: `${uri}decorations/big-chains.png`,
+    window: `${uri}decorations/window.png`,
+    windowLight: `${uri}decorations/window-light.png`,
   },
   particles: {
     jump: `${uri}particles/jump.png`,
     fall: `${uri}particles/fall.png`,
+    run: `${uri}particles/run.png`,
+    diamond: `${uri}particles/diamond.png`,
+  },
+  item: {
+    heart: `${uri}item/heart.png`,
+    diamond: `${uri}item/diamond.png`,
   },
 };
 

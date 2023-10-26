@@ -12,8 +12,8 @@ interface DecorationsProps {
  * @return React.ReactElement <Decorations/>
  */
 const Decorations = ({ decorations }: DecorationsProps) => {
-  return decorations.map(({ position, animation }, i) => (
-    <Container key={i} position={position}>
+  return decorations.map(({ position, animation, scale = 1 }, i) => (
+    <Container key={i} position={position} scale={scale}>
       <TilingSpriteCustom animation={animation} />
     </Container>
   ));

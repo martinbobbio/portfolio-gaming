@@ -339,7 +339,7 @@ const usePlayer = ({
     if (currentAnimation === animations.idle && x) {
       setCurrentAnimation(player.animations.run);
     }
-    if (y > 1) setIsFalling(true);
+    if (y > 10) setIsFalling(true);
     else if (y === 0) setIsFalling(false);
   }, [
     particles,

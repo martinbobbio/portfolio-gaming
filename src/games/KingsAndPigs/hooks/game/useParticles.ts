@@ -29,6 +29,22 @@ const useParticles = ({ textures }: useParticlesProps) => {
         texture: textures.fall,
         invertedTile: true,
       },
+      run: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 8,
+        frameRate: 5,
+        texture: textures.run,
+        invertedTile: true,
+      },
+      diamond: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 8,
+        frameRate: 4,
+        texture: textures.diamond,
+        invertedTile: true,
+      },
     };
   }, [textures]);
 

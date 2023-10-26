@@ -33,7 +33,7 @@ const Camera = ({
 }: CameraProps) => {
   const windowSize = useWindowSize();
 
-  const scale = 2.5;
+  const scale = 1.5;
 
   const centerX = windowSize.width / 2;
   const centerY = windowSize.heigth / 2;

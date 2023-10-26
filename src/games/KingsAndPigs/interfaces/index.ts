@@ -37,3 +37,4 @@ export type {
   ParticlesState,
   Particle,
 } from './particles/particles';
+export type { ItemAnimations, ItemTextures, ItemState } from './item/item';

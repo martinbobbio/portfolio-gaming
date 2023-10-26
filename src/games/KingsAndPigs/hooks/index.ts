@@ -6,3 +6,4 @@ export { default as useParticles } from './game/useParticles';
 export { default as useCollisions } from './game/useCollisions';
 export { default as useResources } from './game/useResources';
 export { default as useDecorations } from './game/useDecorations';
+export { default as useItems } from './game/useItems';

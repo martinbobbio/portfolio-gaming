@@ -3,6 +3,7 @@ import {
   DecorationsTextures,
   DialogBoxTextures,
   DoorTextures,
+  ItemTextures,
   LivesAndCoinsTextures,
   ParticlesTextures,
   PlayerTextures,
@@ -15,6 +16,7 @@ export interface TexturesKingsAndPigs {
   livesAndCoins: LivesAndCoinsTextures;
   decorations: DecorationsTextures;
   particles: ParticlesTextures;
+  item: ItemTextures;
 }
 
 export interface SoundsKingsAndPigs {

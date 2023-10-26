@@ -9,3 +9,4 @@ export { default as GraphicUserInterface } from './GraphicUserInterface/GraphicU
 export { default as Player } from './Player/Player';
 export { default as Doors } from './Doors/Doors';
 export { default as Decorations } from './Decorations/Decorations';
+export { default as Items } from './Items/Items';
