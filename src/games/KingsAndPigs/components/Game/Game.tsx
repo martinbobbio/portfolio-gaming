@@ -46,6 +46,11 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     textures: textures.particles,
   });
 
+  const { items } = useItems({
+    textures: textures.item,
+    diamonds: level.items?.diamonds,
+  });
+
   const { player } = usePlayer({
     textures: textures.king,
     level,
@@ -53,17 +58,13 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     sounds,
     dialogBox,
     particles,
+    items,
     setControls,
   });
 
   const { decorations } = useDecorations({
     textures: textures.decorations,
     objects: level.decorations,
-  });
-
-  const { items } = useItems({
-    textures: textures.item,
-    diamonds: level.diamonds,
   });
 
   return (

@@ -19,7 +19,8 @@ const Controls = ({ controls }: ControlProps) => {
     onTouchLeftEnd,
     onTouchRightStart,
     onTouchRightEnd,
-    onTouchUp,
+    onTouchUpStart,
+    onTouchUpEnd,
     onTouchSpecial,
   } = controls;
   const { isMobile } = useWindowSize();
@@ -27,8 +28,8 @@ const Controls = ({ controls }: ControlProps) => {
   useKeyPress('a', onTouchLeftStart, onTouchLeftEnd);
   useKeyPress('arrowright', onTouchRightStart, onTouchRightEnd);
   useKeyPress('d', onTouchRightStart, onTouchRightEnd);
-  useKeyPress('arrowup', onTouchUp, () => true);
-  useKeyPress('w', onTouchUp, () => true);
+  useKeyPress('arrowup', onTouchUpStart, onTouchUpEnd);
+  useKeyPress('w', onTouchUpStart, onTouchUpEnd);
   useKeyPress('e', onTouchSpecial, () => true);
 
   return (
@@ -48,7 +49,10 @@ const Controls = ({ controls }: ControlProps) => {
         >
           <FAIcon size='xxl' icon={faArrowRight} />
         </ButtonControl>
-        <ButtonControl onTouchStart={controls.onTouchUp} className='down-right'>
+        <ButtonControl
+          onTouchStart={controls.onTouchUpStart}
+          className='down-right'
+        >
           <FAIcon size='xxl' icon={faArrowUp} />
         </ButtonControl>
         <ButtonControl

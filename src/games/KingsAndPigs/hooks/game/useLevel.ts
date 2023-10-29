@@ -24,8 +24,12 @@ const useLevel = () => {
     player: {
       position: new Point(-100, -100),
     },
+    items: {
+      diamonds: [],
+    },
     onNextLevel: () => nextLevel(),
     onPrevLevel: () => prevLevel(),
+    deleteDiamond: (id: number) => deleteDiamond(id),
     updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
   });
   const currentLevel = level.current;
@@ -48,6 +52,23 @@ const useLevel = () => {
       const current = (level.current - 1) as AvailablesLevels;
       setLevel({ ...level, current });
     }
+  };
+
+  const deleteDiamond = (id: number) => {
+    setLevel((prevLevel) => {
+      if (!prevLevel.items?.diamonds) return prevLevel;
+
+      const diamonds = [...prevLevel.items.diamonds];
+      diamonds.splice(id, 1);
+
+      return {
+        ...prevLevel,
+        items: {
+          ...prevLevel.items,
+          diamonds,
+        },
+      };
+    });
   };
 
   const updatePlayerPosition = (position: Point) => {
@@ -117,12 +138,14 @@ const useLevel = () => {
           doorPrev.position.x - 16,
           doorPrev.position.y
         ),
-        diamonds,
         decorations: {
           candles,
           smallChains,
           bigChains,
           windows,
+        },
+        items: {
+          diamonds,
         },
       }));
     }

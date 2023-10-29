@@ -12,6 +12,7 @@ import {
   DoorState,
   DialogBoxState,
   ParticlesState,
+  ItemState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useTick } from '@pixi/react';
@@ -23,6 +24,7 @@ interface usePlayerProps {
   doors: DoorState[];
   dialogBox: DialogBoxState;
   particles: ParticlesState;
+  items: ItemState[];
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -35,6 +37,7 @@ interface usePlayerProps {
  * @param doors for check collisions
  * @param dialogBox for make animations dialogs
  * @param particles for show particles effects
+ * @param item for item logics
  * @param setControls for add behaviors
  * @return usePlayer
  */
@@ -45,11 +48,14 @@ const usePlayer = ({
   doors,
   dialogBox,
   particles,
+  items,
   setControls,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
   const [isFalling, setIsFalling] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
+  const [isJumping, setIsJumping] = useState(false);
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inactiveTime, setInactiveTime] = useState(0);
 
@@ -225,7 +231,8 @@ const usePlayer = ({
 
   const pressRun = useCallback(
     (isLeft: boolean) => {
-      if (player.currentAnimation === animations.idle) {
+      if (!isRunning) {
+        setIsRunning(true);
         setInverted(isLeft);
         setVelocityX(isLeft ? -5 : 5);
         setCurrentAnimation(animations.run);
@@ -236,9 +243,8 @@ const usePlayer = ({
       }
     },
     [
-      animations.idle,
       animations.run,
-      player.currentAnimation,
+      isRunning,
       player.inverted,
       player.position.x,
       setPositionX,
@@ -249,6 +255,7 @@ const usePlayer = ({
   const pressStopRun = useCallback(
     (isLeft: boolean) => {
       if (player.currentAnimation === animations.idle) return;
+      setIsRunning(false);
       setInverted(isLeft);
       setVelocityX(0);
       setCurrentAnimation(animations.idle);
@@ -256,26 +263,38 @@ const usePlayer = ({
     [animations.idle, player.currentAnimation, setVelocityX]
   );
 
+  const getCollision = (a: Block, b: Block) => {
+    const collisions = {
+      left: a.position.x <= b.position.x + b.width,
+      right: a.position.x + a.width >= b.position.x,
+      bottom: a.position.y + a.height >= b.position.y,
+      top: a.position.y <= b.position.y + b.height,
+    };
+    const { right, left, bottom, top } = collisions;
+    if (right && left && bottom && top) return true;
+    return false;
+  };
+
   const checkIfCanEnterDoor = useCallback((): DoorState | null => {
     let doorEntered = null;
     doors
       .filter((door) => door.type === 'next')
       .map((door) => {
-        const hitbox = door.hitbox;
-        const entity = player.hitbox;
-        const collisions = {
-          left: entity.position.x <= hitbox.position.x + hitbox.width,
-          right: entity.position.x + entity.width >= hitbox.position.x,
-          bottom: entity.position.y + entity.height >= hitbox.position.y,
-          top: entity.position.y <= hitbox.position.y + hitbox.height,
-        };
-        const { right, left, bottom, top } = collisions;
-        if (right && left && bottom && top) {
+        if (getCollision(door.hitbox, player.hitbox)) {
           doorEntered = door;
         }
       });
     return doorEntered;
   }, [doors, player.hitbox]);
+
+  const checkIfPickupItem = useCallback(() => {
+    items.map((item, i) => {
+      if (getCollision(item.hitbox, player.hitbox)) {
+        sounds.diamond.play();
+        level.deleteDiamond(i);
+      }
+    });
+  }, [items, level, player.hitbox, sounds.diamond]);
 
   const enterDoor = useCallback(() => {
     setCurrentAnimation(animations.doorOut);
@@ -313,6 +332,8 @@ const usePlayer = ({
 
   const pressUp = useCallback(() => {
     if (player.currentAnimation === animations.doorOut) return;
+    else if (isJumping) return;
+    setIsJumping(true);
     const door = checkIfCanEnterDoor();
     if (door) {
       door.open();
@@ -330,8 +351,13 @@ const usePlayer = ({
     checkIfCanEnterDoor,
     enterDoor,
     jump,
+    isJumping,
     doubleJump,
   ]);
+
+  const pressUpStop = useCallback(() => {
+    setIsJumping(false);
+  }, []);
 
   useEffect(() => {
     const { x, y } = player.velocity;
@@ -341,16 +367,22 @@ const usePlayer = ({
     }
     if (y > 10) setIsFalling(true);
     else if (y === 0) setIsFalling(false);
+    if (isFalling && player.velocity.y === 0) {
+      sounds.fall.play();
+      particles.addParticle('fall', getPlayerPosition(), player.inverted);
+    }
   }, [
     particles,
+    sounds.fall,
+    getPlayerPosition,
     animations.idle,
     elapsedFrames,
-    getPlayerPosition,
     player,
     player.animations.run,
     player.currentAnimation,
     player.velocity,
     player.velocity.x,
+    isFalling,
   ]);
 
   const pressAttack = useCallback(() => {
@@ -389,30 +421,16 @@ const usePlayer = ({
   };
 
   useEffect(() => {
-    if (isFalling && player.velocity.y === 0) {
-      sounds.fall.play();
-      particles.addParticle('fall', getPlayerPosition(), player.inverted);
-    }
-  }, [
-    particles,
-    sounds.fall,
-    getPlayerPosition,
-    isFalling,
-    player.inverted,
-    player.jump.double,
-    player.velocity.y,
-  ]);
-
-  useEffect(() => {
     setControls({
       onTouchLeftStart: () => pressRun(true),
       onTouchLeftEnd: () => pressStopRun(true),
       onTouchRightStart: () => pressRun(false),
       onTouchRightEnd: () => pressStopRun(false),
-      onTouchUp: () => pressUp(),
+      onTouchUpStart: () => pressUp(),
+      onTouchUpEnd: () => pressUpStop(),
       onTouchSpecial: () => pressAttack(),
     });
-  }, [pressRun, pressStopRun, pressUp, pressAttack, setControls]);
+  }, [pressRun, pressStopRun, pressUp, pressAttack, setControls, pressUpStop]);
 
   useEffect(() => {
     level.updatePlayerPosition(player.position);
@@ -435,6 +453,7 @@ const usePlayer = ({
     autodetectHitbox();
     applyVertical(player, collisionBlocks, setPositionY, setVelocityY);
     checkDialogs();
+    checkIfPickupItem();
   });
 
   return {
