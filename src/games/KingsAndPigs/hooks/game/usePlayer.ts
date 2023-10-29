@@ -82,6 +82,7 @@ const usePlayer = ({
         frameBuffer: 8,
         texture: textures.attack,
         frameRate: 3,
+        invertedTile: true,
       },
       doorIn: {
         autoplay: true,
