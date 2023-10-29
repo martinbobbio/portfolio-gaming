@@ -58,6 +58,7 @@ const usePlayer = ({
   const [isJumping, setIsJumping] = useState(false);
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inactiveTime, setInactiveTime] = useState(0);
+  const { addParticle } = particles;
 
   const animations = useMemo(() => {
     const animations: PlayerAnimations = {
@@ -292,9 +293,17 @@ const usePlayer = ({
       if (getCollision(item.hitbox, player.hitbox)) {
         sounds.diamond.play();
         level.deleteDiamond(i);
+        addParticle('diamond', item.hitbox.position, player.inverted);
       }
     });
-  }, [items, level, player.hitbox, sounds.diamond]);
+  }, [
+    items,
+    level,
+    player.hitbox,
+    player.inverted,
+    sounds.diamond,
+    addParticle,
+  ]);
 
   const enterDoor = useCallback(() => {
     setCurrentAnimation(animations.doorOut);
@@ -302,12 +311,12 @@ const usePlayer = ({
   }, [animations.doorOut, sounds.doorIn]);
 
   const jump = useCallback(() => {
-    particles.addParticle('jump', getPlayerPosition(), player.inverted);
+    addParticle('jump', getPlayerPosition(), player.inverted);
     sounds.jump.play();
     setVelocityY(-player.jump.power);
     setDoubleJump(true);
   }, [
-    particles,
+    addParticle,
     getPlayerPosition,
     player.inverted,
     player.jump.power,
@@ -317,13 +326,13 @@ const usePlayer = ({
 
   const doubleJump = useCallback(() => {
     sounds.jump.play();
-    particles.addParticle('jump', getPlayerPosition(), player.inverted);
+    addParticle('jump', getPlayerPosition(), player.inverted);
     setVelocityY(-player.jump.power / 1.5);
     setIsFalling(false);
     setDoubleJump(false);
   }, [
     getPlayerPosition,
-    particles,
+    addParticle,
     player.inverted,
     player.jump.power,
     setVelocityY,
@@ -369,11 +378,11 @@ const usePlayer = ({
     else if (y === 0) setIsFalling(false);
     if (isFalling && player.velocity.y === 0) {
       sounds.fall.play();
-      particles.addParticle('fall', getPlayerPosition(), player.inverted);
+      addParticle('fall', getPlayerPosition(), player.inverted);
     }
   }, [
-    particles,
     sounds.fall,
+    addParticle,
     getPlayerPosition,
     animations.idle,
     elapsedFrames,
@@ -437,12 +446,26 @@ const usePlayer = ({
   }, [level, player.position]);
 
   useEffect(() => {
-    if (player.currentAnimation === animations.run) {
+    if (isRunning) {
       sounds.run.play();
     } else {
       sounds.run.stop();
     }
-  }, [animations.run, player.currentAnimation, sounds.run]);
+  }, [isRunning, sounds.run]);
+
+  useEffect(() => {
+    const { y } = player.velocity;
+    if (elapsedFrames % 20 == 0 && isRunning && y === 0) {
+      addParticle('run', getPlayerPosition(), player.inverted);
+    }
+  }, [
+    isRunning,
+    elapsedFrames,
+    player.inverted,
+    player.velocity,
+    getPlayerPosition,
+    addParticle,
+  ]);
 
   useTick(() => {
     setElapsedFrames(elapsedFrames + 1);

@@ -32,7 +32,7 @@ const useParticles = ({ textures }: useParticlesProps) => {
       run: {
         autoplay: true,
         loop: false,
-        frameBuffer: 8,
+        frameBuffer: 4,
         frameRate: 5,
         texture: textures.run,
         invertedTile: true,
@@ -40,7 +40,7 @@ const useParticles = ({ textures }: useParticlesProps) => {
       diamond: {
         autoplay: true,
         loop: false,
-        frameBuffer: 8,
+        frameBuffer: 6,
         frameRate: 4,
         texture: textures.diamond,
         invertedTile: true,
@@ -61,6 +61,12 @@ const useParticles = ({ textures }: useParticlesProps) => {
       } else if (key === 'fall') {
         position.y += 24;
         position.x += inverted ? 21 : 4;
+      } else if (key === 'diamond') {
+        position.y += -5;
+        position.x += -3;
+      } else if (key === 'run') {
+        position.y += 23;
+        position.x += inverted ? 21 : 0;
       }
       currentAnimation.onComplete = () => {
         setParticles((prev) => {
