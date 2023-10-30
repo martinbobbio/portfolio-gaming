@@ -1,4 +1,5 @@
-import { logoMBDark, logoMBLight } from '@/assets';
+import logoMBLight from '/commons/logo-mb-light.svg';
+import logoMBDark from '/commons/logo-mb-dark.svg';
 import { THEME } from '../theme/theme';
 
 const BRANDING = {

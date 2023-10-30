@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { logoMBDark, logoMBLight } from '@/assets';
 import { FAIcon } from '@/components';
+import { CONFIG } from '@/constants';
 import {
   TitleContainer,
   HeaderStyled,
@@ -25,7 +25,10 @@ interface HeaderProps {
  */
 const Header = ({ hide, breadcrumbs }: HeaderProps) => {
   const { toggle, isDarkMode } = useDarkMode();
-  const logo = isDarkMode ? logoMBDark : logoMBLight;
+  const {
+    branding: { logo },
+  } = CONFIG;
+  const brandLogo = isDarkMode ? logo.dark : logo.light;
   const headerRef = useRef(null);
 
   const handleShowHeader = useCallback((duration: number) => {
@@ -53,7 +56,7 @@ const Header = ({ hide, breadcrumbs }: HeaderProps) => {
       <Container>
         <Toolbar>
           <Link to={'/'}>
-            <Logo src={logo} />
+            <Logo src={brandLogo} />
           </Link>
           <TitleContainer>
             <Breadcrumbs separator={<FAIcon icon={faChevronRight} />}>

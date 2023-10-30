@@ -1,5 +1,4 @@
 import { Text } from '@/components';
-import { logoMBDark, logoMBLight } from '@/assets';
 import { CONFIG } from '@/constants';
 import { version } from '../../../package.json';
 import {
@@ -18,13 +17,16 @@ import { useDarkMode } from 'usehooks-ts';
  */
 const Footer = () => {
   const { isDarkMode } = useDarkMode();
-  const logo = isDarkMode ? logoMBDark : logoMBLight;
+  const {
+    branding: { logo },
+  } = CONFIG;
+  const brandLogo = isDarkMode ? logo.dark : logo.light;
 
   return (
     <FooterStyled>
       <Grid container justifyContent='center' spacing={2}>
         <Grid item xs={12} sm={2}>
-          <FooterLogo src={logo} />
+          <FooterLogo src={brandLogo} />
         </Grid>
         <Grid item xs={12} sm={4}>
           <ContentText>

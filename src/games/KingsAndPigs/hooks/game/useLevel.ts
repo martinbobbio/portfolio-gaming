@@ -118,12 +118,10 @@ const useLevel = () => {
       layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
     const windows = layers.windows && blocksFrom2D(parse2D(layers.windows));
 
-    if (collisionBlocks) {
-      setLevel((prevLevel) => ({ ...prevLevel, collisionBlocks }));
-    }
-    if (doorNext && doorPrev) {
+    if (doorNext && doorPrev && collisionBlocks) {
       setLevel((prevLevel) => ({
         ...prevLevel,
+        collisionBlocks,
         doors: [
           {
             type: 'next',
