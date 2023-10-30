@@ -2,27 +2,23 @@ import { Texture } from 'pixi.js';
 import { Animation } from '..';
 
 export interface DialogBoxState {
-  animations: DialogBoxAnimations;
+  dialog?: Dialog;
+  addDialog: (key: keyof DialogBoxAnimations) => void;
+  deleteDialog: () => void;
+}
+
+export interface Dialog {
   currentAnimation: Animation;
-  visible: boolean;
-  setAnimation: (key: keyof DialogBoxAnimations) => void;
-  deleteAnimation: () => void;
 }
 
 export interface DialogBoxAnimations {
-  helloIn: Animation;
-  helloOut: Animation;
-  deadIn: Animation;
-  deadOut: Animation;
-  exclamationIn: Animation;
-  exclamationOut: Animation;
+  hello: Animation;
+  exclamation: Animation;
+  dead: Animation;
 }
 
 export interface DialogBoxTextures {
-  helloIn: Texture;
-  helloOut: Texture;
-  deadIn: Texture;
-  deadOut: Texture;
-  exclamationIn: Texture;
-  exclamationOut: Texture;
+  hello: Texture;
+  exclamation: Texture;
+  dead: Texture;
 }

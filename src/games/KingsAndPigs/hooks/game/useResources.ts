@@ -31,12 +31,9 @@ const texturePaths: TexturePaths = {
     closing: `${uri}door/closing.png`,
   },
   dialogBox: {
-    helloIn: `${uri}dialogue-boxes/hello-in.png`,
-    helloOut: `${uri}dialogue-boxes/hello-out.png`,
-    deadIn: `${uri}dialogue-boxes/dead-in.png`,
-    deadOut: `${uri}dialogue-boxes/dead-out.png`,
-    exclamationIn: `${uri}dialogue-boxes/exclamation-in.png`,
-    exclamationOut: `${uri}dialogue-boxes/exclamation-out.png`,
+    hello: `${uri}dialogue-boxes/hello.png`,
+    exclamation: `${uri}dialogue-boxes/exclamation.png`,
+    dead: `${uri}dialogue-boxes/dead.png`,
   },
   livesAndCoins: {
     liveBar: `${uri}lives-and-coins/live-bar.png`,

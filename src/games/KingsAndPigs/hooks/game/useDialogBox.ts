@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   DialogBoxTextures,
   DialogBoxAnimations,
@@ -11,77 +11,48 @@ interface useDialogBoxProps {
 
 const useDialogBox = ({ textures }: useDialogBoxProps) => {
   const animations = useMemo(() => {
-    const fadeIn = {
-      autoplay: true,
-      loop: false,
-      frameBuffer: 50,
-      frameRate: 3,
-    };
-    const fadeOut = {
-      autoplay: true,
-      loop: false,
-      frameBuffer: 100,
-      frameRate: 2,
-    };
     const animations: DialogBoxAnimations = {
-      helloIn: {
-        ...fadeIn,
-        texture: textures.helloIn,
+      hello: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 30,
+        frameRate: 5,
+        texture: textures.hello,
       },
-      helloOut: {
-        ...fadeOut,
-        texture: textures.helloOut,
+      exclamation: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 30,
+        frameRate: 5,
+        texture: textures.exclamation,
       },
-      deadIn: {
-        ...fadeIn,
-        texture: textures.deadIn,
-      },
-      deadOut: {
-        ...fadeOut,
-        texture: textures.deadOut,
-      },
-      exclamationIn: {
-        ...fadeIn,
-        texture: textures.exclamationIn,
-      },
-      exclamationOut: {
-        ...fadeOut,
-        texture: textures.exclamationOut,
+      dead: {
+        autoplay: true,
+        loop: false,
+        frameBuffer: 30,
+        frameRate: 5,
+        texture: textures.dead,
       },
     };
     return animations;
   }, [textures]);
 
-  const [dialogBox] = useState<DialogBoxState>(() => {
-    const dialogBox = {
-      animations,
-      currentAnimation: animations.helloIn,
-      visible: false,
-      setAnimation: (key: keyof DialogBoxAnimations) => {
-        dialogBox.visible = true;
-        dialogBox.currentAnimation = animations[key];
-      },
-      deleteAnimation: () => (dialogBox.visible = false),
-    };
-
-    return dialogBox;
+  const [dialogBox, setDialogBox] = useState<DialogBoxState>({
+    dialog: undefined,
+    deleteDialog: () => {
+      setDialogBox((prev) => ({ ...prev, dialog: undefined }));
+    },
+    addDialog: (key: keyof DialogBoxAnimations) => {
+      const currentAnimation = animations[key];
+      const dialog = {
+        currentAnimation,
+      };
+      setDialogBox((prev) => ({ ...prev, dialog }));
+      currentAnimation.onComplete = () => {
+        setDialogBox((prev) => ({ ...prev, dialog: undefined }));
+      };
+    },
   });
-
-  useEffect(() => {
-    const fadeIn = (value: keyof DialogBoxAnimations) => {
-      dialogBox.setAnimation(value);
-    };
-    const fadeOut = () => {
-      dialogBox.deleteAnimation();
-    };
-
-    animations.helloIn.onComplete = () => fadeIn('helloOut');
-    animations.helloOut.onComplete = () => fadeOut();
-    animations.deadIn.onComplete = () => fadeIn('deadOut');
-    animations.deadOut.onComplete = () => fadeOut();
-    animations.exclamationIn.onComplete = () => fadeIn('exclamationOut');
-    animations.exclamationOut.onComplete = () => fadeOut();
-  }, [animations, dialogBox]);
 
   return {
     dialogBox,

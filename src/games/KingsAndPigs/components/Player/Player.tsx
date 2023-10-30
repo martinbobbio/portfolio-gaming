@@ -32,11 +32,11 @@ const Player = ({ player, dialogBox, particles }: PlayerProps) => {
           animation={player.currentAnimation}
           inverted={player.inverted}
         />
-        <Container x={player.inverted ? 25 : 35}>
-          {dialogBox.visible && (
-            <TilingSpriteCustom animation={dialogBox.currentAnimation} />
-          )}
-        </Container>
+        {dialogBox.dialog && (
+          <Container x={player.inverted ? 25 : 35}>
+            <TilingSpriteCustom animation={dialogBox.dialog.currentAnimation} />
+          </Container>
+        )}
       </Container>
     </>
   );

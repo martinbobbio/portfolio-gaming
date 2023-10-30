@@ -49,6 +49,7 @@ const useParticles = ({ textures }: useParticlesProps) => {
   }, [textures]);
 
   const [particles, setParticles] = useState<ParticlesState>({
+    items: [],
     addParticle: (
       key: keyof ParticlesAnimations,
       position: Point,
@@ -84,7 +85,6 @@ const useParticles = ({ textures }: useParticlesProps) => {
         items: [...prev.items, { currentAnimation, position, inverted }],
       }));
     },
-    items: [],
   });
 
   return {

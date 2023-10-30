@@ -59,6 +59,7 @@ const usePlayer = ({
   const [elapsedFrames, setElapsedFrames] = useState(0);
   const [inactiveTime, setInactiveTime] = useState(0);
   const { addParticle } = particles;
+  const { addDialog, deleteDialog } = dialogBox;
 
   const animations = useMemo(() => {
     const animations: PlayerAnimations = {
@@ -408,26 +409,26 @@ const usePlayer = ({
     if (isInactive) setInactiveTime((prevInactiveTime) => prevInactiveTime + 1);
     else {
       setInactiveTime(0);
-      dialogBox.deleteAnimation();
+      deleteDialog();
     }
-    if (inactiveTime >= (5 * 60) / 30) {
-      dialogBox.setAnimation('helloIn');
+    if (inactiveTime >= 5 * 60) {
+      addDialog('hello');
     }
   };
 
   const checkSayExclamation = () => {
     if (player.currentAnimation === animations.idle) {
-      if (checkIfCanEnterDoor()) dialogBox.setAnimation('exclamationIn');
+      if (checkIfCanEnterDoor()) {
+        addDialog('exclamation');
+      }
     } else {
-      dialogBox.deleteAnimation();
+      deleteDialog();
     }
   };
 
   const checkDialogs = () => {
-    if (elapsedFrames % 30 == 0) {
-      checkSayHello();
-      checkSayExclamation();
-    }
+    checkSayHello();
+    checkSayExclamation();
   };
 
   useEffect(() => {

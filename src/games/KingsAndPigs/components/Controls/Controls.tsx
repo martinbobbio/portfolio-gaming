@@ -57,6 +57,7 @@ const Controls = ({ controls }: ControlProps) => {
         </ButtonControl>
         <ButtonControl
           onTouchStart={controls.onTouchSpecial}
+          onTouchEnd={controls.onTouchUpEnd}
           className='down-left'
         >
           <FAIcon size='xxl' icon={faWandMagic} />

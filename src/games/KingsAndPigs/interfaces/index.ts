@@ -21,6 +21,7 @@ export type {
   DialogBoxState,
   DialogBoxTextures,
   DialogBoxAnimations,
+  Dialog,
 } from './dialog-box/dialog-box';
 export type {
   LivesAndCoinsAnimations,
