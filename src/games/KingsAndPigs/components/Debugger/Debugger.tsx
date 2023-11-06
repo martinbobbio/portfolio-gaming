@@ -48,6 +48,9 @@ const Debugger = ({
       {level.collisionBlocks.map((block, i) => (
         <GraphicsComponent key={i} draw={(g) => draw(g, block)} />
       ))}
+      {level.platformBlocks.map((block, i) => (
+        <GraphicsComponent key={i} draw={(g) => draw(g, block)} />
+      ))}
       {doors?.map(({ hitbox }, i) => (
         <GraphicsComponent key={i} draw={(g) => draw(g, hitbox)} />
       ))}

@@ -54,7 +54,8 @@ const useCollisions = () => {
     player: PlayerState,
     blocks: Block[],
     setPositionY: (y: number) => void,
-    setVelocityY: (y: number) => void
+    setVelocityY: (y: number) => void,
+    checkOnlyUp = false
   ) => {
     const { hitbox } = player;
     for (let i = 0; i < blocks.length; i++) {
@@ -63,7 +64,7 @@ const useCollisions = () => {
       if (getIfExistVertical(player, block)) {
         const playerIsGoingDown = player.velocity.y > 0;
         const playerIsGoindUp = player.velocity.y < 0;
-        if (playerIsGoindUp) {
+        if (playerIsGoindUp && !checkOnlyUp) {
           setVelocityY(0);
           const offset = hitbox.position.y - player.position.y;
           setPositionY(block.position.y + block.height - offset + 0.01);

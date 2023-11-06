@@ -51,7 +51,7 @@ const usePlayer = ({
   items,
   setControls,
 }: usePlayerProps) => {
-  const { initialPosition, collisionBlocks } = level;
+  const { initialPosition, collisionBlocks, platformBlocks } = level;
   const { applyHorizontal, applyVertical } = useCollisions();
   const [isFalling, setIsFalling] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -477,6 +477,7 @@ const usePlayer = ({
     applyGravity();
     autodetectHitbox();
     applyVertical(player, collisionBlocks, setPositionY, setVelocityY);
+    applyVertical(player, platformBlocks, setPositionY, setVelocityY, true);
     checkDialogs();
     checkIfPickupItem();
   });

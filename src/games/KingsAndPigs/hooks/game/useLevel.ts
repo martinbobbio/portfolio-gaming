@@ -19,6 +19,7 @@ const useLevel = () => {
     current: 1,
     texture: null,
     collisionBlocks: [],
+    platformBlocks: [],
     initialPosition: new Point(-100, -100),
     doors: [],
     player: {
@@ -93,8 +94,11 @@ const useLevel = () => {
       ({ name }) => name === 'Detections'
     )?.layers;
 
+    const map = levelData.layers.find(({ name }) => name === 'Map')?.layers;
+
     const layers = {
-      collisions: main?.find(({ name }) => name === 'Collisions')?.data,
+      platforms: map?.find(({ name }) => name === 'Platforms')?.data,
+      collisions: map?.find(({ name }) => name === 'Blocks')?.data,
       doorNext: main?.find(({ name }) => name === 'Door Next')?.data,
       doorPrev: main?.find(({ name }) => name === 'Door Prev')?.data,
       diamonds: main?.find(({ name }) => name === 'Diamonds')?.data,
@@ -105,7 +109,7 @@ const useLevel = () => {
     };
 
     const collisionBlocks =
-      layers.collisions && blocksFrom2D(parse2D(layers.collisions));
+      (layers.collisions && blocksFrom2D(parse2D(layers.collisions))) || [];
     const doorNext =
       layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
     const doorPrev =
@@ -117,11 +121,15 @@ const useLevel = () => {
     const bigChains =
       layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
     const windows = layers.windows && blocksFrom2D(parse2D(layers.windows));
+    const platformBlocks =
+      (layers.platforms && blocksFrom2D(parse2D(layers.platforms), 32, 10)) ||
+      [];
 
-    if (doorNext && doorPrev && collisionBlocks) {
+    if (doorNext && doorPrev) {
       setLevel((prevLevel) => ({
         ...prevLevel,
         collisionBlocks,
+        platformBlocks,
         doors: [
           {
             type: 'next',

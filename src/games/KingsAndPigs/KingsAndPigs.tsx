@@ -24,7 +24,6 @@ const KingsAndPigs = () => {
   useEffect(() => {
     if (sounds) sounds.music.play();
   }, [sounds]);
-  console.log(level);
 
   return (
     <>

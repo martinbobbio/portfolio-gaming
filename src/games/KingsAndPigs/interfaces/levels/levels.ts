@@ -7,6 +7,7 @@ export interface LevelKingAndPigs {
   current: AvailablesLevels;
   texture: Texture | null;
   collisionBlocks: Block[];
+  platformBlocks: Block[];
   decorations?: DecorationsLevel;
   initialPosition: Point;
   doors: LevelDoor[];
