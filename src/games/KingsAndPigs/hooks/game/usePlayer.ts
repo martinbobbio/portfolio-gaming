@@ -88,9 +88,10 @@ const usePlayer = ({
       doorIn: {
         autoplay: true,
         loop: false,
-        frameBuffer: 6,
+        frameBuffer: 8,
         texture: textures.doorIn,
         frameRate: 8,
+        invertedTile: true,
       },
       doorOut: {
         autoplay: true,
@@ -98,6 +99,7 @@ const usePlayer = ({
         frameBuffer: 8,
         texture: textures.doorOut,
         frameRate: 8,
+        invertedTile: true,
       },
       dead: {
         autoplay: true,
@@ -295,6 +297,7 @@ const usePlayer = ({
       if (getCollision(item.hitbox, player.hitbox)) {
         sounds.diamond.play();
         level.deleteDiamond(i);
+        level.increaseDiamondStats();
         addParticle('diamond', item.hitbox.position, player.inverted);
       }
     });

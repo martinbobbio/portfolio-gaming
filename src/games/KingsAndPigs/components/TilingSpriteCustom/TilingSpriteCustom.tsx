@@ -26,6 +26,7 @@ const TilingSpriteCustom = ({
     autoplay,
     loop,
     invertedTile,
+    nPosition,
     onComplete,
   } = animation;
   const [elapsedFrames, setElapsedFrames] = useState(1);
@@ -39,12 +40,12 @@ const TilingSpriteCustom = ({
   const position = new Point(inverted ? width : 0, 0);
 
   useEffect(() => {
-    setCurrentFrame(0);
+    setCurrentFrame(nPosition ? nPosition : 0);
     setElapsedFrames(1);
-  }, [animation]);
+  }, [animation, nPosition]);
 
   useTick(() => {
-    if (!autoplay) return;
+    if (!autoplay || nPosition) return;
     setElapsedFrames(elapsedFrames + 1);
     if (elapsedFrames % frameBuffer == 0) {
       if (currentFrame < frameRate - 1) setCurrentFrame(currentFrame + 1);

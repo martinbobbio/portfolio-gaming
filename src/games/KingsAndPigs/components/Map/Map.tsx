@@ -6,7 +6,7 @@ import {
   SoundsKingsAndPigs,
   TexturesKingsAndPigs,
 } from '../../interfaces';
-import { Camera, Game } from '..';
+import { Camera, Game, GraphicUserInterface } from '..';
 import { Texture } from 'pixi.js';
 
 interface MapProps {
@@ -35,13 +35,7 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
 
   return (
     <Stage width={windowSize.width} height={windowSize.heigth}>
-      <Camera
-        player={player}
-        width={width}
-        height={height}
-        level={level}
-        textures={textures}
-      >
+      <Camera player={player} width={width} height={height}>
         <Sprite width={width} height={height} texture={texture} />
         <Game
           setControls={setControls}
@@ -50,6 +44,7 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
           level={level}
         />
       </Camera>
+      <GraphicUserInterface textures={textures} level={level} />
     </Stage>
   );
 };

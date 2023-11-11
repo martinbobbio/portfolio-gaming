@@ -13,7 +13,6 @@ import { Assets, Point, Texture } from 'pixi.js';
  * @return useLevel
  */
 const useLevel = () => {
-  const minLevel = 1;
   const maxLevel = 3;
   const [level, setLevel] = useState<LevelKingAndPigs>({
     current: 1,
@@ -28,30 +27,27 @@ const useLevel = () => {
     items: {
       diamonds: [],
     },
+    stats: {
+      diamonds: 0,
+      timer: 0,
+    },
     onNextLevel: () => nextLevel(),
-    onPrevLevel: () => prevLevel(),
     deleteDiamond: (id: number) => deleteDiamond(id),
     updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
+    increaseDiamondStats: () => increaseDiamondStats(),
   });
   const currentLevel = level.current;
 
   const nextLevel = () => {
     if (level.current < maxLevel) {
       const current = (level.current + 1) as AvailablesLevels;
-      setLevel({
-        ...level,
+      setLevel((prevLevel) => ({
+        ...prevLevel,
         current,
         texture: null,
         collisionBlocks: [],
         doors: [],
-      });
-    }
-  };
-
-  const prevLevel = () => {
-    if (level.current > minLevel) {
-      const current = (level.current - 1) as AvailablesLevels;
-      setLevel({ ...level, current });
+      }));
     }
   };
 
@@ -70,6 +66,16 @@ const useLevel = () => {
         },
       };
     });
+  };
+
+  const increaseDiamondStats = () => {
+    setLevel((prevLevel) => ({
+      ...prevLevel,
+      stats: {
+        ...prevLevel.stats,
+        diamonds: prevLevel.stats.diamonds + 1,
+      },
+    }));
   };
 
   const updatePlayerPosition = (position: Point) => {
@@ -162,10 +168,24 @@ const useLevel = () => {
     loadlLevelData();
   }, [currentLevel, loadLevelTexture, loadlLevelData]);
 
+  useEffect(() => {
+    const timerInterval = setInterval(() => {
+      setLevel((prevLevel) => ({
+        ...prevLevel,
+        stats: {
+          ...prevLevel.stats,
+          timer: prevLevel.stats.timer + 1,
+        },
+      }));
+    }, 1000);
+
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, []);
+
   return {
     level,
-    nextLevel,
-    prevLevel,
   };
 };
 

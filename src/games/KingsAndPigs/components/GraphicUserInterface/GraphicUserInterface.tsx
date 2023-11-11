@@ -2,7 +2,7 @@ import { Container, Graphics, Sprite, Text } from '@pixi/react';
 import { useWindowSize } from '@/hooks';
 import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
 import { TilingSpriteCustom } from '..';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Point, TextStyle } from 'pixi.js';
 
 interface GUIProps {
@@ -19,7 +19,6 @@ interface GUIProps {
  */
 const GraphicUserInterface = ({ level, textures }: GUIProps) => {
   const { isMobile, width } = useWindowSize();
-  const [timer, setTimer] = useState(0);
   const animations = useMemo(() => {
     return {
       heart: {
@@ -42,9 +41,11 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
         frameBuffer: 0,
         texture: textures.livesAndCoins.numbers,
         frameRate: 10,
+        nPosition: 11 - level.stats.diamonds,
       },
     };
-  }, [textures]);
+  }, [textures, level.stats.diamonds]);
+  console.log(level);
 
   const hearts = [
     { x: 12, y: 10 },
@@ -76,16 +77,6 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
     const textSeconds = String(seconds).padStart(2, '0');
     return `${textMinutes}:${textSeconds}`;
   };
-
-  useEffect(() => {
-    const timerInterval = setInterval(() => {
-      setTimer((prevTimer) => prevTimer + 1);
-    }, 1000);
-
-    return () => {
-      clearInterval(timerInterval);
-    };
-  }, [timer]);
 
   return (
     <>
@@ -121,7 +112,7 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
           scale={scales.level}
           y={32}
           x={12}
-          text={`${formatTimer(timer)}`}
+          text={`${formatTimer(level.stats.timer)}`}
           style={textStyle}
         />
       </Container>

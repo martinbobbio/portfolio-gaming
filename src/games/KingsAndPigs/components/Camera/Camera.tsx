@@ -1,36 +1,24 @@
 import { Container } from '@pixi/react';
 import { useWindowSize } from '@/hooks';
 import { Point } from 'pixi.js';
-import { LevelKingAndPigs, TexturesKingsAndPigs } from '../../interfaces';
-import { GraphicUserInterface } from '..';
 
 interface CameraProps {
-  level: LevelKingAndPigs;
   player: Point;
   children: React.ReactNode;
   width: number;
   height: number;
-  textures: TexturesKingsAndPigs;
 }
 
 /**
  * Functional component that renders the camera component.
  *
- * @param level for update the camera position
  * @param player for player position and move the camera
  * @param children for wrap the content
  * @param width for according to the map texture
  * @param height for according to the map texture
  * @return React.ReactElement <Camera/>
  */
-const Camera = ({
-  level,
-  player,
-  children,
-  width,
-  height,
-  textures,
-}: CameraProps) => {
+const Camera = ({ player, children, width, height }: CameraProps) => {
   const windowSize = useWindowSize();
 
   const scale = 1.6;
@@ -50,12 +38,9 @@ const Camera = ({
   const y = centerY - cameraY * scale;
 
   return (
-    <>
-      <Container scale={scale} x={x} y={y}>
-        {children}
-      </Container>
-      <GraphicUserInterface textures={textures} level={level} />
-    </>
+    <Container scale={scale} x={x} y={y}>
+      {children}
+    </Container>
   );
 };
 

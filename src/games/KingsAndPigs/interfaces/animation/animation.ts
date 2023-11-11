@@ -7,5 +7,6 @@ export interface Animation {
   frameBuffer: number;
   frameRate: number;
   invertedTile?: boolean;
+  nPosition?: number;
   onComplete?: () => void;
 }
