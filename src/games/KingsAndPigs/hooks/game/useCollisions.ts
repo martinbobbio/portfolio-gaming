@@ -1,4 +1,4 @@
-import { Block, PlayerState } from '../../interfaces';
+import { Block, BoxState, PlayerState } from '../../interfaces';
 
 /**
  * Hook that manage collisions between objects
@@ -6,8 +6,11 @@ import { Block, PlayerState } from '../../interfaces';
  * @return useResources
  */
 const useCollisions = () => {
-  const getIfExistHorizontal = (player: PlayerState, block: Block) => {
-    const { hitbox } = player;
+  const getIfExistHorizontal = (
+    entity: PlayerState | BoxState,
+    block: Block
+  ) => {
+    const { hitbox } = entity;
     const left = hitbox.position.x <= block.position.x + block.width;
     const right = hitbox.position.x + hitbox.width >= block.position.x;
     const top = hitbox.position.y + hitbox.height >= block.position.y;
@@ -16,23 +19,23 @@ const useCollisions = () => {
   };
 
   const applyHorizontal = (
-    player: PlayerState,
+    entity: PlayerState | BoxState,
     blocks: Block[],
     setPositionX: (x: number) => void
   ) => {
-    const { hitbox } = player;
+    const { hitbox } = entity;
     for (let i = 0; i < blocks.length; i++) {
       const block = blocks[i];
-      if (getIfExistHorizontal(player, block)) {
-        const playerIsGoingRight = player.velocity.x > 0;
-        const playerIsGoindLeft = player.velocity.x < 0;
-        if (playerIsGoindLeft) {
-          const offset = hitbox.position.x - player.position.x;
+      if (getIfExistHorizontal(entity, block)) {
+        const entityIsGoingRight = entity.velocity.x > 0;
+        const entityIsGoindLeft = entity.velocity.x < 0;
+        if (entityIsGoindLeft) {
+          const offset = hitbox.position.x - entity.position.x;
           setPositionX(block.position.x + block.width - offset + 0.01);
           break;
         }
-        if (playerIsGoingRight) {
-          const offset = hitbox.position.x - player.position.x + hitbox.width;
+        if (entityIsGoingRight) {
+          const offset = hitbox.position.x - entity.position.x + hitbox.width;
           setPositionX(block.position.x - offset - 0.01);
           break;
         }
@@ -40,8 +43,8 @@ const useCollisions = () => {
     }
   };
 
-  const getIfExistVertical = (player: PlayerState, block: Block) => {
-    const { hitbox } = player;
+  const getIfExistVertical = (entity: PlayerState | BoxState, block: Block) => {
+    const { hitbox } = entity;
     const left = hitbox.position.x <= block.position.x + block.width;
     const right = hitbox.position.x + hitbox.width >= block.position.x;
     const top = hitbox.position.y + hitbox.height >= block.position.y;
@@ -51,28 +54,28 @@ const useCollisions = () => {
   };
 
   const applyVertical = (
-    player: PlayerState,
+    entity: PlayerState | BoxState,
     blocks: Block[],
     setPositionY: (y: number) => void,
     setVelocityY: (y: number) => void,
     checkOnlyUp = false
   ) => {
-    const { hitbox } = player;
+    const { hitbox } = entity;
     for (let i = 0; i < blocks.length; i++) {
       const block = blocks[i];
 
-      if (getIfExistVertical(player, block)) {
-        const playerIsGoingDown = player.velocity.y > 0;
-        const playerIsGoindUp = player.velocity.y < 0;
-        if (playerIsGoindUp && !checkOnlyUp) {
+      if (getIfExistVertical(entity, block)) {
+        const entityIsGoingDown = entity.velocity.y > 0;
+        const entityIsGoindUp = entity.velocity.y < 0;
+        if (entityIsGoindUp && !checkOnlyUp) {
           setVelocityY(0);
-          const offset = hitbox.position.y - player.position.y;
+          const offset = hitbox.position.y - entity.position.y;
           setPositionY(block.position.y + block.height - offset + 0.01);
           break;
         }
-        if (playerIsGoingDown) {
+        if (entityIsGoingDown) {
           setVelocityY(0);
-          const offset = hitbox.position.y - player.position.y + hitbox.height;
+          const offset = hitbox.position.y - entity.position.y + hitbox.height;
           setPositionY(block.position.y - offset - 0.01);
           break;
         }

@@ -112,6 +112,7 @@ const useLevel = () => {
       smallChains: main?.find(({ name }) => name === 'Small Chains')?.data,
       bigChains: main?.find(({ name }) => name === 'Big Chains')?.data,
       windows: main?.find(({ name }) => name === 'Windows')?.data,
+      boxes: main?.find(({ name }) => name === 'Box')?.data,
     };
 
     const collisionBlocks =
@@ -127,6 +128,7 @@ const useLevel = () => {
     const bigChains =
       layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
     const windows = layers.windows && blocksFrom2D(parse2D(layers.windows));
+    const boxes = layers.boxes && blocksFrom2D(parse2D(layers.boxes));
     const platformBlocks =
       (layers.platforms && blocksFrom2D(parse2D(layers.platforms), 32, 10)) ||
       [];
@@ -150,6 +152,7 @@ const useLevel = () => {
           doorPrev.position.x - 16,
           doorPrev.position.y
         ),
+        boxes,
         decorations: {
           candles,
           smallChains,

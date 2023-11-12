@@ -13,6 +13,7 @@ import {
   DialogBoxState,
   ParticlesState,
   ItemState,
+  BoxState,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useTick } from '@pixi/react';
@@ -25,6 +26,7 @@ interface usePlayerProps {
   dialogBox: DialogBoxState;
   particles: ParticlesState;
   items: ItemState[];
+  boxes: BoxState[];
   setControls: (controls: ControlsKingsAndPigs) => void;
 }
 
@@ -39,6 +41,7 @@ interface usePlayerProps {
  * @param particles for show particles effects
  * @param item for item logics
  * @param setControls for add behaviors
+ * @param boxes for add collision with the player
  * @return usePlayer
  */
 const usePlayer = ({
@@ -49,6 +52,7 @@ const usePlayer = ({
   dialogBox,
   particles,
   items,
+  boxes,
   setControls,
 }: usePlayerProps) => {
   const { initialPosition, collisionBlocks, platformBlocks } = level;
@@ -60,6 +64,7 @@ const usePlayer = ({
   const [inactiveTime, setInactiveTime] = useState(0);
   const { addParticle } = particles;
   const { addDialog, deleteDialog } = dialogBox;
+  const boxesBlocks = boxes.map((box) => box.hitbox);
 
   const animations = useMemo(() => {
     const animations: PlayerAnimations = {
@@ -424,8 +429,6 @@ const usePlayer = ({
       if (checkIfCanEnterDoor()) {
         addDialog('exclamation');
       }
-    } else {
-      deleteDialog();
     }
   };
 
@@ -477,9 +480,11 @@ const usePlayer = ({
     applyMovement();
     autodetectHitbox();
     applyHorizontal(player, collisionBlocks, setPositionX);
+    applyHorizontal(player, boxesBlocks, setPositionX);
     applyGravity();
     autodetectHitbox();
     applyVertical(player, collisionBlocks, setPositionY, setVelocityY);
+    applyVertical(player, boxesBlocks, setPositionY, setVelocityY);
     applyVertical(player, platformBlocks, setPositionY, setVelocityY, true);
     checkDialogs();
     checkIfPickupItem();

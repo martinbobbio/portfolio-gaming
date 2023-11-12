@@ -1,4 +1,4 @@
-import { Debugger, Decorations, Doors, Items, Player } from '..';
+import { Boxes, Debugger, Decorations, Doors, Items, Player } from '..';
 import {
   ControlsKingsAndPigs,
   LevelKingAndPigs,
@@ -6,6 +6,7 @@ import {
   TexturesKingsAndPigs,
 } from '../../interfaces';
 import {
+  useBoxes,
   useDecorations,
   useDialogBox,
   useDoors,
@@ -51,6 +52,11 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     diamonds: level.items?.diamonds,
   });
 
+  const { boxes } = useBoxes({
+    textures: textures.box,
+    level,
+  });
+
   const { player } = usePlayer({
     textures: textures.king,
     level,
@@ -59,6 +65,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
     dialogBox,
     particles,
     items,
+    boxes,
     setControls,
   });
 
@@ -72,6 +79,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
       <Decorations decorations={decorations} />
       <Items items={items} />
       <Doors doors={doors} />
+      <Boxes boxes={boxes} />
       <Player player={player} dialogBox={dialogBox} particles={particles} />
       {debug && (
         <Debugger
@@ -80,6 +88,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
           doors={doors}
           decorations={decorations}
           items={items}
+          boxes={boxes}
         />
       )}
     </>

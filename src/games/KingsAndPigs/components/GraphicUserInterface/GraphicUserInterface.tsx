@@ -45,7 +45,6 @@ const GraphicUserInterface = ({ level, textures }: GUIProps) => {
       },
     };
   }, [textures, level.stats.diamonds]);
-  console.log(level);
 
   const hearts = [
     { x: 12, y: 10 },

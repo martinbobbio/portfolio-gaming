@@ -59,6 +59,9 @@ const texturePaths: TexturePaths = {
     heart: `${uri}item/heart.png`,
     diamond: `${uri}item/diamond.png`,
   },
+  box: {
+    idle: `${uri}box/idle.png`,
+  },
 };
 
 const soundPaths: SoundPaths = {

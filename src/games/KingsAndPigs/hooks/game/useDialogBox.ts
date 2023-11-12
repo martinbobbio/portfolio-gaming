@@ -15,23 +15,26 @@ const useDialogBox = ({ textures }: useDialogBoxProps) => {
       hello: {
         autoplay: true,
         loop: false,
-        frameBuffer: 30,
+        frameBuffer: 16,
         frameRate: 5,
         texture: textures.hello,
+        invertedTile: true,
       },
       exclamation: {
         autoplay: true,
         loop: false,
-        frameBuffer: 30,
+        frameBuffer: 16,
         frameRate: 5,
         texture: textures.exclamation,
+        invertedTile: true,
       },
       dead: {
         autoplay: true,
         loop: false,
-        frameBuffer: 30,
+        frameBuffer: 16,
         frameRate: 5,
         texture: textures.dead,
+        invertedTile: true,
       },
     };
     return animations;
