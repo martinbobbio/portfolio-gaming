@@ -159,6 +159,28 @@ const usePlayer = ({
     animations,
   });
 
+  const updateAttackHitbox = useCallback(() => {
+    const offsetX = player.inverted ? -24 : 24;
+    setPlayer((prevState) => ({
+      ...prevState,
+      attackHitbox: {
+        position: new Point(
+          player.hitbox.position.x + offsetX,
+          player.hitbox.position.y
+        ),
+        width: 32,
+        height: 24,
+      },
+    }));
+  }, [player.hitbox.position.x, player.hitbox.position.y, player.inverted]);
+
+  const resetAttackHitbox = useCallback(() => {
+    setPlayer((prevState) => ({
+      ...prevState,
+      attackHitbox: undefined,
+    }));
+  }, []);
+
   const setPositionX = useCallback(
     (x: number) => {
       const position = player.position;
@@ -409,7 +431,7 @@ const usePlayer = ({
       sounds.sword.play();
       setCurrentAnimation(animations.attack);
     }
-  }, [animations, sounds.sword]);
+  }, [animations.attack, sounds.sword]);
 
   const checkSayHello = () => {
     const { x, y } = player.velocity;
@@ -452,6 +474,21 @@ const usePlayer = ({
   useEffect(() => {
     level.updatePlayerPosition(player.position);
   }, [level, player.position]);
+
+  useEffect(() => {
+    if (player.animations.attack.texture === player.currentAnimation.texture) {
+      console.log('ATACANDO');
+      updateAttackHitbox();
+    } else {
+      console.log('BORRO');
+      resetAttackHitbox();
+    }
+  }, [
+    player.animations.attack,
+    player.currentAnimation,
+    resetAttackHitbox,
+    updateAttackHitbox,
+  ]);
 
   useEffect(() => {
     if (isRunning) {

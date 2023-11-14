@@ -50,6 +50,11 @@ const Debugger = ({
   return (
     <>
       <GraphicsComponent draw={(g) => draw(g, player.hitbox)} />
+      {player.attackHitbox && (
+        <GraphicsComponent
+          draw={(g) => player.attackHitbox && draw(g, player.attackHitbox)}
+        />
+      )}
       {level.collisionBlocks.map((block, i) => (
         <GraphicsComponent key={i} draw={(g) => draw(g, block)} />
       ))}

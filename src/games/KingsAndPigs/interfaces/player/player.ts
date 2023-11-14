@@ -13,6 +13,7 @@ export interface PlayerState {
     power: number;
     double: boolean;
   };
+  attackHitbox?: Block;
 }
 
 export interface PlayerAnimations {
