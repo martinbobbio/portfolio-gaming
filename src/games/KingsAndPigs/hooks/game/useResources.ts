@@ -61,6 +61,7 @@ const texturePaths: TexturePaths = {
   },
   box: {
     idle: `${uri}box/idle.png`,
+    hit: `${uri}box/hit.png`,
   },
 };
 

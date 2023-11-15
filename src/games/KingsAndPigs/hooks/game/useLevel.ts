@@ -4,6 +4,7 @@ import {
   LevelKingAndPigs,
   AvailablesLevels,
   LevelData,
+  Block,
 } from '../../interfaces';
 import { Assets, Point, Texture } from 'pixi.js';
 
@@ -23,6 +24,7 @@ const useLevel = () => {
     doors: [],
     player: {
       position: new Point(-100, -100),
+      attackHitbox: undefined,
     },
     items: {
       diamonds: [],
@@ -34,6 +36,7 @@ const useLevel = () => {
     onNextLevel: () => nextLevel(),
     deleteDiamond: (id: number) => deleteDiamond(id),
     updatePlayerPosition: (point: Point) => updatePlayerPosition(point),
+    updatePlayerAttakHitbox: (block?: Block) => updatePlayerAttakHitbox(block),
     increaseDiamondStats: () => increaseDiamondStats(),
   });
   const currentLevel = level.current;
@@ -80,6 +83,11 @@ const useLevel = () => {
 
   const updatePlayerPosition = (position: Point) => {
     level.player.position = position;
+  };
+
+  const updatePlayerAttakHitbox = (block?: Block) => {
+    if (block) level.player.attackHitbox = block;
+    else level.player.attackHitbox = undefined;
   };
 
   const loadLevelTexture = useCallback(async () => {

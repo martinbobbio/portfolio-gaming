@@ -15,7 +15,7 @@ import {
   usePlayer,
 } from '../../hooks';
 
-const debug = true;
+const debug = false;
 
 interface GameProps {
   textures: TexturesKingsAndPigs;

@@ -14,6 +14,7 @@ export interface LevelKingAndPigs {
   doors: LevelDoor[];
   player: {
     position: Point;
+    attackHitbox?: Block;
   };
   items?: {
     diamonds?: Block[];
@@ -25,6 +26,7 @@ export interface LevelKingAndPigs {
   onNextLevel: () => void;
   deleteDiamond: (id: number) => void;
   updatePlayerPosition: (point: Point) => void;
+  updatePlayerAttakHitbox: (block?: Block) => void;
   increaseDiamondStats: () => void;
 }
 

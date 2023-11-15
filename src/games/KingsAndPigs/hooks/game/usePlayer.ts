@@ -476,11 +476,13 @@ const usePlayer = ({
   }, [level, player.position]);
 
   useEffect(() => {
+    level.updatePlayerAttakHitbox(player.attackHitbox);
+  }, [level, player.attackHitbox]);
+
+  useEffect(() => {
     if (player.animations.attack.texture === player.currentAnimation.texture) {
-      console.log('ATACANDO');
       updateAttackHitbox();
     } else {
-      console.log('BORRO');
       resetAttackHitbox();
     }
   }, [

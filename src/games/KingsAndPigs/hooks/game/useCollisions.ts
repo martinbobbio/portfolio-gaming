@@ -86,6 +86,8 @@ const useCollisions = () => {
   return {
     applyHorizontal,
     applyVertical,
+    getIfExistHorizontal,
+    getIfExistVertical,
   };
 };
 
