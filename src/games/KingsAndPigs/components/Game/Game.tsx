@@ -53,8 +53,8 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
   });
 
   const { boxes } = useBoxes({
-    textures: textures.box,
     level,
+    sounds,
   });
 
   const { player } = usePlayer({
@@ -79,7 +79,7 @@ const Game = ({ level, textures, sounds, setControls }: GameProps) => {
       <Decorations decorations={decorations} />
       <Items items={items} />
       <Doors doors={doors} />
-      <Boxes boxes={boxes} />
+      <Boxes boxes={boxes} textures={textures.box} />
       <Player player={player} dialogBox={dialogBox} particles={particles} />
       {debug && (
         <Debugger

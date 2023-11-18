@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   LevelKingAndPigs,
   BoxState,
   Block,
-  BoxTextures,
-  BoxAnimations,
+  SoundsKingsAndPigs,
 } from '../../interfaces';
 import { Point } from 'pixi.js';
 import { useTick } from '@pixi/react';
@@ -13,37 +12,18 @@ import { useCollisions } from '..';
 
 interface useBoxesProps {
   level: LevelKingAndPigs;
-  textures: BoxTextures;
+  sounds: SoundsKingsAndPigs;
 }
 
 /**
  * Hook that manage boxes in the game.
  *
  * @param level for known data level
- * @param textures for the graphics
+ * @param sounds for making noise effects
  * @return useBoxes
  */
-const useBoxes = ({ textures, level }: useBoxesProps) => {
+const useBoxes = ({ level, sounds }: useBoxesProps) => {
   const gravity = 1;
-  const animations = useMemo(() => {
-    const animations: BoxAnimations = {
-      idle: {
-        autoplay: true,
-        loop: false,
-        frameBuffer: 4,
-        texture: textures.idle,
-        frameRate: 1,
-      },
-      hit: {
-        autoplay: true,
-        loop: false,
-        frameBuffer: 4,
-        texture: textures.hit,
-        frameRate: 1,
-      },
-    };
-    return animations;
-  }, [textures]);
 
   const getInitialPosition = (block: Block): Point => {
     const offsetY = 40;
@@ -64,7 +44,6 @@ const useBoxes = ({ textures, level }: useBoxesProps) => {
           width: 21,
           position: getInitialPosition(block),
         },
-        currentAnimation: animations.idle,
       };
       return box;
     }) || []
@@ -115,11 +94,8 @@ const useBoxes = ({ textures, level }: useBoxesProps) => {
     if (attackHitbox) {
       const isBroken = getIfExistVertical(box, attackHitbox);
       if (isBroken) {
-        updateBox(box, {
-          ...box,
-          currentAnimation: animations.hit,
-          behavior: 'HIT',
-        });
+        updateBox(box, { ...box, behavior: 'HIT' });
+        sounds.boxBreak.play();
       }
     }
   };
@@ -129,11 +105,8 @@ const useBoxes = ({ textures, level }: useBoxesProps) => {
       switch (box.behavior) {
         case 'HIT':
           debounce(() => {
-            updateBox(box, {
-              ...box,
-              behavior: 'BROKEN',
-            });
-          }, 500)();
+            updateBox(box, { ...box, behavior: 'BROKEN' });
+          }, 300)();
           break;
         default:
           break;

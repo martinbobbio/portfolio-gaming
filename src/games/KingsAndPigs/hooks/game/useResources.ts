@@ -62,6 +62,10 @@ const texturePaths: TexturePaths = {
   box: {
     idle: `${uri}box/idle.png`,
     hit: `${uri}box/hit.png`,
+    broken1: `${uri}box/broken-1.png`,
+    broken2: `${uri}box/broken-2.png`,
+    broken3: `${uri}box/broken-3.png`,
+    broken4: `${uri}box/broken-4.png`,
   },
 };
 
@@ -75,6 +79,7 @@ const soundPaths: SoundPaths = {
   diamond: '../kings-and-pigs/sound/diamond.mp3',
   fall: '../kings-and-pigs/sound/fall.mp3',
   run: '../kings-and-pigs/sound/run.mp3',
+  boxBreak: '../kings-and-pigs/sound/box-break.mp3',
 };
 
 /**
@@ -112,6 +117,7 @@ const useResources = () => {
       sounds.run.volume = 0.1;
       sounds.run.loop = true;
       sounds.run.speed = 1.5;
+      sounds.boxBreak.volume = 0.2;
     }
   }, [sounds]);
 

@@ -6,7 +6,6 @@ export interface BoxState {
   velocity: Point;
   hitbox: Block;
   behavior: BoxBehaviors;
-  currentAnimation: Animation;
 }
 
 export type BoxBehaviors = 'IDLE' | 'HIT' | 'BROKEN';
@@ -19,4 +18,8 @@ export interface BoxAnimations {
 export interface BoxTextures {
   idle: Texture;
   hit: Texture;
+  broken1: Texture;
+  broken2: Texture;
+  broken3: Texture;
+  broken4: Texture;
 }

@@ -31,4 +31,5 @@ export interface SoundsKingsAndPigs {
   diamond: Sound;
   fall: Sound;
   run: Sound;
+  boxBreak: Sound;
 }
