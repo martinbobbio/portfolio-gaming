@@ -105,8 +105,21 @@ const useBoxes = ({ level, sounds }: useBoxesProps) => {
       switch (box.behavior) {
         case 'HIT':
           debounce(() => {
-            updateBox(box, { ...box, behavior: 'BROKEN' });
-          }, 300)();
+            updateBox(box, {
+              ...box,
+              behavior: 'BROKEN',
+              hitbox: {
+                height: 0,
+                width: 0,
+                position: box.hitbox.position,
+              },
+            });
+          }, 200)();
+          break;
+        case 'BROKEN':
+          debounce(() => {
+            updateBox(box, { ...box, behavior: 'EXTINCTED' });
+          }, 1200)();
           break;
         default:
           break;

@@ -1,6 +1,6 @@
 import { Container } from '@pixi/react';
 import { BoxState, BoxTextures } from '../../interfaces';
-import { TilingSpriteCustom } from '..';
+import { EffectBlinking, TilingSpriteCustom } from '..';
 
 interface BoxesProps {
   boxes: BoxState[];
@@ -43,10 +43,32 @@ const Boxes = ({ boxes, textures }: BoxesProps) => {
         autoplay: true,
         loop: false,
         frameBuffer: 4,
-        texture: textures.broken1,
         frameRate: 1,
       };
-      return <TilingSpriteCustom animation={animation} />;
+      const pieces = [
+        {
+          x: 0,
+          y: -12,
+          animation: { ...animation, texture: textures.broken1 },
+        },
+        {
+          x: 7,
+          y: -12,
+          animation: { ...animation, texture: textures.broken2 },
+        },
+        {
+          x: 2,
+          y: -12,
+          animation: { ...animation, texture: textures.broken2 },
+        },
+      ];
+      return pieces.map((piece, i) => (
+        <Container key={i} x={piece.x} y={piece.y}>
+          <EffectBlinking blinks={6} interval={200}>
+            <TilingSpriteCustom animation={piece.animation} />
+          </EffectBlinking>
+        </Container>
+      ));
     };
 
     switch (box.behavior) {

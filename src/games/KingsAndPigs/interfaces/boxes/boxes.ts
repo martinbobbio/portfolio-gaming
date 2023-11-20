@@ -8,7 +8,7 @@ export interface BoxState {
   behavior: BoxBehaviors;
 }
 
-export type BoxBehaviors = 'IDLE' | 'HIT' | 'BROKEN';
+export type BoxBehaviors = 'IDLE' | 'HIT' | 'BROKEN' | 'EXTINCTED';
 
 export interface BoxAnimations {
   idle: Animation;
