@@ -100,6 +100,7 @@ const useLevel = () => {
     )?.layers;
 
     const map = levelData.layers.find(({ name }) => name === 'Map')?.layers;
+    const w = levelData.width;
 
     const layers = {
       platforms: map?.find(({ name }) => name === 'Platforms')?.data,
@@ -114,22 +115,22 @@ const useLevel = () => {
       boxes: main?.find(({ name }) => name === 'Box')?.data,
     };
 
-    const collisionBlocks =
-      (layers.collisions && blocksFrom2D(parse2D(layers.collisions))) || [];
-    const doorNext =
-      layers.doorNext && blocksFrom2D(parse2D(layers.doorNext))[0];
-    const doorPrev =
-      layers.doorPrev && blocksFrom2D(parse2D(layers.doorPrev))[0];
-    const diamonds = layers.diamonds && blocksFrom2D(parse2D(layers.diamonds));
-    const candles = layers.candles && blocksFrom2D(parse2D(layers.candles));
-    const smallChains =
-      layers.smallChains && blocksFrom2D(parse2D(layers.smallChains));
-    const bigChains =
-      layers.bigChains && blocksFrom2D(parse2D(layers.bigChains));
-    const windows = layers.windows && blocksFrom2D(parse2D(layers.windows));
-    const boxes = layers.boxes && blocksFrom2D(parse2D(layers.boxes));
+    const getBlocks = (layer: number[] | undefined, amount: number) => {
+      return layer && blocksFrom2D(parse2D(layer, amount));
+    };
+
+    const collisionBlocks = getBlocks(layers.collisions, w) || [];
+    const doorNext = getBlocks(layers.doorNext, w)?.[0];
+    const doorPrev = getBlocks(layers.doorPrev, w)?.[0];
+    const diamonds = getBlocks(layers.diamonds, w);
+    const candles = getBlocks(layers.candles, w);
+    const smallChains = getBlocks(layers.smallChains, w);
+    const bigChains = getBlocks(layers.bigChains, w);
+    const windows = getBlocks(layers.windows, w);
+    const boxes = getBlocks(layers.boxes, w);
     const platformBlocks =
-      (layers.platforms && blocksFrom2D(parse2D(layers.platforms), 32, 10)) ||
+      (layers.platforms &&
+        blocksFrom2D(parse2D(layers.platforms, w), 32, 10)) ||
       [];
 
     if (doorNext && doorPrev) {
