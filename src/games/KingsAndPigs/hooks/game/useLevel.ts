@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { blocksFrom2D, parse2D } from '@/utils';
-import {
-  LevelKingAndPigs,
-  AvailablesLevels,
-  LevelData,
-  Block,
-} from '../../interfaces';
+import { LevelKingAndPigs, LevelData, Block } from '../../interfaces';
 import { Assets, Point, Texture } from 'pixi.js';
 
 /**
@@ -14,7 +9,6 @@ import { Assets, Point, Texture } from 'pixi.js';
  * @return useLevel
  */
 const useLevel = () => {
-  const maxLevel = 3;
   const [level, setLevel] = useState<LevelKingAndPigs>({
     current: 1,
     texture: null,
@@ -42,16 +36,13 @@ const useLevel = () => {
   const currentLevel = level.current;
 
   const nextLevel = () => {
-    if (level.current < maxLevel) {
-      const current = (level.current + 1) as AvailablesLevels;
-      setLevel((prevLevel) => ({
-        ...prevLevel,
-        current,
-        texture: null,
-        collisionBlocks: [],
-        doors: [],
-      }));
-    }
+    setLevel((prevLevel) => ({
+      ...prevLevel,
+      current: prevLevel.current + 1,
+      texture: null,
+      collisionBlocks: [],
+      doors: [],
+    }));
   };
 
   const deleteDiamond = (id: number) => {

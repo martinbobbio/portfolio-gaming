@@ -11,7 +11,6 @@ export type {
 export type { DoorState, DoorTextures, DoorAnimations } from './door/door';
 export type {
   LevelKingAndPigs,
-  AvailablesLevels,
   DecorationsLevel,
   LevelData,
 } from './levels/levels';

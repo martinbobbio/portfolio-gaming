@@ -21,7 +21,7 @@ interface CameraProps {
 const Camera = ({ player, children, width, height }: CameraProps) => {
   const windowSize = useWindowSize();
 
-  const scale = 1.6;
+  const scale = 2;
 
   const centerX = windowSize.width / 2;
   const centerY = windowSize.heigth / 2;
