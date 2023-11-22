@@ -34,7 +34,11 @@ const Map = ({ textures, sounds, level, setControls }: MapProps) => {
   const texture = level.texture;
 
   return (
-    <Stage width={windowSize.width} height={windowSize.heigth}>
+    <Stage
+      width={windowSize.width}
+      height={windowSize.heigth}
+      options={{ background: '#3f3851' }}
+    >
       <Camera player={player} width={width} height={height}>
         <Sprite width={width} height={height} texture={texture} />
         <Game
