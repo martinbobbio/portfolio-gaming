@@ -1,22 +1,19 @@
 import { Link, useLocation } from 'react-router-dom';
 import { Header, MetaTags, Text } from '@/components';
-import { routeToTag, routeToTitle } from '@/utils';
-import { GameStyled } from './Game.styled';
+import { routeToTag, routeToTitle, routeToURL } from '@/utils';
+import { GameStyled, Iframe } from './Game.styled';
 import { useEffect } from 'react';
 
-interface PixiGameProps {
-  game: React.ReactNode;
-}
-
 /**
- * Functional component that render component pixi game.
+ * Functional component that render an iframe with the game.
  *
- * @return React.ReactElement <PixiGame/>
+ * @return React.ReactElement <Game/>
  */
-const PixiGame = ({ game }: PixiGameProps) => {
+const Game = () => {
   const location = useLocation();
   const title = routeToTitle(location.pathname);
   const tag = routeToTag(location.pathname);
+  const url = routeToURL(tag);
   const breadcrumbs = [
     <Text key={0}>
       <Link to='/'>Games</Link>
@@ -32,9 +29,11 @@ const PixiGame = ({ game }: PixiGameProps) => {
     <>
       <MetaTags title={title} favicon={tag} />
       <Header breadcrumbs={breadcrumbs} hide={true} />
-      <GameStyled className={tag}>{game}</GameStyled>
+      <GameStyled className={tag}>
+        <Iframe src={url}>Game not supported</Iframe>
+      </GameStyled>
     </>
   );
 };
 
-export default PixiGame;
+export default Game;

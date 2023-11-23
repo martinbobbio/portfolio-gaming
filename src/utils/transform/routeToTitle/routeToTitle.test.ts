@@ -4,6 +4,6 @@ import { expect, test, describe } from 'vitest';
 describe('routeToTitle', () => {
   test('Should handle first letter uppercase correctly', () => {
     const result = routeToTitle('/my-path');
-    expect(result).toBe('MY PATH');
+    expect(result).toBe('My Path');
   });
 });

@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Home, Game } from '@/views';
-import { KingsAndPigs, RaceSurvival } from '@/games';
 import App from '@/App';
 
 /**
@@ -21,14 +20,8 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path={'home'} element={wrapApplication(<Home />)} />
-        <Route
-          path={'race-survival'}
-          element={wrapApplication(<Game game={<RaceSurvival />} />)}
-        />
-        <Route
-          path={'kings-and-pigs'}
-          element={wrapApplication(<Game game={<KingsAndPigs />} />)}
-        />
+        <Route path={'race-survival'} element={wrapApplication(<Game />)} />
+        <Route path={'kings-and-pigs'} element={wrapApplication(<Game />)} />
         <Route path={'*'} element={wrapApplication(<Home />)} />
       </Routes>
     </BrowserRouter>

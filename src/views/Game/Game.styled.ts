@@ -6,14 +6,6 @@ export const GameStyled = styled.main`
   justify-content: center;
   align-items: center;
   min-height: calc(100vh);
-  &.race-survival,
-  &.race-survival p {
-    font-family: 'Kavoon', cursive;
-  }
-  &.kings-and-pigs,
-  &.kings-and-pigs p {
-    font-family: 'Skranji', sans-serif;
-  }
 
   @media (max-width: ${BREAKPOINTS.small}) {
     padding: 0;
@@ -22,4 +14,11 @@ export const GameStyled = styled.main`
     -moz-user-select: none;
     -ms-user-select: none;
   }
+`;
+
+export const Iframe = styled.iframe`
+  position: absolute;
+  border: none;
+  width: 100%;
+  height: 100%;
 `;

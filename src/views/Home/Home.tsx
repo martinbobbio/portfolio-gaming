@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Footer, Header, Text, MetaTags } from '@/components';
 import { GlobalStyle, HomeStyled } from './Home.styled';
@@ -31,17 +30,12 @@ const Home = () => {
       title: 'Race Survival',
       image: './race-survival/img/background-menu.jpg',
       tags: ['Pixi.js', 'Race'],
-      description: 'Speed, points, challenge, compete, victory, thrill.',
+      description:
+        'Speed, points, challenge, compete, victory, thrill, and more.',
     },
   ];
 
   const breadcrumbs = [<Text key={0}>Games</Text>];
-
-  useEffect(() => {
-    import('@pixi/sound').then(({ sound }) => {
-      sound.removeAll();
-    });
-  }, []);
 
   return (
     <>
