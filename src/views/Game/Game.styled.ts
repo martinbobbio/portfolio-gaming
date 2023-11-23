@@ -1,6 +1,10 @@
 import { BREAKPOINTS } from '@/constants';
 import { styled } from 'styled-components';
 
+interface IframeProps {
+  $loaded: boolean;
+}
+
 export const GameStyled = styled.main`
   display: flex;
   justify-content: center;
@@ -16,9 +20,10 @@ export const GameStyled = styled.main`
   }
 `;
 
-export const Iframe = styled.iframe`
+export const Iframe = styled.iframe<IframeProps>`
   position: absolute;
   border: none;
   width: 100%;
   height: 100%;
+  display: ${({ $loaded }) => ($loaded ? 'block' : 'none')};
 `;

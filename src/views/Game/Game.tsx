@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Header, MetaTags, Text } from '@/components';
+import { Header, Loading, MetaTags, Text } from '@/components';
 import { routeToTag, routeToTitle, routeToURL } from '@/utils';
 import { GameStyled, Iframe } from './Game.styled';
-import { useEffect } from 'react';
 
 /**
  * Functional component that render an iframe with the game.
@@ -10,6 +10,7 @@ import { useEffect } from 'react';
  * @return React.ReactElement <Game/>
  */
 const Game = () => {
+  const [loaded, setLoaded] = useState(false);
   const location = useLocation();
   const title = routeToTitle(location.pathname);
   const tag = routeToTag(location.pathname);
@@ -25,12 +26,18 @@ const Game = () => {
     window.scrollTo(0, 0);
   }, []);
 
+  const handleOnLoad = () => {
+    setTimeout(() => setLoaded(true), 500);
+  };
   return (
     <>
       <MetaTags title={title} favicon={tag} />
       <Header breadcrumbs={breadcrumbs} hide={true} />
       <GameStyled className={tag}>
-        <Iframe src={url}>Game not supported</Iframe>
+        {!loaded && <Loading title='Loading game...' />}
+        <Iframe onLoad={handleOnLoad} src={url} $loaded={loaded}>
+          Game not supported
+        </Iframe>
       </GameStyled>
     </>
   );
